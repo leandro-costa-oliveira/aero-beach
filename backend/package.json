@@ -1,0 +1,31 @@
+{
+  "name": "aero-beach-backend",
+  "version": "1.0.0",
+  "main": "src/aero-beach.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/aero-beach.ts",
+    "dev2": "ts-node-dev --import tsx  src/aero-beach.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "multer": "^2.0.2",
+    "reflect-metadata": "^0.2.2",
+    "routing-controllers": "^0.11.3"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.6",
+    "@types/express": "^5.0.3",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^24.2.0",
+    "ts-node-dev": "^2.0.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.2"
+  }
+}
