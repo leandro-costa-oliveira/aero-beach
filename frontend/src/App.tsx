@@ -1,18 +1,17 @@
-import { useState } from "react";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./api/queryClient";
 import "./App.css";
+import { Counter } from "./componentes/Counter";
 import { Header } from "./componentes/Header";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <Header />
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p></p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+      <QueryClientProvider client={queryClient}>
+        <Header />
+        <Counter />
+        <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+      </QueryClientProvider>
     </>
   );
 }
