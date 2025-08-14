@@ -10,7 +10,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <Header />
         <Counter />
-        <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+        <p className="read-the-docs">Pressione as logos do Vite e React para saber mais</p>
       </QueryClientProvider>
     </>
   );
