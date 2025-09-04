@@ -4,8 +4,8 @@ import { Footer } from "./components/Footer/Footer";
 export function App() {
   return (
     <>
-      <Header></Header>
-      <Footer></Footer>
+      <Header/>
+      <Footer/>
     </>
   );
 }

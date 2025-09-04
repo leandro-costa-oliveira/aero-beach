@@ -4,24 +4,24 @@ import styles from "./Header.module.css";
 
 export function Header() {
   return (
-    <Navbar expand="md" className="bg-dark navbar-dark container-fluid px-2">
-      <Navbar.Brand href="#home" className={styles.logomarca}>
+    <Navbar expand="sm" className="bg-dark navbar-dark container-fluid px-2">
+      <Navbar.Brand href="#home" className={`${styles.logoContainer} gap-1 px-4 rounded-5 d-flex`}>
         <img src={logo} className={styles.img} />
         AeroBeach
       </Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" className="" />
+      <Navbar.Toggle aria-controls="basic-navbar-nav"/>
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="">
-          <Nav.Link href="#home" className="">
-            Home
+        <Nav>
+          <Nav.Link href="#inicio">
+            Inicio
           </Nav.Link>
-          <Nav.Link href="#torneios" className="">
+          <Nav.Link href="#torneios">
             Torneios
           </Nav.Link>
-          <Nav.Link href="#rankings" className="">
+          <Nav.Link href="#rankings">
             Rankings
           </Nav.Link>
-          <Nav.Link href="#sobre" className="">
+          <Nav.Link href="#sobre">
             Sobre
           </Nav.Link>
         </Nav>

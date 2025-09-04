@@ -3,10 +3,6 @@
   height: auto;
 }
 
-.logomarca {
-  display: flex;
+.logoContainer {
   background-color: #343b41;
-  border-radius: 50px;
-  padding: 0.3rem 0.8rem 0.3rem 0.8rem;
-  gap: 0.5rem;
 }
