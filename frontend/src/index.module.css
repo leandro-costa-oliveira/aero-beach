@@ -2,3 +2,10 @@
     font-family: figtree;
     src: url('./assets/fonts/Figtree/Figtree-Regular.ttf');
 }
+
+.lightLink{
+    color: rgb(173, 181, 189);
+}
+.lightLink:hover{
+    color: rgb(255, 255, 255);
+}
