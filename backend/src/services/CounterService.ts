@@ -1,8 +1,10 @@
+import { prisma } from "./DatabaseService";
+
 export class CounterService {
   private count = 0;
 
   public getCount() {
-    return this.count;
+    return prisma.contador.findFirst();
   }
 
   async doCount() {
