@@ -1,0 +1,5 @@
+-- CreateTable
+CREATE TABLE "Contador" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "contador" INTEGER NOT NULL
+);

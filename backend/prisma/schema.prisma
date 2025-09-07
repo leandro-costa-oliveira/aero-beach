@@ -13,3 +13,8 @@ datasource db {
   provider = "sqlite"
   url      = "file:./aerobeach.db"
 }
+
+model Contador {
+  id Int @id @default(autoincrement()) 
+  contador Int 
+}
