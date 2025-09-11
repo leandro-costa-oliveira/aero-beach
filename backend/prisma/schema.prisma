@@ -30,6 +30,8 @@ model Torneios {
   categoria             CategoriaTorneio
   modalidade            ModalidadeTorneio
   federado              Boolean           @default(false)
+
+  inscricoes Inscricoes[]
 }
 
 enum TipoTorneio {
@@ -58,4 +60,17 @@ model Jogadores {
   cpf      String
   telefone String
   email    String
+
+  inscricoes Inscricoes[]
+}
+
+model Inscricoes {
+  id            String   @id @default(uuid())
+  torneio_id    String
+  jogador_id    String
+  pagamento     Boolean  @default(false)
+  dataPagamento DateTime
+
+  torneio Torneios  @relation(fields: [torneio_id], references: [id])
+  jogador Jogadores @relation(fields: [jogador_id], references: [id])
 }
