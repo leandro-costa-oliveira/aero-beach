@@ -26,19 +26,19 @@ model Torneios {
   realizado_em          DateTime?
   data_limite_inscricao DateTime
   valor_inscricao       Float
-  tipo                  Tipo
-  categoria             Categoria
-  modalidade            Modalidade
+  tipo                  TipoTorneio
+  categoria             CategoriaTorneio
+  modalidade            ModalidadeTorneio
   federado              Boolean    @default(false)
 }
 
-enum Tipo {
+enum TipoTorneio {
   masculino
   feminino
   misto
 }
 
-enum Categoria {
+enum CategoriaTorneio {
   iniciante
   d
   c
@@ -47,7 +47,7 @@ enum Categoria {
   open
 }
 
-enum Modalidade {
+enum ModalidadeTorneio {
   duplas
   simples
 }
