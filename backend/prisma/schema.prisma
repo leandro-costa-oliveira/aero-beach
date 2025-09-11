@@ -68,7 +68,7 @@ model Inscricoes {
   id            String   @id @default(uuid())
   torneio_id    String
   jogador_id    String
-  pagamento     Boolean  @default(false)
+  pago          Boolean  @default(false)
   dataPagamento DateTime
 
   torneio Torneios  @relation(fields: [torneio_id], references: [id])
