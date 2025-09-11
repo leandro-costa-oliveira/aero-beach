@@ -15,6 +15,39 @@ datasource db {
 }
 
 model Contador {
-  id Int @id @default(autoincrement()) 
-  contador Int 
+  id       Int @id @default(autoincrement())
+  contador Int
+}
+
+model Torneios {
+  id                    String     @id @default(uuid())
+  nome                  String?
+  data                  DateTime
+  realizado_em          DateTime?
+  data_limite_inscricao DateTime
+  valor_inscricao       Float
+  tipo                  TipoTorneio
+  categoria             CategoriaTorneio
+  modalidade            ModalidadeTorneio
+  federado              Boolean    @default(false)
+}
+
+enum TipoTorneio {
+  masculino
+  feminino
+  misto
+}
+
+enum CategoriaTorneio {
+  iniciante
+  d
+  c
+  b
+  a
+  open
+}
+
+enum ModalidadeTorneio {
+  duplas
+  simples
 }
