@@ -137,4 +137,4 @@ dist
 
 aerobeach.db
 
-generated/
+**/generated
