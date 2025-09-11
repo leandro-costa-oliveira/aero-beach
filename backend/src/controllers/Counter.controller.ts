@@ -10,7 +10,8 @@ export class CounterController {
 
   @Get("/")
   async count() {
-    return { count: this.counterService.getCount() };
+    const num = await this.counterService.getCount();
+    return { count: num?.contador || 0 };
   }
 
   @Post("/")
