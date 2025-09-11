@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./aerobeach.db"
+}
+
+model Contador {
+  id       Int @id @default(autoincrement())
+  contador Int
+}
+
+model Torneios {
+  id                    String     @id @default(uuid())
+  nome                  String?
+  data                  DateTime
+  realizado_em          DateTime?
+  data_limite_inscricao DateTime
+  valor_inscricao       Float
+  tipo                  Tipo
+  categoria             Categoria
+  modalidade            Modalidade
+  federado              Boolean    @default(false)
+}
+
+enum Tipo {
+  masculino
+  feminino
+  misto
+}
+
+enum Categoria {
+  iniciante
+  d
+  c
+  b
+  a
+  open
+}
+
+enum Modalidade {
+  duplas
+  simples
+}
