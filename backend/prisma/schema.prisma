@@ -20,7 +20,7 @@ model Contador {
 }
 
 model Torneios {
-  id                    String     @id @default(uuid())
+  id                    String            @id @default(uuid())
   nome                  String?
   data                  DateTime
   realizado_em          DateTime?
@@ -29,7 +29,7 @@ model Torneios {
   tipo                  TipoTorneio
   categoria             CategoriaTorneio
   modalidade            ModalidadeTorneio
-  federado              Boolean    @default(false)
+  federado              Boolean           @default(false)
 }
 
 enum TipoTorneio {
@@ -50,4 +50,12 @@ enum CategoriaTorneio {
 enum ModalidadeTorneio {
   duplas
   simples
+}
+
+model Jogadores {
+  id       String @id @default(uuid())
+  nome     String
+  cpf      String
+  telefone String
+  email    String
 }
