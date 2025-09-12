@@ -62,6 +62,8 @@ model Jogadores {
   email    String
 
   inscricoes Inscricoes[]
+  duplas1    duplas[]     @relation("duplaParticipante1")
+  duplas2    duplas[]     @relation("duplaParticipante2")
 }
 
 model Inscricoes {
@@ -73,4 +75,15 @@ model Inscricoes {
 
   torneio Torneios  @relation(fields: [torneio_id], references: [id])
   jogador Jogadores @relation(fields: [jogador_id], references: [id])
+}
+
+model duplas {
+  id            String @id @default(uuid())
+  participante1 String
+  participante2 String
+
+  jogador1 Jogadores @relation("duplaParticipante1", fields: [participante1], references: [id])
+  jogador2 Jogadores @relation("duplaParticipante2", fields: [participante2], references: [id])
+
+  @@unique([participante1, participante2])
 }
