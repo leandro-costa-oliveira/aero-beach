@@ -1,11 +1,11 @@
 import { Get, JsonController } from "routing-controllers";
-import { TournmentService } from "../services/TournmentService";
+import { TournamentService } from "../services/TournamentService";
 
 @JsonController("/torneios")
 export class TournamentController {
-  private tournmentService: TournmentService
+  private tournmentService: TournamentService
   constructor() {
-    this.tournmentService = new TournmentService();
+    this.tournmentService = new TournamentService();
   }
 
   @Get("/latest")

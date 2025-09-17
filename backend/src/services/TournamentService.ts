@@ -1,6 +1,6 @@
 import { prisma } from "./DatabaseService";
 
-export class TournmentService {
+export class TournamentService {
   
   public async lastTournament() {
     return prisma.torneio.findFirst({
