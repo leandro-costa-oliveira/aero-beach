@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client/extension";
 import { prisma } from "./DatabaseService";
 
 export class TournamentService {
@@ -7,7 +6,7 @@ export class TournamentService {
 
     const [data, total] = await Promise.all([
       prisma.torneios.findMany({
-        skip, 
+        skip,
         take: perPage,
         orderBy: { data: "desc" },
       }),
@@ -21,5 +20,13 @@ export class TournamentService {
       perPage,
       totalPages: Math.ceil(total / perPage),
     };
+  }
+
+  public async lastTournament() {
+    return prisma.torneios.findFirst({
+      orderBy: {
+        data: "desc",
+      },
+    });
   }
 }

@@ -1,12 +1,11 @@
 import { Get, JsonController, QueryParam } from "routing-controllers";
-import { TournamentService } from "../services/tournamentService";
+import { TournamentService } from "../services/TournamentService";
 
 @JsonController("/torneios")
 export class TournamentController {
-  private TournamentService: TournamentService;
-
+  private tournmentService: TournamentService
   constructor() {
-    this.TournamentService = new TournamentService();
+    this.tournmentService = new TournamentService();
   }
 
   @Get('/')
@@ -14,6 +13,13 @@ export class TournamentController {
     @QueryParam("page") page: number,
     @QueryParam("perPage") perPage: number
   ) {
-    return this.TournamentService.getAll(page, perPage);
+    return this.tournmentService.getAll(page, perPage);
   }
+
+  @Get("/latest")
+  async lastTournament() {
+    const lastTournament = await this.tournmentService.lastTournament();
+    return { tournament: lastTournament || null };
+  }
+
 }
