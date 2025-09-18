@@ -8,7 +8,7 @@ export class TournamentService {
       prisma.torneios.findMany({
         skip,
         take: perPage,
-        orderBy: { data: "desc" },
+        orderBy: { dataInicio: "desc" },
       }),
       prisma.torneios.count(),
     ]);
@@ -25,7 +25,7 @@ export class TournamentService {
   public async lastTournament() {
     return prisma.torneios.findFirst({
       orderBy: {
-        data: "desc",
+        dataInicio: "desc",
       },
     });
   }

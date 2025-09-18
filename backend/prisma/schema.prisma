@@ -22,10 +22,10 @@ model Contador {
 model Torneios {
   id                    String            @id @default(uuid())
   nome                  String?
-  data                  DateTime
-  realizado_em          DateTime?
-  data_limite_inscricao DateTime
-  valor_inscricao       Float
+  dataInicio            DateTime
+  dataRealizacao        DateTime?
+  dataLimiteInscricao   DateTime
+  valorInscricao        Float
   tipo                  TipoTorneio
   categoria             CategoriaTorneio
   modalidade            ModalidadeTorneio
@@ -68,13 +68,13 @@ model Jogadores {
 
 model Inscricoes {
   id            String   @id @default(uuid())
-  torneio_id    String
-  jogador_id    String
+  torneioId     String
+  jogadorId     String
   pago          Boolean  @default(false)
   dataPagamento DateTime
 
-  torneio Torneios  @relation(fields: [torneio_id], references: [id])
-  jogador Jogadores @relation(fields: [jogador_id], references: [id])
+  torneio Torneios  @relation(fields: [torneioId], references: [id])
+  jogador Jogadores @relation(fields: [jogadorId], references: [id])
 }
 
 model duplas {
