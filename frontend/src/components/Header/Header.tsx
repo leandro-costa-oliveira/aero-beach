@@ -4,7 +4,7 @@ import index from "../../index.module.css"
 
 export function Header() {
   return (
-    <Navbar expand="sm" className="bg-dark navbar-dark container-fluid px-2">
+    <Navbar expand="sm" className="bg-dark navbar-dark container-fluid px-2 mb-3">
       <Navbar.Brand href="#inicio" style={{ backgroundColor: '#343b41' }} className="gap-1 px-4 rounded-5 d-flex">
         <img src={logo} height="30" />
         AeroBeach
