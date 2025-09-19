@@ -1,13 +1,12 @@
 import logo from "../../assets/img/aero-logo.png";
 import { Nav, Navbar } from "react-bootstrap";
-import styles from "./Header.module.css";
 import index from "../../index.module.css"
 
 export function Header() {
   return (
     <Navbar expand="sm" className="bg-dark navbar-dark container-fluid px-2">
-      <Navbar.Brand href="#inicio" className={`${styles.logoContainer} gap-1 px-4 rounded-5 d-flex`}>
-        <img src={logo} className={styles.img} />
+      <Navbar.Brand href="#inicio" style={{ backgroundColor: '#343b41' }} className="gap-1 px-4 rounded-5 d-flex">
+        <img src={logo} height="30" />
         AeroBeach
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav"/>
