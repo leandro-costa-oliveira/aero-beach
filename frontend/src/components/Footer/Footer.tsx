@@ -4,7 +4,7 @@ import index from '../../index.module.css'
 
 export function Footer() {
   return (
-    <footer className={`bg-dark container-fluid mt-auto d-flex py-4 px-5 mt-5`}>
+    <footer className={`bg-dark container-fluid mt-auto d-flex py-4 px-5`}>
       <Container fluid className="border-top pt-3">
         <Row className="m-2">
           <Col>
