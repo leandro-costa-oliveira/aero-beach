@@ -54,16 +54,26 @@ enum ModalidadeTorneio {
   simples
 }
 
-model Jogadores {
-  id       String @id @default(uuid())
+model Usuarios {
+  id       String   @id @default(uuid())
   nome     String
-  cpf      String
+  email    String   @unique
   telefone String
-  email    String
+  cpf      String   @unique
+  role     String
+  senha    String?
+
+  jogador  Jogadores?
+}
+
+model Jogadores {
+  id       String   @id
+  nome     String
 
   inscricoes Inscricoes[]
   duplas1    duplas[]     @relation("duplaParticipante1")
   duplas2    duplas[]     @relation("duplaParticipante2")
+  usuario    Usuarios     @relation(fields: [id], references: [id])
 }
 
 model Inscricoes {
