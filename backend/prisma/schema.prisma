@@ -54,6 +54,15 @@ enum ModalidadeTorneio {
   simples
 }
 
+model Usuarios {
+  id       String   @id @default(uuid())
+  nome     String
+  email    String   @unique
+  telefone String
+  role     String   @default("")
+  senha    String?
+}
+
 model Jogadores {
   id       String @id @default(uuid())
   nome     String
