@@ -1,6 +1,6 @@
 import logo from "../../assets/img/aero-logo.png";
 import { Nav, Navbar } from "react-bootstrap";
-import index from "../../index.module.css"
+import "../../index.css"
 
 export function Header() {
   return (
@@ -12,16 +12,16 @@ export function Header() {
       <Navbar.Toggle aria-controls="basic-navbar-nav"/>
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav>
-          <Nav.Link href="#inicio" className={index.lightLink}>
+          <Nav.Link href="#inicio" className="lightLink">
             Inicio
           </Nav.Link>
-          <Nav.Link href="#torneios" className={index.lightLink}>
+          <Nav.Link href="#torneios" className="lightLink">
             Torneios
           </Nav.Link>
-          <Nav.Link href="#rankings" className={index.lightLink}>
+          <Nav.Link href="#rankings" className="lightLink">
             Rankings
           </Nav.Link>
-          <Nav.Link href="#sobre" className={index.lightLink}>
+          <Nav.Link href="#sobre" className="lightLink">
             Sobre
           </Nav.Link>
         </Nav>
