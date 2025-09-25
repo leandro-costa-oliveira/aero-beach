@@ -1,21 +1,15 @@
-import { Header } from "./components/Header/Header";
-import { Footer } from "./components/Footer/Footer";
-import { CardTorneios } from "./components/CardTorneios/CardTorneios";
-import { Col, Container, Row } from "react-bootstrap";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Layout } from "./layouts/layout";
+import { HomePage } from "./pages/HomePage";
 
-export function App() {
+export default function App() {
   return (
-    <>
-      <Header />
-      <Container>
-        <Row>
-          <Col>
-            <CardTorneios />
-          </Col>
-          <Col></Col>
-        </Row>
-      </Container>
-      <Footer />
-    </>
+    <Router>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<HomePage />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }

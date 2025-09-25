@@ -32,7 +32,7 @@ export function CardTorneios({
         </div>
         <ListGroup className="mt-2 mb-4">
           <ListGroup.Item className="border-secondary">Inscrições até: {new Date(limiteInscricao).toLocaleDateString()}</ListGroup.Item>
-          <ListGroup.Item className="border-secondary">Valor do incrição {preco}</ListGroup.Item>
+          <ListGroup.Item className="border-secondary">Valor do incrição: {preco}</ListGroup.Item>
         </ListGroup>
             <Button variant="outline-primary" className="w-100">Ver Detalhes</Button>
       </Card.Body>
