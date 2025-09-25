@@ -1,5 +1,5 @@
-import path from "path";
 import "reflect-metadata";
+import path from "path";
 import { createExpressServer } from "routing-controllers";
 
 const app = createExpressServer({

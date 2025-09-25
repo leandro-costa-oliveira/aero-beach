@@ -1,7 +1,9 @@
+import { Service } from 'typedi';
 import { prisma } from "../services/DatabaseService";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+@Service()
 export class AuthService {
 
   async login(email: string, password: string) {

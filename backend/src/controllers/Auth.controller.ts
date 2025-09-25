@@ -1,13 +1,12 @@
 import { BodyParam, JsonController, Post, UnauthorizedError } from "routing-controllers";
+import { Service } from 'typedi';
 import { AuthService } from "../services/AuthService";
 
 @JsonController("/auth")
+@Service()
 export class AuthController {
-  private authService: AuthService;
 
-  constructor() {
-    this.authService = new AuthService();
-  }
+  constructor(private authService: AuthService) {}
 
   @Post("/login")
   async login(
