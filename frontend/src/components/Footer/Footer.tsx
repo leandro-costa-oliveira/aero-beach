@@ -13,14 +13,6 @@ export function Footer() {
               <p className="m-0 px-3 py-2 text-light">© 2025 AltSoft. Todos os direitos reservados.</p>
             </div>
           </Col>
-          <Col>
-            <Nav className="d-flex justify-content-end">
-                <Nav.Link href='#inicio' className="lightLink">Inicio</Nav.Link>
-                <Nav.Link href='#torneios' className="lightLink">Torneios</Nav.Link>
-                <Nav.Link href='#rankings' className="lightLink">Rankings</Nav.Link>
-                <Nav.Link href='#sobre' className="lightLink">Sobre</Nav.Link>
-            </Nav>
-          </Col>
         </Row>
       </Container>
     </footer>
