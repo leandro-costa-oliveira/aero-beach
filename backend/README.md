@@ -9,6 +9,8 @@ generate prisma local files:
 create a new dev db:
 `npx migrate dev `
 
+copy the `.env.example` information into a new `.env` file, and add the correct enviroment values.
+
 then just start with `npm run dev`
 
 ## last tested specs:
