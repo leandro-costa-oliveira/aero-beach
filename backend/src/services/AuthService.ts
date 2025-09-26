@@ -2,6 +2,7 @@ import { Service } from 'typedi';
 import { prisma } from "../services/DatabaseService";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import 'dotenv/config'
 
 @Service()
 export class AuthService {
