@@ -1,6 +1,10 @@
 import "reflect-metadata";
+
 import path from "path";
-import { createExpressServer } from "routing-controllers";
+import { createExpressServer, useContainer } from "routing-controllers";
+import Container from "typedi";
+
+useContainer(Container);
 
 const app = createExpressServer({
   cors: true,
