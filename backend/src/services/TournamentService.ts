@@ -1,5 +1,7 @@
+import { Service } from 'typedi';
 import { prisma } from "./DatabaseService";
 
+@Service()
 export class TournamentService {
   async getAll(page: number = 1, perPage: number = 10) {
     const skip = (page - 1) * perPage;
