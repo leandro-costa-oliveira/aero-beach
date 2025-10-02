@@ -4,7 +4,7 @@ CREATE TABLE "Usuarios" (
     "nome" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "telefone" TEXT NOT NULL,
-    "role" TEXT NOT NULL,
+    "role" TEXT NOT NULL DEFAULT '',
     "senha" TEXT
 );
 
