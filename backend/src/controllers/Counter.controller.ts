@@ -1,12 +1,12 @@
 import { Get, JsonController, Post } from "routing-controllers";
+import { Service } from 'typedi';
 import { CounterService } from "../services/CounterService";
 
 @JsonController("/counter")
+@Service()
 export class CounterController {
-  private counterService: CounterService;
-  constructor() {
-    this.counterService = new CounterService();
-  }
+
+  constructor(private counterService: CounterService) {}
 
   @Get("/")
   async count() {

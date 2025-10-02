@@ -1,5 +1,7 @@
+import { Service } from 'typedi';
 import { prisma } from "./DatabaseService";
 
+@Service()
 export class CounterService {
   private count = 0;
 

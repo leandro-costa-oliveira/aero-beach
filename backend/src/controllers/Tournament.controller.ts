@@ -1,12 +1,12 @@
 import { Get, JsonController, QueryParam } from "routing-controllers";
+import { Service } from 'typedi';
 import { TournamentService } from "../services/TournamentService";
 
 @JsonController("/torneios")
+@Service()
 export class TournamentController {
-  private tournmentService: TournamentService
-  constructor() {
-    this.tournmentService = new TournamentService();
-  }
+
+  constructor(private tournmentService: TournamentService) {}
 
   @Get('/')
   async getAll(
