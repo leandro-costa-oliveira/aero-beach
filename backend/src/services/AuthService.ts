@@ -3,6 +3,7 @@ import { prisma } from "../services/DatabaseService";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import 'dotenv/config'
+import { CredentialsDTO } from '../DTOs/Crendentials';
 
 @Service()
 export class AuthService {
@@ -24,12 +25,28 @@ export class AuthService {
       return null;
     }
 
+    const credentials: CredentialsDTO = {
+      userId: user.id,
+      username: user.nome
+    }
     const accessToken = jwt.sign(
-      { userId: user.id, username: user.nome },
+      credentials,
       process.env.JWT_SECRET!,
       { expiresIn: '3h' }
     );
 
     return { accessToken };
   }
-}
+
+  async getCredentials(authorizationToken: string): Promise<CredentialsDTO | null> {
+    const decoded = jwt.verify(authorizationToken, process.env.JWT_SECRET!)
+    if (!decoded || typeof decoded === 'string') {
+      return null;
+    }
+    const { userId, username } = decoded;
+    if (!userId || !username) {
+      return null;
+    }
+    return { userId, username };
+  }
+} 
