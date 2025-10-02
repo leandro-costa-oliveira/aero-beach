@@ -1,0 +1,64 @@
+on:
+  push:
+    branches:
+      - master
+      - development
+  pull_request:
+    branches:
+      - development
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: docker
+    container:
+      image: node:24-alpine
+    steps:
+      - name: Git Clone
+        uses: actions/checkout@v4
+
+      - name: Restore Node Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Run Tests
+        run: npm run test
+
+      - uses: actions/upload-artifact@v3
+        name: Upload Artifact
+        with:
+          name: dist
+          path: dist
+
+  build-docker:
+    name: Build Docker image
+    needs: [build-and-test]
+    if: github.ref == 'refs/heads/development' || github.ref == 'refs/heads/master'
+    runs-on: docker
+    container:
+      image: node:20-alpine
+
+    steps:
+      - name: Git Clone
+        uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v3
+        name: Download Artifact
+        with:
+          name: dist
+          path: dist
+
+      - uses: https://git.lhprovedor.com.br/leandro/devops/.forgejo/actions/build-docker@main
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
