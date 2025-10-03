@@ -2,12 +2,12 @@ import { Button, Card, Col, ListGroup, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 type TorneioProps = {
-  id?: string;
-  nome?: string;
-  federado?: boolean;
+  id: string;
+  nome: string;
+  federado: boolean;
   realizadoEm: string;
   limiteInscricao: string;
-  preco?: number;
+  preco: number;
 };
 
 export function CardTorneios({
@@ -28,7 +28,7 @@ export function CardTorneios({
           </Col>
         </Row>
       </Card.Header>
-      <Card.Body>
+        <Card.Body>
         <div className="d-flex justify-content-end text-secondary">
           {new Date(realizadoEm).toLocaleDateString()}
         </div>
