@@ -1,5 +1,7 @@
+import { Service } from 'typedi';
 import { prisma } from "./DatabaseService";
 
+@Service()
 export class TournamentService {
   async getAll(page: number = 1, perPage: number = 10) {
     const skip = (page - 1) * perPage;
@@ -8,7 +10,7 @@ export class TournamentService {
       prisma.torneios.findMany({
         skip,
         take: perPage,
-        orderBy: { data: "desc" },
+        orderBy: { dataInicio: "desc" },
       }),
       prisma.torneios.count(),
     ]);
@@ -25,7 +27,7 @@ export class TournamentService {
   public async lastTournament() {
     return prisma.torneios.findFirst({
       orderBy: {
-        data: "desc",
+        dataInicio: "desc",
       },
     });
   }
