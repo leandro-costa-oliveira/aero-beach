@@ -7,6 +7,6 @@ export function Avatar (props: React.HTMLAttributes<HTMLImageElement>){
 
 
     return(
-        <Image {...props} src={avatar} roundedCircle height={46}/>
+        <Image {...props} src={avatar} roundedCircle height={40}/>
     );
 };

@@ -3,7 +3,7 @@ import { Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "../../index.css"
 import { Avatar } from "../Avatar/Avatar";
-
+import menu from "../../assets/img/menu.png";
 export function Header() {
   return (
     <Navbar expand="sm" className="bg-dark navbar-dark container-fluid px-4 mb-3">
@@ -11,7 +11,8 @@ export function Header() {
         <img src={logo} height="30" />
         AeroBeach
       </Navbar.Brand>
-      <Navbar.Toggle  aria-controls="basic-navbar-nav">
+      <Navbar.Toggle  aria-controls="basic-navbar-nav" className="d-flex gap-3 d-sm-none" >
+        <img src={menu} height={40} />
         <Avatar/>
       </Navbar.Toggle>
       <Navbar.Collapse id="basic-navbar-nav">
