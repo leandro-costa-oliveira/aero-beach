@@ -1,5 +1,6 @@
 import logo from "../../assets/img/aero-logo.png";
 import { Nav, Navbar } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "../../index.css"
 
 export function Header() {
@@ -11,19 +12,11 @@ export function Header() {
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav"/>
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav>
-          <Nav.Link href="#inicio" className="lightLink">
-            Inicio
-          </Nav.Link>
-          <Nav.Link href="#torneios" className="lightLink">
-            Torneios
-          </Nav.Link>
-          <Nav.Link href="#rankings" className="lightLink">
-            Rankings
-          </Nav.Link>
-          <Nav.Link href="#sobre" className="lightLink">
-            Sobre
-          </Nav.Link>
+        <Nav className="gap-3">
+          <Link to={'/'} className="lightLink align-content-center">Inicio</Link>
+          <Link to={'/'} className="lightLink align-content-center">Torneios</Link>
+          <Link to={'/'} className="lightLink align-content-center">Rankings</Link>
+          <Link to={'/'} className="lightLink align-content-center">Sobre</Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
