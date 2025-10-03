@@ -1,15 +1,17 @@
 import { Button, Card, Col, ListGroup, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 type TorneioProps = {
-  id: string;
-  nome: string;
+  id?: string;
+  nome?: string;
   federado?: boolean;
   realizadoEm: string;
   limiteInscricao: string;
-  preco: number;
+  preco?: number;
 };
 
 export function CardTorneios({
+  //id,
   nome,
   federado,
   realizadoEm,
@@ -34,7 +36,7 @@ export function CardTorneios({
           <ListGroup.Item className="border-secondary">Inscrições até: {new Date(limiteInscricao).toLocaleDateString()}</ListGroup.Item>
           <ListGroup.Item className="border-secondary">Valor do incrição: {preco}</ListGroup.Item>
         </ListGroup>
-            <Button variant="outline-primary" className="w-100">Ver Detalhes</Button>
+            <Link to={'/torneios/latest'}><Button variant="outline-primary" className="w-100">Ver Detalhes</Button></Link>
       </Card.Body>
     </Card>
   );

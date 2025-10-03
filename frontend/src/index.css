@@ -5,6 +5,7 @@
 
 .lightLink{
     color: rgb(173, 181, 189);
+    text-decoration: none;
 }
 .lightLink:hover{
     color: rgb(255, 255, 255);
