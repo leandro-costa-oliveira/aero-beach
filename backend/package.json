@@ -9,6 +9,7 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
+    "build:docker": "docker build -t leandrocostaaca/aero-beach-backend .",
     "test:jest": "jest"
   },
   "keywords": [],

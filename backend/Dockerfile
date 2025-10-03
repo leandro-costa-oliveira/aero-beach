@@ -1,17 +1,11 @@
-FROM node:24-alpine as builder
+FROM node:24-alpine
 
 WORKDIR /app
 
-RUN apk add python3
 COPY package*.json ./
-RUN npm install
-RUN npm run build
+RUN npm install --omit=dev
 
-
-FROM node:24-alpine as runtime
-
-COPY package*.json ./
-RUN npm install --production
-COPY  --from=builder /app/dist /app
+COPY prisma ./prisma
+COPY src ./src
 
 CMD ["node", "aero-beach.js"]
