@@ -39,7 +39,7 @@ export function HomePage() {
 
   console.log(torneio)
   return (
-    <Container className="col-2 col-md-8">
+    <Container className="col-12 col-md-8">
       {torneio ? (
         <CardTorneios
           id={torneio.id}
