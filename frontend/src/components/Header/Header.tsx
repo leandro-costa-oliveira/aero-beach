@@ -4,16 +4,19 @@ import { Link } from "react-router-dom";
 import "../../index.css"
 import { Avatar } from "../Avatar/Avatar";
 import menu from "../../assets/img/menu.png";
+
 export function Header() {
   return (
     <Navbar expand="sm" className="bg-dark navbar-dark container-fluid px-4 mb-3">
-      <Navbar.Brand href="#inicio" style={{ backgroundColor: '#343b41' }} className="gap-1 px-4 rounded-5 d-flex">
+      <Link to={'/'} className="text-decoration-none">
+      <Navbar.Brand style={{ backgroundColor: '#343b41' }} className="gap-1 px-4 rounded-5 d-flex">
         <img src={logo} height="30" />
         AeroBeach
       </Navbar.Brand>
+      </Link>
       <Navbar.Toggle  aria-controls="basic-navbar-nav" className="d-flex gap-3 d-sm-none" >
         <img src={menu} height={40} />
-        <Avatar/>
+        <Link to={'/Profile'}><Avatar/></Link>
       </Navbar.Toggle>
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="gap-3">
@@ -23,7 +26,7 @@ export function Header() {
           <Link to={'/'} className="lightLink align-content-center">Sobre</Link>
         </Nav>
       </Navbar.Collapse>
-      <Avatar className="avatarDesktop"/>
+     <Link to={'/Profile'}><Avatar className="avatarDesktop"/></Link>
     </Navbar>
   );
 }
