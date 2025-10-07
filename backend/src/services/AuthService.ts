@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { prisma } from "../services/DatabaseService";
+import DatabaseService, { DatabaseInterface } from "../services/DatabaseService";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import 'dotenv/config'
@@ -8,10 +8,12 @@ import { CredentialsDTO } from '../DTOs/Crendentials';
 @Service()
 export class AuthService {
 
+  constructor(
+    private databaseService: DatabaseInterface = new DatabaseService()
+  ) {}
+
   async login(email: string, password: string) {
-    const user = await prisma.usuarios.findFirst({
-      where: { email: email }
-    });
+    const user = await this.databaseService.getUserByEmail(email);
     if (!user) {
       return null;
     }
@@ -35,7 +37,7 @@ export class AuthService {
       { expiresIn: '3h' }
     );
 
-    return { accessToken };
+    return accessToken;
   }
 
   async getCredentials(authorizationToken: string): Promise<CredentialsDTO | null> {

@@ -6,7 +6,9 @@ import { AuthService } from "../services/AuthService";
 @Service()
 export class AuthController {
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService = new AuthService()
+  ) {}
 
   @Post("/login")
   async login(
