@@ -9,6 +9,7 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
+    "build:docker": "docker build -t leandrocostaaca/aero-beach-backend .",
     "test:jest": "jest"
   },
   "keywords": [],
@@ -16,7 +17,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@prisma/adapter-better-sqlite3": "^6.15.0",
     "@prisma/client": "^6.15.0",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
