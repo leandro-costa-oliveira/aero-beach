@@ -15,12 +15,15 @@ export class AuthService {
     if (!user) {
       return null;
     }
+    if (!user.salt) {
+      /*
+        TODO: Necessário serviço para atualizar o salt do usuário caso não exista,
+        para evitar erro durante o hash
+      */
+      return null;
+    }
 
-    /* TODO:
-      Salt seria adicionado em uma task futura no momento
-      de adicionar a coluna salt na tabela Usuarios
-    */
-    const hashPassword = bcrypt.hashSync(password, 10);
+    const hashPassword = bcrypt.hashSync(password, user.salt);
     if (hashPassword !== user.senha) {
       return null;
     }
