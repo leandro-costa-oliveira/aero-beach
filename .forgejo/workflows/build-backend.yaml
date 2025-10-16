@@ -27,7 +27,7 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-
+        working-directory: backend
         run: npm install
 
       - name: Generate Prisma Client
@@ -46,7 +46,7 @@ jobs:
         name: Upload Artifact
         with:
           name: dist
-          path: dist
+          path: backend/dist
 
   build-docker:
     name: Build Docker image
@@ -64,7 +64,7 @@ jobs:
         name: Download Artifact
         with:
           name: dist
-          path: dist
+          path: backend/dist
 
       - uses: https://git.lhprovedor.com.br/leandro/devops/.forgejo/actions/build-docker@main
         env:
