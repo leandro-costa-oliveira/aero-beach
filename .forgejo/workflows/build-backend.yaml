@@ -68,7 +68,7 @@ jobs:
 
       - uses: https://git.lhprovedor.com.br/leandro/devops/.forgejo/actions/build-docker@main
         env:
-          IMAGE_NAME: ${{ github.ref == 'refs/heads/development' && 'leandrocostaaca/aero-beach-backend-dev' || 'leandrocostaaca/aero-beach-backend' }}
+          IMAGE_NAME: ${{ github.ref == 'refs/heads/development' && 'aero-beach-backend-dev' || 'aero-beach-backend' }}
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
