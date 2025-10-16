@@ -26,19 +26,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Workdir
-        run: cd frontend
-
       - name: Install dependencies
+
         run: npm install
 
       - name: Generate Prisma Client
+        working-directory: backend
         run: npm run prisma:generate
 
       - name: Build
+        working-directory: backend
         run: npm run build
 
       - name: Run Tests
+        working-directory: backend
         run: npm run test
 
       - uses: actions/upload-artifact@v3
@@ -71,3 +72,4 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          dockerfile: backend/Dockerfile
