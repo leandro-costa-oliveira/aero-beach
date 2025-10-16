@@ -1,4 +1,4 @@
-name: AeroBeach Backend
+name: AeroBeach Frontend
 on:
   push:
     branches:
@@ -22,31 +22,27 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-
+        working-directory: frontend
         run: npm install
 
-      - name: Generate Prisma Client
-        working-directory: backend
-        run: npm run prisma:generate
-
       - name: Build
-        working-directory: backend
+        working-directory: frontend
         run: npm run build
 
       - name: Run Tests
-        working-directory: backend
+        working-directory: frontend
         run: npm run test
 
       - uses: actions/upload-artifact@v3
         name: Upload Artifact
         with:
           name: dist
-          path: dist
+          path: frontend/dist
 
   build-docker:
     name: Build Docker image
@@ -55,6 +51,9 @@ jobs:
     runs-on: docker
     container:
       image: node:20-alpine
+    defaults:
+      run:
+        working-directory: frontend
 
     steps:
       - name: Git Clone
@@ -64,12 +63,12 @@ jobs:
         name: Download Artifact
         with:
           name: dist
-          path: dist
+          path: frontend/dist
 
       - uses: https://git.lhprovedor.com.br/leandro/devops/.forgejo/actions/build-docker@main
         env:
-          IMAGE_NAME: ${{ github.ref == 'refs/heads/development' && 'leandrocostaaca/aero-beach-backend-dev' || 'leandrocostaaca/aero-beach-backend' }}
+          IMAGE_NAME: ${{ github.ref == 'refs/heads/development' && 'leandrocostaaca/aero-beach-frontend-dev' || 'leandrocostaaca/aero-beach-frontend' }}
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          dockerfile: backend/Dockerfile
+          dockerfile: frontend/Dockerfile
