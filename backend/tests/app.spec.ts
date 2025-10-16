@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals'
 import request from 'supertest'
 import express from 'express'
-import app from './app'
+import app from '../../../aero-beach/backend/src/app'
 
 describe('jest and supertest functionality', () => {
   

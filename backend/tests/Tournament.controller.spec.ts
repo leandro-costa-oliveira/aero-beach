@@ -1,9 +1,9 @@
 import { it, describe, expect } from "@jest/globals";
-import { CategoriaTorneio, ModalidadeTorneio, TipoTorneio } from "../../generated/prisma";
+import { CategoriaTorneio, ModalidadeTorneio, TipoTorneio } from "../../../aero-beach/backend/generated/prisma";
 
-import { MockedDatabaseService } from "../mocks/DatabaseService.mock";
-import { TournamentService } from "../services/TournamentService";
-import { TournamentController } from "./Tournament.controller";
+import { MockedDatabaseService } from "../../../aero-beach/backend/src/mocks/DatabaseService.mock";
+import { TournamentService } from "../../../aero-beach/backend/src/services/TournamentService";
+import { TournamentController } from "../../../aero-beach/backend/src/controllers/Tournament.controller";
 
 const mockedDatabaseService = new MockedDatabaseService();
 const mockedTournamentService = new TournamentService(mockedDatabaseService);
