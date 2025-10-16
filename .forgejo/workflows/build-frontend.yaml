@@ -31,9 +31,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Generate Prisma Client
-        run: npm run prisma:generate
-
       - name: Build
         run: npm run build
 
@@ -66,7 +63,7 @@ jobs:
 
       - uses: https://git.lhprovedor.com.br/leandro/devops/.forgejo/actions/build-docker@main
         env:
-          IMAGE_NAME: ${{ github.ref == 'refs/heads/development' && 'leandrocostaaca/aero-beach-backend-dev' || 'leandrocostaaca/aero-beach-backend' }}
+          IMAGE_NAME: ${{ github.ref == 'refs/heads/development' && 'leandrocostaaca/aero-beach-frontend-dev' || 'leandrocostaaca/aero-beach-frontend' }}
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
