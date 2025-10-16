@@ -1,3 +1,4 @@
+name: AeroBeach Backend
 on:
   push:
     branches:
