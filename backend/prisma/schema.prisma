@@ -61,6 +61,7 @@ model Usuarios {
   telefone String
   role     String   @default("")
   senha    String?
+  salt     String?
 }
 
 model Jogadores {
