@@ -72,4 +72,4 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          dockerfile: backend/Dockerfile
+          context: backend
