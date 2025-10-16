@@ -1,8 +1,8 @@
 import { describe, it, expect } from "@jest/globals";
 
-import { MockedDatabaseService, MOCKED_USER } from "../mocks/DatabaseService.mock";
-import { AuthService } from "../services/AuthService";
-import { AuthController } from "./Auth.controller";
+import { MockedDatabaseService, MOCKED_USER } from "../../../aero-beach/backend/src/mocks/DatabaseService.mock";
+import { AuthService } from "../../../aero-beach/backend/src/services/AuthService";
+import { AuthController } from "../../../aero-beach/backend/src/controllers/Auth.controller";
 
 const mockedDatabaseService = new MockedDatabaseService();
 const mockedAuthService = new AuthService(mockedDatabaseService);
