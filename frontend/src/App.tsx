@@ -1,11 +1,15 @@
-import { Header } from "./components/Header/Header";
-import { Footer } from "./components/Footer/Footer";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Layout } from "./layouts/Layout";
+import { HomePage } from "./pages/HomePage";
 
-export function App() {
+export default function App() {
   return (
-    <>
-      <Header/>
-      <Footer/>
-    </>
+    <Router>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<HomePage />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
