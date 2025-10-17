@@ -33,7 +33,7 @@ export function Header() {
         className="d-flex gap-3 d-sm-none ms-auto"
       >
         <img src={menu} height={36} />
-        <Link to={"/Profile"}>
+        <Link to={"/profile"}>
           <Avatar />
         </Link>
       </Navbar.Toggle>
@@ -42,18 +42,18 @@ export function Header() {
           <Link to={"/"} className="lightLink align-content-center">
             Inicio
           </Link>
-          <Link to={"/"} className="lightLink align-content-center">
+          <Link to={"/torneios"} className="lightLink align-content-center">
             Torneios
           </Link>
-          <Link to={"/"} className="lightLink align-content-center">
+          <Link to={"/rankings"} className="lightLink align-content-center">
             Rankings
           </Link>
-          <Link to={"/"} className="lightLink align-content-center">
+          <Link to={"/sobre"} className="lightLink align-content-center">
             Sobre
           </Link>
         </Nav>
       </Navbar.Collapse>
-      <Link to={"/Profile"}>
+      <Link to={"/profile"}>
         <Avatar className="d-none d-sm-block" />
       </Link>
     </Navbar>
