@@ -8,7 +8,8 @@ const config: Config = {
   },
   moduleFileExtensions: ["ts", "js", "json"],
   testMatch: ["**/?(*.)+(spec|test).[tj]s?(x)"],
-  rootDir: ".", // make sure jest resolves from project root
+  rootDir: ".", // make sure jest resolves from project root,
+  testPathIgnorePatterns: ["/node_modules/", "/dist/"],
 };
 
 export default config;

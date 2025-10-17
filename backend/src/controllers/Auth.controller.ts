@@ -7,7 +7,7 @@ import { AuthService } from "../services/AuthService";
 export class AuthController {
 
   constructor(
-    private authService: AuthService = new AuthService()
+    private authService: AuthService
   ) {}
 
   @Post("/login")

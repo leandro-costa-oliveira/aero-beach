@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals'
 import request from 'supertest'
 import express from 'express'
-import app from '../../../aero-beach/backend/src/app'
+import app from '../src/app'
 
 describe('jest and supertest functionality', () => {
   
@@ -9,8 +9,10 @@ describe('jest and supertest functionality', () => {
     expect(true).toBe(true)
   })
 
-  it('checks if supertest is working', () => {
-    request(express()).get('/').then((response) => {
+  it('checks if supertest is working', async () => {
+    await request(express())
+    .get('/')
+    .then((response) => {
       expect(response.status).toBe(404)
     })
   })
@@ -19,7 +21,10 @@ describe('jest and supertest functionality', () => {
 describe('Main app', () => {
 
   it('checks if the main app is running', async () => {
-    const response = await request(app).get('/IsServerAlive')
-    expect(response.status).toBe(200)
+    await request(app)
+    .get('/IsServerAlive')
+    .then((response) => {
+      expect(response.status).toBe(200)
+    })
   })
 })
