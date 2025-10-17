@@ -1,6 +1,7 @@
-import { Container } from "react-bootstrap";
-import { CardTorneios } from "../components/CardTorneios/CardTorneios.tsx";
 import { useEffect, useState } from "react";
+import { Container } from "react-bootstrap";
+import { apiClient } from "../api/api-client.ts";
+import { CardTorneios } from "../components/CardTorneios/CardTorneios.tsx";
 
 type Torneio = {
   id: string;
@@ -11,14 +12,11 @@ type Torneio = {
   valorInscricao: number;
 };
 
-function useGetLastTorneio(
-  torneios: (torneios: Torneio) => void,
-  errMensage: (mensagem: string) => void
-) {
+function useGetLastTorneio(torneios: (torneios: Torneio) => void, errMensage: (mensagem: string) => void) {
   useEffect(() => {
-    fetch("http://localhost:3000/torneios/latest")
-      .then((res) => res.json())
-      .then((jsonRes) => torneios(jsonRes.tournament))
+    apiClient
+      .get<{ tournament: Torneio }>("/torneios/latest")
+      .then((jsonRes) => torneios(jsonRes.data.tournament))
       .catch((err) => {
         console.error(err);
         if (err instanceof Error) {
@@ -28,7 +26,6 @@ function useGetLastTorneio(
   }, []);
 }
 
-
 export function HomePage() {
   const [torneio, setTorneio] = useState<Torneio | null>(null);
 
@@ -37,7 +34,7 @@ export function HomePage() {
     (errMensage) => console.log(errMensage)
   );
 
-  console.log(torneio)
+  console.log(torneio);
   return (
     <Container className="col-2 col-md-8">
       {torneio ? (
