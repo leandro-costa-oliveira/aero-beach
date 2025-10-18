@@ -10,4 +10,4 @@ RUN npm install --omit=dev
 COPY prisma ./prisma
 COPY dist ./src
 
-CMD ["./start.sh"]
+CMD ["sh","./start.sh"]
