@@ -6,9 +6,10 @@
     "build": "tsc",
     "dev": "ts-node-dev src/aero-beach.ts",
     "test": "jest",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio",
+    "db:generate": "prisma generate",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:studio": "prisma studio",
     "build:docker": "docker build -t leandrocostaaca/aero-beach-backend .",
     "test:jest": "jest"
   },
