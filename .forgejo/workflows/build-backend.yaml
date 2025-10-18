@@ -36,7 +36,7 @@ jobs:
 
       - name: Migrate Prisma Client
         working-directory: backend
-        run: npm run db:migrate
+        run: npm run db:migrate:dev
 
       - name: Build
         working-directory: backend
