@@ -32,11 +32,11 @@ jobs:
 
       - name: Generate Prisma Client
         working-directory: backend
-        run: npm run prisma:generate
+        run: npm run db:generate
 
       - name: Migrate Prisma Client
         working-directory: backend
-        run: npm run prisma:migrate
+        run: npm run db:migrate
 
       - name: Build
         working-directory: backend
