@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsBoolean, IsDate, IsEnum, IsNumber, IsString, Matches} from 'class-validator';
 import { CategoriaTorneio, ModalidadeTorneio, TipoTorneio, Torneios } from '../../generated/prisma';
 
@@ -7,12 +8,15 @@ export class TorneioForm implements Omit<Torneios, "id"> {
   @Matches(/^(?=.*[a-zA-Z])[a-zA-Z\s]+$/, { message: "Nome inválido. Deve conter pelo menos uma letra e não pode ser vazio." })
   nome!: string
 
+  @Type(() => Date)
   @IsDate({ message: "Data de início inválida. Deve ser uma data válida." })
   dataInicio!: Date
 
+  @Type(() => Date)
   @IsDate({ message: "Data de realização inválida. Deve ser uma data válida." })
   dataRealizacao!: Date
 
+  @Type(() => Date)
   @IsDate({ message: "Data limite de inscrição inválida. Deve ser uma data válida." })
   dataLimiteInscricao!: Date
 

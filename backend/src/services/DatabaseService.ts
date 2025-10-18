@@ -1,23 +1,20 @@
 import { Service } from "typedi";
 import { PrismaClient, Torneios, Usuarios } from "../../generated/prisma";
 import { UserDTO } from "../DTOs/User";
+import { TorneioForm } from "../DTOs/TorneioForm";
 
 export const prisma = new PrismaClient();
 
-export interface DatabaseInterface {
-  getUserByEmail(email: string): Promise<Usuarios | null>;
-  createTournament(tournament: Omit<Torneios, "id">): Promise<void>;
-}
-
 @Service()
-export default class DatabaseService implements DatabaseInterface {
+export default class DatabaseService {
+
   async getUserByEmail(email: string): Promise<UserDTO | null> {
     return await prisma.usuarios.findFirst({
       where: { email: email },
     });
   }
 
-  async createTournament(tournament: Omit<Torneios, "id">): Promise<void> {
+  async createTournament(tournament: TorneioForm): Promise<void> {
     await prisma.torneios.create({
       data: tournament,
     });

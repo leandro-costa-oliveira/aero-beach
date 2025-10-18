@@ -1,13 +1,13 @@
 import { Service } from 'typedi';
-import DatabaseService, { DatabaseInterface, prisma } from "./DatabaseService";
-import { Torneios } from "../../generated/prisma";
+import DatabaseService, { prisma } from "./DatabaseService";
 import { BadRequestError } from 'routing-controllers';
+import { TorneioForm } from '../DTOs/TorneioForm';
 
 @Service()
 export class TournamentService {
 
   constructor(
-    private databaseService: DatabaseInterface = new DatabaseService()
+    private databaseService: DatabaseService
   ) {}
 
   async getAll(page: number = 1, perPage: number = 10) {
@@ -39,7 +39,7 @@ export class TournamentService {
     });
   }
 
-  async createTornament(tournament: Omit<Torneios, "id">): Promise<string> {
+  async createTornament(tournament: TorneioForm): Promise<string> {
   
     if (tournament.dataInicio > tournament.dataRealizacao!) {
       throw new BadRequestError("Data de início não pode ser maior que a data de realização do torneio.");

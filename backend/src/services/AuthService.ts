@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import DatabaseService, { DatabaseInterface } from "../services/DatabaseService";
+import DatabaseService from "../services/DatabaseService";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import 'dotenv/config'
@@ -9,7 +9,7 @@ import { CredentialsDTO } from '../DTOs/Crendentials';
 export class AuthService {
 
   constructor(
-    private databaseService: DatabaseInterface = new DatabaseService()
+    private databaseService: DatabaseService
   ) {}
 
   async login(email: string, password: string) {
