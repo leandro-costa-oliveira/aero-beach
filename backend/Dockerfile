@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY package*.json ./
 COPY start.sh ./
+RUN chmod +x ./start.sh
 RUN npm install --omit=dev
 
 COPY prisma ./prisma
