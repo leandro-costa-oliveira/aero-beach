@@ -1,6 +1,5 @@
 import { Service } from "typedi";
-import { PrismaClient, Torneios, Usuarios } from "../../generated/prisma";
-import { UserDTO } from "../DTOs/User";
+import { PrismaClient, Usuarios } from "../../generated/prisma";
 import { TorneioForm } from "../DTOs/TorneioForm";
 
 export const prisma = new PrismaClient();
@@ -8,7 +7,7 @@ export const prisma = new PrismaClient();
 @Service()
 export default class DatabaseService {
 
-  async getUserByEmail(email: string): Promise<UserDTO | null> {
+  async getUserByEmail(email: string): Promise<Usuarios | null> {
     return await prisma.usuarios.findFirst({
       where: { email: email },
     });
