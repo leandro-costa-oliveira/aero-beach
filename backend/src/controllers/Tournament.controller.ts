@@ -1,4 +1,4 @@
-import { Authorized, Body, Get, JsonController, Post, QueryParam } from "routing-controllers";
+import { Authorized, Body, Get, HttpCode, JsonController, Post, QueryParam } from "routing-controllers";
 import { Service } from 'typedi';
 import { TournamentService } from "../services/TournamentService";
 import { TorneioForm } from "../DTOs/TorneioForm";
@@ -8,7 +8,7 @@ import { TorneioForm } from "../DTOs/TorneioForm";
 export class TournamentController {
 
   constructor(
-    private tournmentService: TournamentService = new TournamentService()
+    private tournmentService: TournamentService
   ) {}
 
   @Get('/')
@@ -20,7 +20,8 @@ export class TournamentController {
   }
 
   @Post('/')
-  @Authorized()
+  @HttpCode(201)
+  // @Authorized()
   async createTornament(
     @Body() body: TorneioForm,
   ) {

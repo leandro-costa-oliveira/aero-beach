@@ -27,12 +27,16 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-
+        working-directory: backend
         run: npm install
 
       - name: Generate Prisma Client
         working-directory: backend
-        run: npm run prisma:generate
+        run: npm run db:generate
+
+      - name: Migrate Prisma Client
+        working-directory: backend
+        run: npm run db:migrate:dev
 
       - name: Build
         working-directory: backend
@@ -46,7 +50,7 @@ jobs:
         name: Upload Artifact
         with:
           name: dist
-          path: dist
+          path: backend/dist
 
   build-docker:
     name: Build Docker image
@@ -64,12 +68,12 @@ jobs:
         name: Download Artifact
         with:
           name: dist
-          path: dist
+          path: backend/dist
 
       - uses: https://git.lhprovedor.com.br/leandro/devops/.forgejo/actions/build-docker@main
         env:
-          IMAGE_NAME: ${{ github.ref == 'refs/heads/development' && 'leandrocostaaca/aero-beach-backend-dev' || 'leandrocostaaca/aero-beach-backend' }}
+          IMAGE_NAME: ${{ github.ref == 'refs/heads/development' && 'aero-beach-backend-dev' || 'aero-beach-backend' }}
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          dockerfile: backend/Dockerfile
+          context: backend
