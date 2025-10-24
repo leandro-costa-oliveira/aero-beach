@@ -11,6 +11,7 @@ export default function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<Login />} />
           </Route>
         </Routes>
       </Router>
