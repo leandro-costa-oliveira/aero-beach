@@ -1,39 +1,61 @@
 import logo from "../../assets/img/aero-logo.png";
 import { Nav, Navbar } from "react-bootstrap";
-import styles from "./Header.module.css";
-import index from "../../index.module.css";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
+import "../../index.css";
+import { Avatar } from "../Avatar/Avatar";
+import menu from "../../assets/img/menu.png";
 
 export function Header() {
   return (
-    <Navbar expand="sm" className="bg-dark navbar-dark container-fluid px-2">
-      <Navbar.Brand
-        href="#inicio"
-        className={`${styles.logoContainer} gap-1 px-4 rounded-5 d-flex`}
+    <Navbar expand="sm" className="bg-dark navbar-dark px-4 mb-3">
+      <Link to={"/"} className="text-decoration-none d-block d-sm-none">
+        <Navbar.Brand
+          style={{ backgroundColor: "#343b41" }}
+          className="gap-1 px-3 rounded-5 d-flex"
+        >
+          <img src={logo} height="30" />
+        </Navbar.Brand>
+      </Link>
+      <Link to={"/"} className="text-decoration-none d-none d-sm-block">
+        <Navbar.Brand
+          style={{ backgroundColor: "#343b41" }}
+          className="gap-1 px-4 rounded-5 d-flex"
+        >
+          <img src={logo} height="30" />
+          AeroBeach
+        </Navbar.Brand>
+      </Link>
+      <Navbar.Toggle
+        aria-controls="basic-navbar-nav"
+        className="d-flex gap-3 d-sm-none ms-auto"
       >
-        <img src={logo} className={styles.img} />
-        AeroBeach
-      </Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <img src={menu} height={36} />
+        <Link to={"/Profile"}>
+          <Avatar />
+        </Link>
+      </Navbar.Toggle>
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="flex-grow-1">
-          <Nav.Link href="#inicio" className={index.lightLink}>
+        <Nav className="gap-3">
+          <Link to={"/"} className="lightLink align-content-center">
             Inicio
-          </Nav.Link>
-          <Nav.Link href="#torneios" className={index.lightLink}>
+          </Link>
+          <Link to={"/"} className="lightLink align-content-center">
             Torneios
-          </Nav.Link>
-          <Nav.Link href="#rankings" className={index.lightLink}>
+          </Link>
+          <Link to={"/"} className="lightLink align-content-center">
             Rankings
-          </Nav.Link>
-          <Nav.Link href="#sobre" className={index.lightLink}>
+          </Link>
+          <Link to={"/"} className="lightLink align-content-center">
             Sobre
-          </Nav.Link>
+          </Link>
           <Nav.Link as={Link} to="/login" className="ms-sm-auto">
             Login
           </Nav.Link>
         </Nav>
       </Navbar.Collapse>
+      <Link to={"/Profile"}>
+        <Avatar className="d-none d-sm-block" />
+      </Link>
     </Navbar>
   );
 }
