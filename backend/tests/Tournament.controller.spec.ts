@@ -1,29 +1,26 @@
-import { it, describe, expect } from "@jest/globals";
-import { Factory } from 'fishery';
-import { faker } from '@faker-js/faker';
+import { it, describe, expect, beforeAll } from "@jest/globals";
+import { randomUUID } from "node:crypto";
+
 import supertest from 'supertest'
 import app from "../src/app";
+import {
+  tournamentFormFactory,
+  tournamentSubscriptionFormFactory
+} from "./Factories";
 
-import { CategoriaTorneio, ModalidadeTorneio, TipoTorneio } from "../generated/prisma/index";
+import DatabaseService from "../src/services/DatabaseService";
+import { Torneios } from "../generated/prisma/index";
 import { TorneioForm } from "../src/DTOs/TorneioForm";
 
-const torneioFormFactory = Factory.define<TorneioForm>(() => ({
-  nome: faker.person.firstName(),
-  dataInicio: new Date("2023-10-10"),
-  dataRealizacao: new Date("2023-10-20"),
-  dataLimiteInscricao: new Date("2023-10-15"),
-  categoria: faker.helpers.arrayElement(Object.values(CategoriaTorneio)),
-  modalidade: faker.helpers.arrayElement(Object.values(ModalidadeTorneio)),
-  tipo: faker.helpers.arrayElement(Object.values(TipoTorneio)),
-  federado: faker.datatype.boolean(),
-  valorInscricao: faker.number.float({ min: 10, max: 50, fractionDigits: 2 })
-}))
 
-describe("Integration tests for tournaments/", () => {
+let tournament_Ongoing: Torneios;
+let tournament_Done: Torneios;
+
+describe("Integration tests for tournaments/torneios", () => {
 
   it ("checks if tournament creation works with valid data", async () => {
 
-    const data: TorneioForm = torneioFormFactory.build();
+    const data: TorneioForm = tournamentFormFactory.build();
 
     await supertest(app)
     .post('/torneios')
@@ -39,7 +36,7 @@ describe("Integration tests for tournaments/", () => {
     const diaInicio = 20
     const diaRealizacao = 10
     const diaLimiteInscricao = 15
-    const data: TorneioForm = torneioFormFactory.build({
+    const data: TorneioForm = tournamentFormFactory.build({
       dataInicio: new Date(`2023-10-${diaInicio}`),
       dataRealizacao: new Date(`2023-10-${diaRealizacao}`),
       dataLimiteInscricao: new Date(`2023-10-${diaLimiteInscricao}`)
@@ -59,7 +56,7 @@ describe("Integration tests for tournaments/", () => {
     const diaInicio = 10
     const diaRealizacao = 15
     const diaLimiteInscricao = 20
-    const data: TorneioForm = torneioFormFactory.build({
+    const data: TorneioForm = tournamentFormFactory.build({
       dataInicio: new Date(`2023-10-${diaInicio}`),
       dataRealizacao: new Date(`2023-10-${diaRealizacao}`),
       dataLimiteInscricao: new Date(`2023-10-${diaLimiteInscricao}`)
@@ -74,3 +71,125 @@ describe("Integration tests for tournaments/", () => {
     });
   });
 });
+
+
+describe("Integration tests for tournaments/:id/increver", () => {
+
+  beforeAll(async () => {
+    tournament_Ongoing = await new DatabaseService().createTournament(tournamentFormFactory.build({
+      dataInicio: new Date("1500-11-10"),
+      dataRealizacao: new Date("2500-11-20"),
+      dataLimiteInscricao: new Date("2500-11-19"),
+    }))
+    tournament_Done = await new DatabaseService().createTournament(tournamentFormFactory.build({
+      dataInicio: new Date("2022-09-10"),
+      dataRealizacao: new Date("2022-09-20"),
+      dataLimiteInscricao: new Date("2022-09-15"),
+    }))
+  })
+
+  it ("Checks if tournament subscription works with valid data", async () => {
+
+    const subscriptionData = tournamentSubscriptionFormFactory.build({
+      torneioId: tournament_Ongoing.id
+    })
+
+    await supertest(app)
+    .post(`/torneios/${tournament_Ongoing.id}/increver`)
+    .set("Content-Type", "application/json")
+    .send(subscriptionData).then((response) => {
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe("Inscrição realizada com sucesso!");
+    });
+  })
+
+  it ("Checks it thows error when trying to subscribe a team with only one player", async () => {
+
+    const subscriptionData = tournamentSubscriptionFormFactory.build({
+      torneioId: tournament_Ongoing.id,
+      jogador2: undefined
+    })
+
+    await supertest(app)
+    .post(`/torneios/${tournament_Ongoing.id}/increver`)
+    .set("Content-Type", "application/json")
+    .send(subscriptionData).then((response) => {
+      expect(response.status).toBe(400);
+      expect(response.body.message).toBe("Inscrição de dupla requer dois jogadores.");
+    });
+  })
+
+  it("Checks if throws error when trying to subscribe to a non-existing tournament", async () => {
+
+    const subscriptionData = tournamentSubscriptionFormFactory.build({
+      torneioId: randomUUID()
+    })
+
+    await supertest(app)
+    .post(`/torneios/${subscriptionData.torneioId}/increver`)
+    .set("Content-Type", "application/json")
+    .send(subscriptionData).then((response) => {
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe("Torneio não encontrado.");
+    });
+  })
+
+  it("Checks if throws error when trying to subscribe after the registration deadline", async () => {
+
+    const subscriptionData = tournamentSubscriptionFormFactory.build({
+      torneioId: tournament_Done.id
+    })
+
+    await supertest(app)
+    .post(`/torneios/${tournament_Done.id}/increver`)
+    .set("Content-Type", "application/json")
+    .send(subscriptionData).then((response) => {
+      expect(response.status).toBe(400);
+      expect(response.body.message).toBe("O prazo de inscrição para este torneio já expirou.");
+    });
+  })
+
+  it ("Checks if throws error when trying to subscribe a team with already subscribed players", async () => {
+
+    const subscriptionData = tournamentSubscriptionFormFactory.build({
+      torneioId: tournament_Ongoing.id
+    })
+
+    await supertest(app)
+    .post(`/torneios/${tournament_Ongoing.id}/increver`)
+    .set("Content-Type", "application/json")
+    .send(subscriptionData).then((response) => {
+      console.log(response.body.message);
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe("Inscrição realizada com sucesso!");
+    });
+
+    // Player 1 already subscribed
+    const secondSubscriptionData = tournamentSubscriptionFormFactory.build({
+      torneioId: tournament_Ongoing.id,
+      jogador1: subscriptionData.jogador1,
+    })
+
+    await supertest(app)
+    .post(`/torneios/${tournament_Ongoing.id}/increver`)
+    .set("Content-Type", "application/json")
+    .send(secondSubscriptionData).then((response) => {
+      expect(response.status).toBe(400);
+      expect(response.body.message).toBe("One or both players are already subscribed to this tournament");
+    });
+
+    // Player 2 already subscribed
+    const thirdSubscriptionData = tournamentSubscriptionFormFactory.build({
+      torneioId: tournament_Ongoing.id,
+      jogador2: subscriptionData.jogador2,
+    })
+
+    await supertest(app)
+    .post(`/torneios/${tournament_Ongoing.id}/increver`)
+    .set("Content-Type", "application/json")
+    .send(thirdSubscriptionData).then((response) => {
+      expect(response.status).toBe(400);
+      expect(response.body.message).toBe("One or both players are already subscribed to this tournament");
+    });
+  })
+})
