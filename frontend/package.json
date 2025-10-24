@@ -11,7 +11,7 @@
     "test": "echo TODO"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.84.1",
+    "@tanstack/react-query": "^5.90.5",
     "axios": "^1.11.0",
     "bootstrap": "^5.3.8",
     "react": "^19.1.1",
