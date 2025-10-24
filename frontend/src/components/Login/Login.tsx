@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { requestLogin } from "../../api/auth";
@@ -41,7 +41,11 @@ export function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
       </Form.Group>
-      <Button type="submit" className="bg-secondary container mt-4">
+      <Button
+        type="submit"
+        disabled={mutation.isPending}
+        className="bg-secondary container mt-4"
+      >
         Entrar
       </Button>
     </Form>
