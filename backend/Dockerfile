@@ -8,7 +8,8 @@ RUN chmod +x ./start.sh
 RUN npm install --omit=dev
 
 COPY prisma ./prisma
-COPY generated ./generated
+RUN npm run db:generate
+
 COPY dist/src ./src
 
 CMD ["sh","./start.sh"]
