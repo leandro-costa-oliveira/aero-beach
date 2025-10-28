@@ -1,35 +1,22 @@
-import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { requestLogin } from "../../api/auth";
+import { useEfetuarLogin } from "../../api/auth";
 
 export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const mutation = useMutation<
-    { accessToken: string },
-    unknown,
-    { email: string; password: string }
-  >({
-    mutationFn: requestLogin,
-    onSuccess: (data) => {
-      localStorage.setItem("token", data.accessToken);
-    },
-    onError: (e) => {
-      console.log(e);
-    },
-  });
+  const { mutate, isPending } = useEfetuarLogin();
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    mutation.mutate({ email, password });
+    mutate({ email, password });
   }
-
   return (
     <Form className="container-sm" onSubmit={handleSubmit}>
       <Form.Group>
         <Form.Label>E-mail</Form.Label>
         <Form.Control
-          type="e-mail"
+          type="email"
           placeholder="nome@dominio.tld"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -43,7 +30,7 @@ export function Login() {
       </Form.Group>
       <Button
         type="submit"
-        disabled={mutation.isPending}
+        disabled={isPending}
         className="bg-secondary container mt-4"
       >
         Entrar

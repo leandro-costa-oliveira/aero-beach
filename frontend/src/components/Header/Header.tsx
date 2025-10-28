@@ -30,7 +30,7 @@ export function Header() {
         className="d-flex gap-3 d-sm-none ms-auto"
       >
         <img src={menu} height={36} />
-        <Link to={"/Profile"}>
+        <Link to={"/Login"}>
           <Avatar />
         </Link>
       </Navbar.Toggle>
@@ -48,12 +48,9 @@ export function Header() {
           <Link to={"/"} className="lightLink align-content-center">
             Sobre
           </Link>
-          <Nav.Link as={Link} to="/login" className="ms-sm-auto">
-            Login
-          </Nav.Link>
         </Nav>
       </Navbar.Collapse>
-      <Link to={"/Profile"}>
+      <Link to={"/Login"}>
         <Avatar className="d-none d-sm-block" />
       </Link>
     </Navbar>

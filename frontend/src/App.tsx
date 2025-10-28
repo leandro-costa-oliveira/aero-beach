@@ -3,6 +3,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { queryClient } from "./api/queryClient";
 import { Layout } from "./layouts/Layout";
 import { HomePage } from "./pages/HomePage";
+import { Login } from "./components/Login/Login";
 
 export default function App() {
   return (
