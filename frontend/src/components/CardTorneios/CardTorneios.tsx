@@ -11,7 +11,7 @@ type TorneioProps = {
 };
 
 export function CardTorneios({
-  //id,
+  id,
   nome,
   federado,
   realizadoEm,
@@ -36,7 +36,7 @@ export function CardTorneios({
           <ListGroup.Item className="border-secondary">Inscrições até: {new Date(limiteInscricao).toLocaleDateString()}</ListGroup.Item>
           <ListGroup.Item className="border-secondary">Valor do incrição: {preco}</ListGroup.Item>
         </ListGroup>
-            <Link to={'/torneios/latest'}><Button variant="outline-primary" className="w-100">Ver Detalhes</Button></Link>
+            <Link to={`/torneios/${id}`}><Button variant="outline-primary" className="w-100">Ver Detalhes</Button></Link>
       </Card.Body>
     </Card>
   );

@@ -39,13 +39,13 @@ export function Header() {
           <Link to={"/"} className="lightLink align-content-center">
             Inicio
           </Link>
-          <Link to={"/"} className="lightLink align-content-center">
+          <Link to={"/torneios"} className="lightLink align-content-center">
             Torneios
           </Link>
-          <Link to={"/"} className="lightLink align-content-center">
+          <Link to={"/rankings"} className="lightLink align-content-center">
             Rankings
           </Link>
-          <Link to={"/"} className="lightLink align-content-center">
+          <Link to={"/sobre"} className="lightLink align-content-center">
             Sobre
           </Link>
         </Nav>
