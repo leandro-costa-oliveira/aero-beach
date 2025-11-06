@@ -7,10 +7,7 @@ import menu from "../../assets/img/menu.png";
 
 export function Header() {
   return (
-    <Navbar
-      expand="sm"
-      className="bg-dark navbar-dark px-4 mb-3"
-    >
+    <Navbar expand="sm" className="bg-dark navbar-dark px-4 mb-3">
       <Link to={"/"} className="text-decoration-none d-block d-sm-none">
         <Navbar.Brand
           style={{ backgroundColor: "#343b41" }}
@@ -33,7 +30,7 @@ export function Header() {
         className="d-flex gap-3 d-sm-none ms-auto"
       >
         <img src={menu} height={36} />
-        <Link to={"/profile"}>
+        <Link to={"/Login"}>
           <Avatar />
         </Link>
       </Navbar.Toggle>
@@ -53,7 +50,7 @@ export function Header() {
           </Link>
         </Nav>
       </Navbar.Collapse>
-      <Link to={"/profile"}>
+      <Link to={"/Login"}>
         <Avatar className="d-none d-sm-block" />
       </Link>
     </Navbar>
