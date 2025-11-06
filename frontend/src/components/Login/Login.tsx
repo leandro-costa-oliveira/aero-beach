@@ -5,7 +5,7 @@ import { useEfetuarLogin } from "../../api/useEfetuarLogin";
 export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { mutate, isPending } = useEfetuarLogin();
+  const { mutate, isPending, error } = useEfetuarLogin();
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -29,6 +29,10 @@ export function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+      </Form.Group>
+
+      <Form.Group>
+        {!!error && <Form.Text className="text-danger">{(error as any)?.message ?? "Erro desconhecido"}</Form.Text>}
       </Form.Group>
       <Button type="submit" disabled={isPending} className="bg-secondary container mt-4">
         Entrar
