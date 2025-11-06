@@ -1,11 +1,15 @@
-import logo from "../../assets/img/aero-logo.png";
-import { Nav, Navbar } from "react-bootstrap";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { Nav, Navbar } from "react-bootstrap";
 import "../../index.css";
+
 import { Avatar } from "../Avatar/Avatar";
 import menu from "../../assets/img/menu.png";
+import logo from "../../assets/img/aero-logo.png";
+import { AuthContext } from "../../Context/AuthContext";
 
 export function Header() {
+  const { accessToken } = useContext(AuthContext);
   return (
     <Navbar expand="sm" className="bg-dark navbar-dark px-4 mb-3">
       <Link to={"/"} className="text-decoration-none d-block d-sm-none">
@@ -50,7 +54,7 @@ export function Header() {
           </Link>
         </Nav>
       </Navbar.Collapse>
-      <Link to={"/Login"}>
+      <Link to={accessToken ? "/profile" : "/login"}>
         <Avatar className="d-none d-sm-block" />
       </Link>
     </Navbar>
