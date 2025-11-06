@@ -17,12 +17,18 @@ export function Login() {
         <Form.Label>E-mail</Form.Label>
         <Form.Control
           type="email"
+          disabled={isPending}
           placeholder="nome@dominio.tld"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <Form.Label className="mt-2">Senha</Form.Label>
-        <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <Form.Control
+          type="password"
+          disabled={isPending}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
       </Form.Group>
       <Button type="submit" disabled={isPending} className="bg-secondary container mt-4">
         Entrar
