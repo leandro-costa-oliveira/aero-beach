@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useEfetuarLogin } from "../../api/auth";
+import { useEfetuarLogin } from "../../api/useEfetuarLogin";
 
 export function Login() {
   const [email, setEmail] = useState("");
@@ -22,17 +22,9 @@ export function Login() {
           onChange={(e) => setEmail(e.target.value)}
         />
         <Form.Label className="mt-2">Senha</Form.Label>
-        <Form.Control
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </Form.Group>
-      <Button
-        type="submit"
-        disabled={isPending}
-        className="bg-secondary container mt-4"
-      >
+      <Button type="submit" disabled={isPending} className="bg-secondary container mt-4">
         Entrar
       </Button>
     </Form>
