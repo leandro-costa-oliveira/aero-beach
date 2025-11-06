@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useEfetuarLogin } from "../../api/useEfetuarLogin";
+import { useEfetuarLogin } from "../api/useEfetuarLogin";
 
 export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { mutate, isPending, error } = useEfetuarLogin();
+  const { mutateAsync, isPending, error } = useEfetuarLogin();
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    mutate({ email, password });
+    await mutateAsync({ email, password });
+    // TODO: Get setToken from AuthContext
+    // TODO: setToken(resp.accessToken);
   }
+
   return (
     <Form className="container-sm" onSubmit={handleSubmit}>
       <Form.Group>

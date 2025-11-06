@@ -2,7 +2,7 @@ import { apiClient } from "./api-client";
 import { useMutation } from "@tanstack/react-query";
 
 export function useEfetuarLogin() {
-  return useMutation<{ accessToken: string }, unknown, { email: string; password: string }>({
+  return useMutation({
     mutationFn: fetchLogin,
     onSuccess: (data) => {
       localStorage.setItem("token", data.accessToken);
