@@ -1,6 +1,7 @@
 import { Alert, Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useListarTorneios } from "../api/useListarTorneios";
 import { CardTorneios } from "../components/CardTorneios/CardTorneios";
+import { TournamentPagination } from "../components/TournamentPagination/TournamentPagination";
 
 export const TorneiosPage = () => {
   const { data, isLoading, error } = useListarTorneios();
@@ -34,9 +35,9 @@ export const TorneiosPage = () => {
   }
 
   return (
-    <Container className="py-5">
+    <Container className="my-3">
       <div className="d-flex flex-row justify justify-content-between mb-2">
-      <h2>Todos os {data.total} Torneios</h2>
+      <p className="fs-5 fw-semibold"> Um total de {data.total} torneios</p>
       <Button variant="success">+ Novo torneio</Button>
       </div>
 
@@ -54,7 +55,6 @@ export const TorneiosPage = () => {
           </Col>
         ))}
       </Row>
-
     </Container>
   );
 };
