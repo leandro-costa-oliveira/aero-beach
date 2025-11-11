@@ -1,10 +1,14 @@
+// TorneiosPage.tsx
+import { useState } from "react";
 import { Alert, Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useListarTorneios } from "../api/useListarTorneios";
 import { CardTorneios } from "../components/CardTorneios/CardTorneios";
 import { TournamentPagination } from "../components/TournamentPagination/TournamentPagination";
 
 export const TorneiosPage = () => {
-  const { data, isLoading, error } = useListarTorneios();
+  const [currentPage, setCurrentPage] = useState(1);
+  const perPage = 6;
+  const { data, isLoading, error } = useListarTorneios(currentPage, perPage);
 
   if (isLoading) {
     return (
@@ -25,6 +29,7 @@ export const TorneiosPage = () => {
       </Alert>
     );
   }
+
   if (!data?.data || data.data.length === 0) {
     return (
       <Alert variant="info text-center">
@@ -34,11 +39,16 @@ export const TorneiosPage = () => {
     );
   }
 
+  const handlePageChange = (page: number) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setCurrentPage(page);
+  };
+
   return (
     <Container className="my-3">
       <div className="d-flex flex-row justify justify-content-between mb-2">
-      <p className="fs-5 fw-semibold"> Um total de {data.total} torneios</p>
-      <Button variant="success">+ Novo torneio</Button>
+        <p className="fs-5 fw-semibold"> Um total de {data.total} torneios</p>
+        <Button variant="success">Novo torneio</Button>
       </div>
 
       <Row xs={1} md={2} lg={3} className="g-4">
@@ -55,6 +65,11 @@ export const TorneiosPage = () => {
           </Col>
         ))}
       </Row>
+      <TournamentPagination
+        totalPages={data.totalPages}
+        currentPage={data.page}
+        onPageChange={handlePageChange}
+      />
     </Container>
   );
 };
