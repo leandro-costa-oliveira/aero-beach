@@ -1,20 +1,24 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useEfetuarLogin } from "../api/useEfetuarLogin";
+import { AuthContext } from "../Context/AuthContext";
 
 export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { mutateAsync, isPending, error } = useEfetuarLogin();
+  const { accessToken } = useContext(AuthContext);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     await mutateAsync({ email, password });
-    // TODO: Get setToken from AuthContext
-    // TODO: setToken(resp.accessToken);
   }
 
-  return (
+  return accessToken ? (
+    <div>
+      <h3 className="container-sm mt-4">Login bem sucedido!</h3>
+    </div>
+  ) : (
     <Form className="container-sm" onSubmit={handleSubmit}>
       <Form.Group>
         <Form.Label>E-mail</Form.Label>
@@ -33,7 +37,6 @@ export function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
       </Form.Group>
-
       <Form.Group>
         {!!error && <Form.Text className="text-danger">{(error as any)?.message ?? "Erro desconhecido"}</Form.Text>}
       </Form.Group>
