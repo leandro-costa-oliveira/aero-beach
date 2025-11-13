@@ -13,28 +13,19 @@ export function Header() {
   return (
     <Navbar expand="sm" className="bg-dark navbar-dark px-4 mb-3">
       <Link to={"/"} className="text-decoration-none d-block d-sm-none">
-        <Navbar.Brand
-          style={{ backgroundColor: "#343b41" }}
-          className="gap-1 px-3 rounded-5 d-flex"
-        >
+        <Navbar.Brand style={{ backgroundColor: "#343b41" }} className="gap-1 px-3 rounded-5 d-flex">
           <img src={logo} height="30" />
         </Navbar.Brand>
       </Link>
       <Link to={"/"} className="text-decoration-none d-none d-sm-block">
-        <Navbar.Brand
-          style={{ backgroundColor: "#343b41" }}
-          className="gap-1 px-4 rounded-5 d-flex"
-        >
+        <Navbar.Brand style={{ backgroundColor: "#343b41" }} className="gap-1 px-4 rounded-5 d-flex">
           <img src={logo} height="30" />
           AeroBeach
         </Navbar.Brand>
       </Link>
-      <Navbar.Toggle
-        aria-controls="basic-navbar-nav"
-        className="d-flex gap-3 d-sm-none ms-auto"
-      >
+      <Navbar.Toggle aria-controls="basic-navbar-nav" className="d-flex gap-3 d-sm-none ms-auto">
         <img src={menu} height={36} />
-        <Link to={"/Login"}>
+        <Link to={"/login"}>
           <Avatar />
         </Link>
       </Navbar.Toggle>
