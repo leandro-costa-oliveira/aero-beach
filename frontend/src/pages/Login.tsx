@@ -7,12 +7,11 @@ export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { mutateAsync, isPending, error } = useEfetuarLogin();
-  const { accessToken, setAccessToken } = useContext(AuthContext);
+  const { accessToken } = useContext(AuthContext);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const response = await mutateAsync({ email, password });
-    setAccessToken(response.accessToken);
+    await mutateAsync({ email, password });
   }
 
   return accessToken ? (
