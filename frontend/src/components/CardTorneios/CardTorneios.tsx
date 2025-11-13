@@ -10,33 +10,30 @@ type TorneioProps = {
   preco: number;
 };
 
-export function CardTorneios({
-  id,
-  nome,
-  federado,
-  realizadoEm,
-  limiteInscricao,
-  preco,
-}: TorneioProps) {
+export function CardTorneios({ id, nome, federado, realizadoEm, limiteInscricao, preco }: TorneioProps) {
+  const { data: torneio } = useTorneio(id);
+
   return (
     <Card className="border-dark">
       <Card.Header className="bg-dark text-light">
         <Row>
           <Col>{nome}</Col>
-          <Col className="d-flex justify-content-end">
-            {federado ? "Federado" : "Não Federado"}
-          </Col>
+          <Col className="d-flex justify-content-end">{federado ? "Federado" : "Não Federado"}</Col>
         </Row>
       </Card.Header>
-        <Card.Body>
-        <div className="d-flex justify-content-end text-secondary">
-          {new Date(realizadoEm).toLocaleDateString()}
-        </div>
+      <Card.Body>
+        <div className="d-flex justify-content-end text-secondary">{new Date(realizadoEm).toLocaleDateString()}</div>
         <ListGroup className="mt-1 mb-3">
-          <ListGroup.Item className="border-secondary">Inscrições até: {new Date(limiteInscricao).toLocaleDateString()}</ListGroup.Item>
+          <ListGroup.Item className="border-secondary">
+            Inscrições até: {new Date(limiteInscricao).toLocaleDateString()}
+          </ListGroup.Item>
           <ListGroup.Item className="border-secondary">Valor do incrição: {preco}</ListGroup.Item>
         </ListGroup>
-            <Link to={`/torneios/${id}`}><Button variant="outline-primary" className="w-100">Ver Detalhes</Button></Link>
+        <Link to={`/torneios/${id}`}>
+          <Button variant="outline-primary" className="w-100">
+            Ver Detalhes
+          </Button>
+        </Link>
       </Card.Body>
     </Card>
   );

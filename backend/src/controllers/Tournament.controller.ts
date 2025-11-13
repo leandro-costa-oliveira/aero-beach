@@ -1,5 +1,15 @@
-import { Authorized, BadRequestError, Body, Get, HttpCode, JsonController, Param, Post, QueryParam } from "routing-controllers";
-import { Service } from 'typedi';
+import {
+  Authorized,
+  BadRequestError,
+  Body,
+  Get,
+  HttpCode,
+  JsonController,
+  Param,
+  Post,
+  QueryParam,
+} from "routing-controllers";
+import { Service } from "typedi";
 import { TournamentService } from "../services/TournamentService";
 import { TorneioForm } from "../DTOs/TorneioForm";
 import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
@@ -28,14 +38,10 @@ export class TournamentController {
     return { tournament: lastTournament || null };
   }
 
-  @Post("/:id/increver")
+  @Post("/:id/inscrever")
   @HttpCode(201)
-  async tournamentSubscription(
-    @Body() body: TorneioInscricaoForm,
-  ) {
+  async tournamentSubscription(@Body() body: TorneioInscricaoForm) {
     await this.tournamentService.subscribeTournamentAsDouble(body);
     return { message: "Inscrição realizada com sucesso!" };
   }
-
 }
- 
