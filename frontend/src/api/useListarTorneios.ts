@@ -19,7 +19,7 @@ export function useListarTorneios(page: number = 1, perPage: number = 6) {
       const resp = await apiClient.get<ListaTorneios<Torneio>>(`/torneios/?page=${page}&perPage=${perPage}`);
 
       resp.data.data.forEach((torneio) => {
-        queryClient.setQueryData(QueryKeys.useTorneio(torneio.id), torneio);
+        // queryClient.setQueryData(QueryKeys.useTorneio(torneio.id), torneio);
       });
       return resp.data;
     },
