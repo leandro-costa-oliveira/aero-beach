@@ -1,12 +1,14 @@
 // TorneiosPage.tsx
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Alert, Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useListarTorneios } from "../api/useListarTorneios";
 import { CardTorneios } from "../components/CardTorneios/CardTorneios";
 import { TournamentPagination } from "../components/TournamentPagination/TournamentPagination";
+import { AuthContext } from "../Context/AuthContext";
 
 export const TorneiosPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const { accessToken } = useContext(AuthContext);
   const perPage = 6;
   const { data, isLoading, error } = useListarTorneios(currentPage, perPage);
 
@@ -23,9 +25,7 @@ export const TorneiosPage = () => {
     return (
       <Alert variant="danger text-center">
         <h3>Erro ao carregar torneios </h3>
-        <p>
-          Não foi possível encontrar torneios no servidor. Erro: {String(error)}
-        </p>
+        <p>Não foi possível encontrar torneios no servidor. Erro: {String(error)}</p>
       </Alert>
     );
   }
@@ -48,7 +48,7 @@ export const TorneiosPage = () => {
     <Container className="my-3">
       <div className="d-flex flex-row justify justify-content-between mb-2">
         <p className="fs-5 fw-semibold"> Um total de {data.total} torneios</p>
-        <Button variant="success">Novo torneio</Button>
+        {accessToken && <Button variant="success">Novo torneio</Button>}
       </div>
 
       <Row xs={1} md={2} lg={3} className="g-4">
@@ -65,11 +65,7 @@ export const TorneiosPage = () => {
           </Col>
         ))}
       </Row>
-      <TournamentPagination
-        totalPages={data.totalPages}
-        currentPage={data.page}
-        onPageChange={handlePageChange}
-      />
+      <TournamentPagination totalPages={data.totalPages} currentPage={data.page} onPageChange={handlePageChange} />
     </Container>
   );
 };
