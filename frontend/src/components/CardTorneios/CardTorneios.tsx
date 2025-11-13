@@ -32,7 +32,7 @@ export function CardTorneios({
         <div className="d-flex justify-content-end text-secondary">
           {new Date(realizadoEm).toLocaleDateString()}
         </div>
-        <ListGroup className="mt-2 mb-4">
+        <ListGroup className="mt-1 mb-3">
           <ListGroup.Item className="border-secondary">Inscrições até: {new Date(limiteInscricao).toLocaleDateString()}</ListGroup.Item>
           <ListGroup.Item className="border-secondary">Valor do incrição: {preco}</ListGroup.Item>
         </ListGroup>

@@ -9,7 +9,7 @@ import { Duplas, Inscricoes } from '../../generated/prisma';
 export class TournamentService {
   constructor(private databaseService: DatabaseService) {}
 
-  async getAll(page: number = 1, perPage: number = 10) {
+  async getAll(page: number = 1, perPage: number = 6) {
     const skip = (page - 1) * perPage;
 
     const [data, total] = await Promise.all([
