@@ -65,7 +65,7 @@ export class TournamentService {
   }
 
    async getById(id: string) {
-    if (!id) {
+    if (!id || null) {
       throw new BadRequestError("ID inválido.");
     }
 
