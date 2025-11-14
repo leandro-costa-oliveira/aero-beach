@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { apiClient } from "./api-client";
+import { apiClient } from "../api/api-client";
 import { useMutation } from "@tanstack/react-query";
 import { AuthContext } from "../Context/AuthContext";
 

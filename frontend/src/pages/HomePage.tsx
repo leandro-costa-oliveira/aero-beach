@@ -1,5 +1,5 @@
 import { Alert, Container, Spinner } from "react-bootstrap";
-import { useUltimoTorneio } from "../api/useUltimoTorneio.ts";
+import { useUltimoTorneio } from "../hooks/useUltimoTorneio.ts";
 import { CardTorneios } from "../components/CardTorneios/CardTorneios.tsx";
 
 export function HomePage() {
