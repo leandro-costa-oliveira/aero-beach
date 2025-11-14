@@ -25,7 +25,7 @@ export function Header() {
       </Link>
       <Navbar.Toggle aria-controls="basic-navbar-nav" className="d-flex gap-3 d-sm-none ms-auto">
         <img src={menu} height={36} />
-        <Link to={"/login"}>
+        <Link to={accessToken ? "/profile" : "/login"}>
           <Avatar />
         </Link>
       </Navbar.Toggle>
