@@ -34,7 +34,7 @@ export function HomePage() {
   }
   console.log(torneio);
   return (
-    <Container className="col-2 col-md-8">
+    <Container className="col-12 col-md-8">
       <p className="fs-5 fw-semibold"> O Torneio Mais Recente:</p>
       <CardTorneios
         id={torneio.id}
