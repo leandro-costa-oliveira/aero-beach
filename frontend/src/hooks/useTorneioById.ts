@@ -7,8 +7,11 @@ export function useTorneioById(id: string) {
   return useQuery({
     queryKey: [QueryKeys.TorneioById, id],
     queryFn: async () => {
-      const torneio = await apiClient.get<{ tournament: Torneio }>(`/torneios/:id=${id}`).then((resp) => resp.data.tournament);
+      const torneio = await apiClient
+        .get<Torneio>(`/torneios/${id}`)
+        .then((resp) => resp.data);
       return torneio;
     },
   });
 }
+9
