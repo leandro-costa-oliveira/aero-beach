@@ -35,7 +35,7 @@ export function HomePage() {
   console.log(torneio);
   return (
     <Container className="col-12 col-md-8">
-      <p className="fs-5 fw-semibold"> O Torneio Mais Recente:</p>
+      <h1 className="mb-4 text-primary display-6 border-bottom pb-2"> O Torneio Mais Recente:</h1>
       <CardTorneios
         id={torneio.id}
         nome={torneio.nome}
