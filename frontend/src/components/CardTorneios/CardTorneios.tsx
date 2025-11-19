@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Col, ListGroup, Row } from "react-bootstrap";
+import { Badge, Button, Card, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 type TorneioProps = {
