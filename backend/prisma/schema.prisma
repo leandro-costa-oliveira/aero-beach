@@ -88,7 +88,7 @@ model Inscricoes {
 }
 
 model Duplas {
-  id            String @id @default(uuid())
+  id            String  @id @default(uuid())
   torneioId     String
   participante1 String
   participante2 String
