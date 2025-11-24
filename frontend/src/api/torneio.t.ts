@@ -1,9 +1,19 @@
 // TODO: Importar o model do prisma do backend
+
+export type Categoria = {
+  id: string;
+  genero: string;
+  modalidade: string; 
+  nivel: string; 
+  valorInscricao: number;
+  dataRealizacao: string | null;
+};
+
 export type Torneio = {
   id: string;
   nome: string;
   federado: boolean;
-  dataRealizacao: string;
+  dataInicio: string;
   dataLimiteInscricao: string;
-  valorInscricao: number;
+  categorias: Categoria[];
 };

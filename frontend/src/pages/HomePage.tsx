@@ -32,7 +32,9 @@ export function HomePage() {
       </Alert>
     );
   }
-  console.log(torneio);
+
+  const minPrice = torneio?.categorias?.length
+    ? Math.min(...torneio.categorias.map(c => c.valorInscricao)) : 0;
   return (
     <Container className="col-12 col-md-8">
       <h1 className="mb-4 text-primary display-6 border-bottom pb-2"> O Torneio Mais Recente:</h1>
@@ -40,9 +42,9 @@ export function HomePage() {
         id={torneio.id}
         nome={torneio.nome}
         federado={torneio.federado}
-        realizadoEm={torneio.dataRealizacao}
+        realizadoEm={torneio.dataInicio}
         limiteInscricao={torneio.dataLimiteInscricao}
-        preco={torneio.valorInscricao}
+        preco={minPrice}
       />
     </Container>
   );
