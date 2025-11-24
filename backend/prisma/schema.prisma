@@ -106,12 +106,7 @@ model Torneios {
   id                  String            @id @default(uuid())
   nome                String?
   dataInicio          DateTime
-  dataRealizacao      DateTime?
   dataLimiteInscricao DateTime
-  valorInscricao      Float
-  tipo                TipoTorneio
-  categoria           CategoriaTorneio
-  modalidade          ModalidadeTorneio
   federado            Boolean           @default(false)
   situacao            SituacaoTorneio   @default(aberto)
 
