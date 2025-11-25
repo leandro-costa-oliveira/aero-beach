@@ -1,4 +1,4 @@
-import { Alert, Container, Spinner } from "react-bootstrap";
+import { Alert, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useUltimoTorneio } from "../hooks/useUltimoTorneio.ts";
 import { CardTorneios } from "../components/CardTorneios/CardTorneios.tsx";
 
@@ -36,16 +36,25 @@ export function HomePage() {
   const minPrice = torneio?.categorias?.length
     ? Math.min(...torneio.categorias.map(c => c.valorInscricao)) : 0;
   return (
-    <Container className="col-12 col-md-8">
-      <h1 className="mb-4 text-primary display-6 border-bottom pb-2"> O Torneio Mais Recente:</h1>
-      <CardTorneios
-        id={torneio.id}
-        nome={torneio.nome}
-        federado={torneio.federado}
-        realizadoEm={torneio.dataInicio}
-        limiteInscricao={torneio.dataLimiteInscricao}
-        preco={minPrice}
-      />
+  <Container className="py-4">
+      <Row className="justify-content-center">
+        <Col xs={12} md={8} lg={6}>
+          
+          <h1 className="mb-4 text-primary display-6 border-bottom pb-2">
+             O Torneio Mais Recente:
+          </h1>
+          
+          <CardTorneios
+            id={torneio.id}
+            nome={torneio.nome}
+            federado={torneio.federado}
+            realizadoEm={torneio.dataInicio}
+            limiteInscricao={torneio.dataLimiteInscricao}
+            preco={minPrice}
+          />
+        
+        </Col>
+      </Row>
     </Container>
   );
 }

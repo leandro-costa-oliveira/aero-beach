@@ -54,7 +54,7 @@ export function TorneioDetalhesPage() {
     );
   }
 
-  const dataRealizacaoFormatada = new Date(torneio.dataRealizacao).toLocaleDateString("pt-BR");
+  const dataRealizacaoFormatada = new Date(torneio.dataInicio).toLocaleDateString("pt-BR");
   const dataLimiteInscricaoFormatada = new Date(torneio.dataLimiteInscricao).toLocaleDateString("pt-BR");
 
   const isFederado = torneio.federado ? "success" : "secondary";
@@ -72,41 +72,6 @@ export function TorneioDetalhesPage() {
             {torneio.federado ? "Torneio Federado" : "Não Federado"}
           </Badge>
         </Card.Header>
-        
-        <Card.Body>
-          <Row className="g-4">
-            <Col md={6}>
-              <ListGroup variant="flush">
-                <ListGroup.Item>
-                  Realização: <span className="float-end text-success fw-bold">{dataRealizacaoFormatada}</span>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  Limite de inscrição: <span className="float-end text-danger">{dataLimiteInscricaoFormatada}</span>
-                </ListGroup.Item>
-                <ListGroup.Item className="bg-light">
-                  Valor da inscrição: <span className="float-end text-success fw-bold">R$ {torneio.valorInscricao.toFixed(2).replace('.', ',')}</span>
-                </ListGroup.Item>
-              </ListGroup>
-            </Col>
-            
-            <Col md={6}>
-              <ListGroup variant="flush">
-                <ListGroup.Item>
-                  Modalidade: <Badge bg="info" className="float-end">{torneio.modalidade}</Badge>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  Tipo: <Badge bg="secondary" className="float-end">{torneio.tipo}</Badge>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  Categoria: <Badge bg="dark" className="float-end">{torneio.categoria}</Badge>
-                </ListGroup.Item>
-                <ListGroup.Item className="text-muted small">
-                  ID do Torneio: <span className="float-end">{torneio.id}</span>
-                </ListGroup.Item>
-              </ListGroup>
-            </Col>
-          </Row>
-        </Card.Body>
         
         <Card.Footer>
         </Card.Footer>

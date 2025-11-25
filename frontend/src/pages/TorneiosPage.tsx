@@ -60,9 +60,9 @@ export const TorneiosPage = () => {
               id={torneio.id}
               nome={torneio.nome || "Torneio Sem Nome"}
               federado={torneio.federado}
-              realizadoEm={torneio.dataRealizacao || "Sem Data Definida"}
+              realizadoEm={torneio.dataInicio || "Sem Data Definida"}
               limiteInscricao={torneio.dataLimiteInscricao}
-              preco={torneio.valorInscricao}
+              preco={2}
             />
           </Col>
         ))}

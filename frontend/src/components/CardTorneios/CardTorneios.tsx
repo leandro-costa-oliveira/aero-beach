@@ -35,14 +35,14 @@ export function CardTorneios({
   
   return (
     <Card className="shadow-sm">
-      <Card.Header className="bg-light d-flex justify-content-between align-items-center">
-        <span className="fw-bold">{nome}</span>
-        <Badge bg={isFederado} className="p-2">
+      <Card.Header className="bg-light d-flex align-items-center">
+        <span className="text-truncate fw-bold me-2 flex-grow-1" title={nome}>{nome}</span>
+        <Badge bg={isFederado} className="p-2 flex-shrink-0">
           {federado ? "Torneio Federado" : "Não Federado"}
         </Badge>
       </Card.Header>
-      <Card.Body>''
-        <Badge bg={inscricoesStatus.status} className="p-2">
+      <Card.Body>
+        <Badge bg={inscricoesStatus.status} className="p-2 flex-shrink-0">
           {inscricoesStatus.data}
         </Badge>
         <ListGroup className="mt-1 mb-3" variant="flush">
@@ -59,7 +59,7 @@ export function CardTorneios({
             </span>
           </ListGroup.Item>
           <ListGroup.Item className="bg-light">
-            Valor da inscrição:
+            Inscrição a partir de:
             <span className="float-end text-success fw-bold">
               R$ {seecurePrice.toFixed(2).replace(".", ",")}
             </span>
