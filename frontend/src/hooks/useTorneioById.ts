@@ -14,4 +14,3 @@ export function useTorneioById(id: string) {
     },
   });
 }
-9

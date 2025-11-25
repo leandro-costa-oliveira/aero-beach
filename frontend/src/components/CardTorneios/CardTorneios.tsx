@@ -7,7 +7,7 @@ type TorneioProps = {
   federado: boolean;
   realizadoEm: string;
   limiteInscricao: string;
-  value: number | null;
+  preco: number | null;
 };
 
 export function CardTorneios({
@@ -16,7 +16,7 @@ export function CardTorneios({
   federado,
   realizadoEm,
   limiteInscricao,
-  value,
+  preco,
 }: TorneioProps) {
   const isFederado = federado ? "success" : "secondary";
   const inscricoesStatus =
@@ -31,7 +31,7 @@ export function CardTorneios({
     "pt-BR"
   );
 
-  const price = value ?? 0;
+  const seecurePrice = preco ?? 0;
   
   return (
     <Card className="shadow-sm">
@@ -61,7 +61,7 @@ export function CardTorneios({
           <ListGroup.Item className="bg-light">
             Valor da inscrição:
             <span className="float-end text-success fw-bold">
-              R$ {price.toFixed(2).replace(".", ",")}
+              R$ {seecurePrice.toFixed(2).replace(".", ",")}
             </span>
           </ListGroup.Item>
         </ListGroup>
