@@ -31,12 +31,14 @@ export function CardTorneios({
     "pt-BR"
   );
 
-  const seecurePrice = preco ?? 0;
-  
+  const securePrice = preco ?? 0;
+
   return (
     <Card className="shadow-sm">
       <Card.Header className="bg-light d-flex align-items-center">
-        <span className="text-truncate fw-bold me-2 flex-grow-1" title={nome}>{nome}</span>
+        <span className="text-truncate fw-bold me-2 flex-grow-1" title={nome}>
+          {nome}
+        </span>
         <Badge bg={isFederado} className="p-2 flex-shrink-0">
           {federado ? "Torneio Federado" : "Não Federado"}
         </Badge>
@@ -46,31 +48,36 @@ export function CardTorneios({
           {inscricoesStatus.data}
         </Badge>
         <ListGroup className="mt-1 mb-3" variant="flush">
-          <ListGroup.Item className="border-secondary">
+          <ListGroup.Item className="border-secondary fw-semibold">
             Realização:
             <span className="float-end text-primary  fw-bold">
               {dataRealizacaoFormatada}
             </span>
           </ListGroup.Item>
-          <ListGroup.Item className="border-secondary">
+          <ListGroup.Item className="border-secondary fw-semibold">
             Inscrições até:
             <span className="float-end text-secondary  fw-bold">
               {dataLimiteInscricaoFormatada}
             </span>
           </ListGroup.Item>
-          <ListGroup.Item className="bg-light">
-            Inscrição a partir de:
+          <ListGroup.Item className="bg-light fw-semibold">
+            Inscrições a partir de:
             <span className="float-end text-success fw-bold">
-              R$ {seecurePrice.toFixed(2).replace(".", ",")}
+              {securePrice.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
             </span>
           </ListGroup.Item>
         </ListGroup>
+      </Card.Body>
+      <Card.Footer>
         <Link to={`/torneios/${id}`}>
           <Button variant="outline-primary" className="w-100">
             Ver Detalhes
           </Button>
         </Link>
-      </Card.Body>
+      </Card.Footer>
     </Card>
   );
 }
