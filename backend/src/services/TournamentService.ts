@@ -17,7 +17,7 @@ export class TournamentService {
         skip,
         take: perPage,
         orderBy: { dataInicio: "desc" },
-        include: { categorias: false },
+        include: { categorias: true },
       }),
       prisma.torneios.count(),
     ]);
@@ -36,7 +36,7 @@ export class TournamentService {
       orderBy: {
         dataInicio: "desc",
       },
-      include: { categorias: false },
+      include: { categorias: true },
     });
   }
 
@@ -83,6 +83,7 @@ export class TournamentService {
 
     const torneio = await prisma.torneios.findUnique({
       where: { id: id },
+      include: { categorias: true },
     });
 
     if (!torneio) {

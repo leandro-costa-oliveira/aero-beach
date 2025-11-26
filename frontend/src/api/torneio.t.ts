@@ -15,5 +15,6 @@ export type Torneio = {
   federado: boolean;
   dataInicio: string;
   dataLimiteInscricao: string;
+  situacao: string;
   categorias: Categoria[];
 };
