@@ -75,12 +75,19 @@ export function CardTorneios({
         </ListGroup>
       </Card.Body>
       <Card.Footer>
+        {accessToken ? (
           <Link to={`/torneios/${id}`}>
             <Button variant="outline-primary" className="w-100 btn-anim fw-semibold">
               Ver Detalhes
             </Button>
           </Link>
-
+        ) : (
+          <Link to={`/login?redirect=/torneios/${id}`}>
+            <Button variant="outline-secondary" className="w-100 btn-anim fw-semibold">
+              faça login para ver detalhes
+            </Button>
+          </Link>
+        )}
       </Card.Footer>
     </Card>
   );
