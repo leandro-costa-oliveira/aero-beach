@@ -49,7 +49,7 @@ export const TorneiosPage = () => {
   return (
     <Container className="my-3">
       <div className="d-flex flex-row justify justify-content-between mb-2">
-        <p className="mb-4 text-primary display-6 border-bottom pb-2"> Um total de {data.total} torneios</p>
+        <p className="mb-4 text-primary display-6 border-bottom pb-2 "> Um total de {data.total} torneios</p>
         {accessToken && <Button variant="success">Novo torneio</Button>}
       </div>
 
