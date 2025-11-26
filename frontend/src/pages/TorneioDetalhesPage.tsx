@@ -114,14 +114,14 @@ export function TorneioDetalhesPage() {
             <Card.Footer>
               <Button
                 variant="outline-primary"
-                className="w-100 fw-semibold"
+                className="w-100 fw-semibold btn-anim"
                 onClick={() =>
                   document.getElementById("categorias")?.scrollIntoView({
                     behavior: "smooth",
                   })
                 }
               >
-                Inscrever-se
+                Ver categorias
               </Button>
             </Card.Footer>
           </Card>

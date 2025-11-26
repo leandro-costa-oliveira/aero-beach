@@ -43,8 +43,8 @@ export function CardCategorias({categoria} : CategoriaProps) {
         </ListGroup>
       </Card.Body>
       <Card.Footer>
-        <Button variant="outline-success" className="w-100 fw-semibold">
-          Realizar inscrição {price}
+        <Button variant="outline-success" className="w-100 fw-semibold btn-anim">
+          Realizar inscrição: {price}
         </Button>
       </Card.Footer>
     </Card>
