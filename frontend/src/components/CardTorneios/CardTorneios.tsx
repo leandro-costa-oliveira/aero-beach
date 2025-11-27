@@ -11,8 +11,6 @@ type TorneioProps = {
 };
 
 export function CardTorneios({ id, nome, federado, realizadoEm, limiteInscricao, preco }: TorneioProps) {
-  const { data: torneio } = useTorneio(id);
-
   return (
     <Card className="border-dark">
       <Card.Header className="bg-dark text-light">
