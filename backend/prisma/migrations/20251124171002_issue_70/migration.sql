@@ -10,6 +10,24 @@ CREATE TABLE "Categorias" (
     CONSTRAINT "Categorias_torneioId_fkey" FOREIGN KEY ("torneioId") REFERENCES "Torneios" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
+INSERT INTO "Categorias" ("id", "torneioId", "genero", "modalidade", "valorInscricao", "nivel", "dataRealizacao")
+SELECT 
+ (lower(
+            hex(randomblob(4)) || '-' ||
+            hex(randomblob(2)) || '-' ||
+            '4' || substr(hex(randomblob(2)), 2) || '-' ||
+            substr('89ab', abs(random()) % 4 + 1, 1) ||
+            substr(hex(randomblob(2)), 2) || '-' ||
+            hex(randomblob(6))
+       )),
+  "id", 
+  "tipo", 
+  "modalidade", 
+  "valorInscricao",
+  "categoria",
+  "dataRealizacao"
+FROM "Torneios";
+
 -- RedefineTables
 PRAGMA defer_foreign_keys=ON;
 PRAGMA foreign_keys=OFF;
