@@ -70,7 +70,18 @@ CREATE TABLE "new_Inscricoes" (
     CONSTRAINT "Inscricoes_jogadorId_fkey" FOREIGN KEY ("jogadorId") REFERENCES "Jogadores" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Inscricoes_categoriasId_fkey" FOREIGN KEY ("categoriasId") REFERENCES "Categorias" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
-INSERT INTO "new_Inscricoes" ("dataPagamento", "id", "jogadorId", "pago", "torneioId") SELECT "dataPagamento", "id", "jogadorId", "pago", "torneioId" FROM "Inscricoes";
+INSERT INTO "new_Inscricoes" ("dataPagamento", "id", "jogadorId", "pago", "torneioId", "categoriasId") 
+SELECT 
+i.dataPagamento,
+i.id,
+i.jogadorId,
+i.pago,
+i.torneioId ,
+c.id,
+FROM Inscricoes as i
+JOIN Torneios as t ON i.torneioId = t.id
+JOIN Categorias as c ON t.id = c.torneioId;
+
 DROP TABLE "Inscricoes";
 ALTER TABLE "new_Inscricoes" RENAME TO "Inscricoes";
 CREATE TABLE "new_Torneios" (
