@@ -88,27 +88,27 @@ model Inscricoes {
 }
 
 model Duplas {
-  id            String  @id @default(uuid())
+  id            String @id @default(uuid())
   torneioId     String
   participante1 String
   participante2 String
-  categoriasId  String?
+  categoriasId  String
 
-  torneio    Torneios    @relation(fields: [torneioId], references: [id])
-  jogador1   Jogadores   @relation("duplaParticipante1", fields: [participante1], references: [id])
-  jogador2   Jogadores   @relation("duplaParticipante2", fields: [participante2], references: [id])
-  categorias Categorias? @relation(fields: [categoriasId], references: [id])
+  torneio    Torneios   @relation(fields: [torneioId], references: [id])
+  jogador1   Jogadores  @relation("duplaParticipante1", fields: [participante1], references: [id])
+  jogador2   Jogadores  @relation("duplaParticipante2", fields: [participante2], references: [id])
+  categorias Categorias @relation(fields: [categoriasId], references: [id])
 
-  @@unique([participante1, participante2])
+  @@unique([participante1, participante2, categoriasId])
 }
 
 model Torneios {
-  id                  String            @id @default(uuid())
+  id                  String          @id @default(uuid())
   nome                String?
   dataInicio          DateTime
   dataLimiteInscricao DateTime
-  federado            Boolean           @default(false)
-  situacao            SituacaoTorneio   @default(aberto)
+  federado            Boolean         @default(false)
+  situacao            SituacaoTorneio @default(aberto)
 
   categorias Categorias[]
   inscricoes Inscricoes[]
