@@ -34,4 +34,8 @@ export class TorneioForm implements Omit<Torneios, "id"> {
 
   @IsBoolean({ message: "Indicação de torneio federado inválida. Deve ser true ou false." })
   federado!: boolean
+
+  @IsOptional()
+  @IsEnum(SituacaoTorneio, { message: `Situação do torneio inválida. Valores permitidos: ${Object.values(SituacaoTorneio).join(", ")}` })
+  situacao!: SituacaoTorneio;
 }
