@@ -1,7 +1,7 @@
 import { Badge, Button, Card, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../Context/AuthContext";
-import { useContext } from "react";
+//import { AuthContext } from "../../Context/AuthContext";
+//import { useContext } from "react";
 
 type TorneioProps = {
   id: string;
@@ -33,11 +33,11 @@ export function CardTorneios({
     "pt-BR"
   );
 
-  const { accessToken } = useContext(AuthContext);
+  //const { accessToken } = useContext(AuthContext);
   const securePrice = preco ?? 0;
 
   return (
-    <Card className="shadow-sm">
+    <Card className="shadow-sm big-hover">
       <Card.Header className="bg-light d-flex align-items-center">
         <span className="text-truncate fw-bold me-2 flex-grow-1" title={nome}>
           {nome}
@@ -75,19 +75,29 @@ export function CardTorneios({
         </ListGroup>
       </Card.Body>
       <Card.Footer>
-        {accessToken ? (
+        {//accessToken ? (
           <Link to={`/torneios/${id}`}>
-            <Button variant="outline-primary" className="w-100 btn-anim fw-semibold">
+            <Button
+              variant="outline-primary"
+              className="w-100 btn-anim fw-semibold"
+            >
               Ver Detalhes
             </Button>
           </Link>
-        ) : (
+       
+         /**  ) : (
           <Link to={`/login?redirect=/torneios/${id}`}>
-            <Button variant="outline-secondary" className="w-100 btn-anim fw-semibold">
+            <Button
+              variant="outline-secondary"
+              className="w-100 btn-anim fw-semibold"
+            >
               faça login para ver detalhes
             </Button>
           </Link>
-        )}
+        ) **/
+        
+        }
+        
       </Card.Footer>
     </Card>
   );
