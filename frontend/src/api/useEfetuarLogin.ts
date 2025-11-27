@@ -22,5 +22,8 @@ export function useEfetuarLogin() {
 
 async function fetchLogin({ email, password }: { email: string; password: string }) {
   const response = await apiClient.post<{ accessToken: string }>("/auth/login", { email, password });
+  if (response.status === 200) {
+    apiClient.defaults.headers.common["Authorization"] = response.data.accessToken;
+  }
   return response.data;
 }
