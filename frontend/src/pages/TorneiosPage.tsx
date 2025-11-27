@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { Alert, Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useListarTorneios } from "../hooks/useListarTorneios";
 import { CardTorneios } from "../components/CardTorneios/CardTorneios";
-import { TournamentPagination } from "../components/TournamentPagination/TournamentPagination";
+import { AeroPagination } from "../components/AeroPagination/AeroPagination";
 import { AuthContext } from "../Context/AuthContext";
 
 export const TorneiosPage = () => {
@@ -67,7 +67,7 @@ export const TorneiosPage = () => {
           </Col>
         ))}
       </Row>
-      <TournamentPagination
+      <AeroPagination
         totalPages={data.totalPages}
         currentPage={data.page}
         onPageChange={handlePageChange}

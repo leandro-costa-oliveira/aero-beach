@@ -25,3 +25,7 @@ body {
         border-color 0.3s ease-in-out, 
         color 0.3s ease-in-out;
 }
+
+.big-hover:hover{
+  transform: scale(1.005);
+}

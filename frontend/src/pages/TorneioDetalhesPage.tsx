@@ -77,10 +77,10 @@ export function TorneioDetalhesPage() {
 
   return (
     <Container className="my-5 gap-3">
+      <Row className="justify-content-center">
       <h1 className="mb-4 text-primary display-4 border-bottom pb-2 text-truncate">
         {torneio.nome}
       </h1>
-      <Row className="justify-content-center">
         <Col xs={12} md={8} lg={10}>
           <Card className="shadow-lg border-light">
             <Card.Header className="bg-light d-flex justify-content-between align-items-center">
@@ -126,18 +126,27 @@ export function TorneioDetalhesPage() {
             </Card.Footer>
           </Card>
         </Col>
+
       </Row>
       <h2 className="my-5 text-primary display-6 border-bottom pb-2">
         Categorias Disponíveis
       </h2>
-
       <Container className="p-0" id="categorias">
-        <Row xs={1} md={2} lg={3} className="g-4">
+        <Row xs={1} md={2} lg={3} className="g-4 mb-2">
           {(torneio.categorias || []).map((cate) => (
             <Col key={cate.id}>
               <CardCategorias categoria={cate} />
             </Col>
           ))}
+        </Row>
+        <span className="text-muted mt-3 text-center">
+          *Sua inscrição é individual por categoria. Escolha a categoria desejada, clique em
+          "Realizar inscrição", pague o valor apresentado e pronto. Automaticamente você
+          estará na lista dos jogadores.*
+        </span>
+      </Container>
+      <Container className="p-0" id="">
+        <Row xs={1} md={2} lg={3} className="g-4 mb-2">
         </Row>
       </Container>
     </Container>
@@ -173,11 +182,4 @@ model Categorias {
 
   @@unique([torneioId, genero, modalidade, nivel])
 }
-**/
-
-/**
-  <Alert variant="info text-center">
-    <h3>Ainda não existem categorias nesse torneio</h3>
-    <p>Atualize a página ou volte mais tarde</p>
-  </Alert>
 **/

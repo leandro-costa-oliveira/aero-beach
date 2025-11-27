@@ -11,7 +11,7 @@ import { AuthContext } from "../../Context/AuthContext";
 export function Header() {
   const { accessToken } = useContext(AuthContext);
   return (
-    <Navbar expand="sm" className="bg-dark navbar-dark px-4 mb-3">
+    <Navbar expand="sm" className="bg-dark navbar-dark px-4">
       <Link to={"/"} className="text-decoration-none d-block d-sm-none">
         <Navbar.Brand style={{ backgroundColor: "#343b41" }} className="gap-1 px-3 rounded-5 d-flex">
           <img src={logo} height="30" />
