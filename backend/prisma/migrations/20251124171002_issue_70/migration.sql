@@ -36,16 +36,29 @@ CREATE TABLE "new_Duplas" (
     "torneioId" TEXT NOT NULL,
     "participante1" TEXT NOT NULL,
     "participante2" TEXT NOT NULL,
-    "categoriasId" TEXT,
+    "categoriasId" TEXT NOT NULL,
     CONSTRAINT "Duplas_torneioId_fkey" FOREIGN KEY ("torneioId") REFERENCES "Torneios" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Duplas_participante1_fkey" FOREIGN KEY ("participante1") REFERENCES "Jogadores" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Duplas_participante2_fkey" FOREIGN KEY ("participante2") REFERENCES "Jogadores" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Duplas_categoriasId_fkey" FOREIGN KEY ("categoriasId") REFERENCES "Categorias" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
-INSERT INTO "new_Duplas" ("id", "participante1", "participante2", "torneioId") SELECT "id", "participante1", "participante2", "torneioId" FROM "Duplas";
+
+INSERT INTO "new_Duplas" ("id", "participante1", "participante2", "torneioId", categoriasId) 
+SELECT 
+	d.id, 
+	d.participante1, 
+	d.participante2, 
+	d.torneioId,
+	c.id as categoriaId
+FROM Duplas as d
+JOIN Torneios as t on t.id = d.torneioId
+JOIN Categorias as c on t.id = c.torneioId;
+
+
 DROP TABLE "Duplas";
 ALTER TABLE "new_Duplas" RENAME TO "Duplas";
-CREATE UNIQUE INDEX "Duplas_participante1_participante2_key" ON "Duplas"("participante1", "participante2");
+CREATE UNIQUE INDEX "Duplas_participante1_participante2_key" ON "Duplas"("participante1", "participante2", "categoriasId");
+
 CREATE TABLE "new_Inscricoes" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "torneioId" TEXT NOT NULL,
