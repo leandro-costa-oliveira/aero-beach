@@ -40,9 +40,8 @@ export function HomePage() {
         id={torneio.id}
         nome={torneio.nome}
         federado={torneio.federado}
-        realizadoEm={torneio.dataRealizacao}
+        realizadoEm={torneio.dataInicio}
         limiteInscricao={torneio.dataLimiteInscricao}
-        preco={torneio.valorInscricao}
       />
     </Container>
   );
