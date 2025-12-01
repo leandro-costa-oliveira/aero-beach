@@ -2,8 +2,8 @@ import { BadRequestError } from "routing-controllers";
 import { Service } from "typedi";
 import { TorneioForm } from "../DTOs/TorneioForm";
 import DatabaseService, { prisma } from "./DatabaseService";
-import { TorneioInscricaoForm } from '../DTOs/TorneioInscricaoForm';
-import { Duplas, Inscricoes } from '../../generated/prisma';
+import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
+import { Duplas, Inscricoes } from "../../generated/prisma";
 
 @Service()
 export class TournamentService {
@@ -17,6 +17,7 @@ export class TournamentService {
         skip,
         take: perPage,
         orderBy: { dataInicio: "desc" },
+        include: { categorias: true },
       }),
       prisma.torneios.count(),
     ]);
@@ -35,42 +36,54 @@ export class TournamentService {
       orderBy: {
         dataInicio: "desc",
       },
+      include: { categorias: true },
     });
   }
 
   // TODO: Retornar o torneio criado ao invés de uma mensagem fixa
   async createTournament(tournament: TorneioForm): Promise<string> {
     if (tournament.dataInicio > tournament.dataRealizacao!) {
-      throw new BadRequestError("Data de início não pode ser maior que a data de realização do torneio.");
+      throw new BadRequestError(
+        "Data de início não pode ser maior que a data de realização do torneio."
+      );
     }
     if (tournament.dataLimiteInscricao > tournament.dataRealizacao!) {
-      throw new BadRequestError("Data limite de inscrição não pode ser maior que a data de realização do torneio.");
+      throw new BadRequestError(
+        "Data limite de inscrição não pode ser maior que a data de realização do torneio."
+      );
     }
     if (tournament.dataLimiteInscricao < tournament.dataInicio) {
-      throw new BadRequestError("Data limite de inscrição não pode ser menor que a data de início do torneio.");
+      throw new BadRequestError(
+        "Data limite de inscrição não pode ser menor que a data de início do torneio."
+      );
     }
 
     await this.databaseService.createTournament(tournament);
     return "Torneio criado com sucesso!";
   }
 
-  async subscribeTournamentAsDouble(torneioInscricaoForm: TorneioInscricaoForm): Promise<{
+  async subscribeTournamentAsDouble(
+    torneioInscricaoForm: TorneioInscricaoForm
+  ): Promise<{
     subscriptions: Inscricoes[];
     double: Duplas;
   }> {
     if (!torneioInscricaoForm.jogador2) {
       throw new BadRequestError("Inscrição de dupla requer dois jogadores.");
     }
-    return await this.databaseService.subscribeTournamentAsDouble(torneioInscricaoForm);
+    return await this.databaseService.subscribeTournamentAsDouble(
+      torneioInscricaoForm
+    );
   }
 
-   async getById(id: string) {
+  async getById(id: string) {
     if (!id || null) {
       throw new BadRequestError("ID inválido.");
     }
 
     const torneio = await prisma.torneios.findUnique({
-      where: { id: id},
+      where: { id: id },
+      include: { categorias: true },
     });
 
     if (!torneio) {
@@ -80,4 +93,3 @@ export class TournamentService {
     return torneio;
   }
 }
-

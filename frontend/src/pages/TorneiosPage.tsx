@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { Alert, Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useListarTorneios } from "../hooks/useListarTorneios";
 import { CardTorneios } from "../components/CardTorneios/CardTorneios";
-import { TournamentPagination } from "../components/TournamentPagination/TournamentPagination";
+import { AeroPagination } from "../components/AeroPagination/AeroPagination";
 import { AuthContext } from "../Context/AuthContext";
 
 export const TorneiosPage = () => {
@@ -49,7 +49,7 @@ export const TorneiosPage = () => {
   return (
     <Container className="my-3">
       <div className="d-flex flex-row justify justify-content-between mb-2">
-        <p className="fs-5 fw-semibold"> Um total de {data.total} torneios</p>
+        <p className="mb-4 text-primary display-6 border-bottom pb-2 "> Um total de {data.total} torneios</p>
         {accessToken && <Button variant="success">Novo torneio</Button>}
       </div>
 
@@ -60,14 +60,14 @@ export const TorneiosPage = () => {
               id={torneio.id}
               nome={torneio.nome || "Torneio Sem Nome"}
               federado={torneio.federado}
-              realizadoEm={torneio.dataRealizacao || "Sem Data Definida"}
+              realizadoEm={torneio.dataInicio || "Sem Data Definida"}
               limiteInscricao={torneio.dataLimiteInscricao}
-              preco={torneio.valorInscricao}
+              preco={2}
             />
           </Col>
         ))}
       </Row>
-      <TournamentPagination
+      <AeroPagination
         totalPages={data.totalPages}
         currentPage={data.page}
         onPageChange={handlePageChange}
