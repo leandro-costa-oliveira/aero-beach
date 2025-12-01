@@ -1,7 +1,7 @@
 // TorneiosPage.tsx
 import { useContext, useState } from "react";
 import { Alert, Button, Col, Container, Row, Spinner } from "react-bootstrap";
-import { useListarTorneios } from "../api/useListarTorneios";
+import { useListarTorneios } from "../hooks/useListarTorneios";
 import { CardTorneios } from "../components/CardTorneios/CardTorneios";
 import { TournamentPagination } from "../components/TournamentPagination/TournamentPagination";
 import { AuthContext } from "../Context/AuthContext";
@@ -25,7 +25,9 @@ export const TorneiosPage = () => {
     return (
       <Alert variant="danger text-center">
         <h3>Erro ao carregar torneios </h3>
-        <p>Não foi possível encontrar torneios no servidor. Erro: {String(error)}</p>
+        <p>
+          Não foi possível encontrar torneios no servidor. Erro: {String(error)}
+        </p>
       </Alert>
     );
   }
@@ -65,7 +67,11 @@ export const TorneiosPage = () => {
           </Col>
         ))}
       </Row>
-      <TournamentPagination totalPages={data.totalPages} currentPage={data.page} onPageChange={handlePageChange} />
+      <TournamentPagination
+        totalPages={data.totalPages}
+        currentPage={data.page}
+        onPageChange={handlePageChange}
+      />
     </Container>
   );
 };

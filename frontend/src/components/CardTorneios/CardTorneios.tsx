@@ -7,10 +7,9 @@ type TorneioProps = {
   federado: boolean;
   realizadoEm: string;
   limiteInscricao: string;
-  preco: number;
 };
 
-export function CardTorneios({ id, nome, federado, realizadoEm, limiteInscricao, preco }: TorneioProps) {
+export function CardTorneios({ id, nome, federado, realizadoEm, limiteInscricao }: TorneioProps) {
   return (
     <Card className="border-dark">
       <Card.Header className="bg-dark text-light">
@@ -25,7 +24,6 @@ export function CardTorneios({ id, nome, federado, realizadoEm, limiteInscricao,
           <ListGroup.Item className="border-secondary">
             Inscrições até: {new Date(limiteInscricao).toLocaleDateString()}
           </ListGroup.Item>
-          <ListGroup.Item className="border-secondary">Valor do incrição: {preco}</ListGroup.Item>
         </ListGroup>
         <Link to={`/torneios/${id}`}>
           <Button variant="outline-primary" className="w-100">

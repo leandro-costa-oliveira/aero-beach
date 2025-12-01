@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { apiClient } from "./api-client";
-import type { Torneio } from "./torneio.t";
+import { apiClient } from "../api/api-client";
+import type { Torneio } from "../api/torneio.t";
 
 export function useCadastrarTorneio() {
   return useMutation({

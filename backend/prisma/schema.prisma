@@ -80,7 +80,7 @@ model Inscricoes {
   jogadorId     String
   pago          Boolean   @default(false)
   dataPagamento DateTime?
-  categoriasId  String?
+  categoriasId  String
 
   torneio    Torneios    @relation(fields: [torneioId], references: [id])
   jogador    Jogadores   @relation(fields: [jogadorId], references: [id])

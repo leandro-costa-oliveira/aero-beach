@@ -63,4 +63,21 @@ export class TournamentService {
     }
     return await this.databaseService.subscribeTournamentAsDouble(torneioInscricaoForm);
   }
+
+   async getById(id: string) {
+    if (!id || null) {
+      throw new BadRequestError("ID inválido.");
+    }
+
+    const torneio = await prisma.torneios.findUnique({
+      where: { id: id},
+    });
+
+    if (!torneio) {
+      throw new BadRequestError("Torneio não encontrado.");
+    }
+
+    return torneio;
+  }
 }
+

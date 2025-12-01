@@ -1,5 +1,5 @@
 import { Alert, Container, Spinner } from "react-bootstrap";
-import { useUltimoTorneio } from "../api/useUltimoTorneio.ts";
+import { useUltimoTorneio } from "../hooks/useUltimoTorneio.ts";
 import { CardTorneios } from "../components/CardTorneios/CardTorneios.tsx";
 
 export function HomePage() {
@@ -40,9 +40,8 @@ export function HomePage() {
         id={torneio.id}
         nome={torneio.nome}
         federado={torneio.federado}
-        realizadoEm={torneio.dataRealizacao}
+        realizadoEm={torneio.dataInicio}
         limiteInscricao={torneio.dataLimiteInscricao}
-        preco={torneio.valorInscricao}
       />
     </Container>
   );
