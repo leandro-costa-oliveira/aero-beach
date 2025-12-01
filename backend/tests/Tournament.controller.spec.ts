@@ -1,13 +1,13 @@
-import { it, describe, expect, beforeAll } from "@jest/globals";
+import { beforeAll, describe, expect, it } from "@jest/globals";
 import { randomUUID } from "node:crypto";
 
 import supertest from "supertest";
 import app from "../src/app";
 import { tournamentFormFactory, tournamentSubscriptionFormFactory } from "./Factories";
 
-import DatabaseService from "../src/services/DatabaseService";
 import { Torneios } from "../generated/prisma/index";
 import { TorneioForm } from "../src/DTOs/TorneioForm";
+import DatabaseService from "../src/services/DatabaseService";
 
 let tournament_Ongoing: Torneios;
 let tournament_Done: Torneios;
@@ -32,7 +32,6 @@ describe("Integration tests for tournaments/torneios", () => {
     const diaLimiteInscricao = 15;
     const data: TorneioForm = tournamentFormFactory.build({
       dataInicio: new Date(`2023-10-${diaInicio}`),
-      dataRealizacao: new Date(`2023-10-${diaRealizacao}`),
       dataLimiteInscricao: new Date(`2023-10-${diaLimiteInscricao}`),
     });
 
@@ -52,7 +51,6 @@ describe("Integration tests for tournaments/torneios", () => {
     const diaLimiteInscricao = 20;
     const data: TorneioForm = tournamentFormFactory.build({
       dataInicio: new Date(`2023-10-${diaInicio}`),
-      dataRealizacao: new Date(`2023-10-${diaRealizacao}`),
       dataLimiteInscricao: new Date(`2023-10-${diaLimiteInscricao}`),
     });
 
@@ -74,14 +72,12 @@ describe("Integration tests for tournaments/:id/inscrever", () => {
     tournament_Ongoing = await new DatabaseService().createTournament(
       tournamentFormFactory.build({
         dataInicio: new Date("1500-11-10"),
-        dataRealizacao: new Date("2500-11-20"),
         dataLimiteInscricao: new Date("2500-11-19"),
       })
     );
     tournament_Done = await new DatabaseService().createTournament(
       tournamentFormFactory.build({
         dataInicio: new Date("2022-09-10"),
-        dataRealizacao: new Date("2022-09-20"),
         dataLimiteInscricao: new Date("2022-09-15"),
       })
     );
