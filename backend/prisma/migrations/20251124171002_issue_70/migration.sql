@@ -43,13 +43,13 @@ CREATE TABLE "new_Duplas" (
     CONSTRAINT "Duplas_categoriasId_fkey" FOREIGN KEY ("categoriasId") REFERENCES "Categorias" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
-INSERT INTO "new_Duplas" ("id", "participante1", "participante2", "torneioId", categoriasId) 
+INSERT INTO "new_Duplas" ("id", "participante1", "participante2", "torneioId", "categoriasId") 
 SELECT 
 	d.id, 
 	d.participante1, 
 	d.participante2, 
 	d.torneioId,
-	c.id as categoriaId
+	c.id
 FROM Duplas as d
 JOIN Torneios as t on t.id = d.torneioId
 JOIN Categorias as c on t.id = c.torneioId;
