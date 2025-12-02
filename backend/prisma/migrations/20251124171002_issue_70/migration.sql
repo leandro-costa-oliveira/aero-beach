@@ -77,7 +77,7 @@ i.id,
 i.jogadorId,
 i.pago,
 i.torneioId ,
-c.id,
+c.id
 FROM Inscricoes as i
 JOIN Torneios as t ON i.torneioId = t.id
 JOIN Categorias as c ON t.id = c.torneioId;
