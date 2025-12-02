@@ -141,36 +141,38 @@ describe("Integration tests for tournaments/:id/inscrever", () => {
       torneioId: tournament_Ongoing.id,
       categoriaId: categoria.id,
     });
-
+    
     await supertest(app)
-      .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
-      .set("Content-Type", "application/json")
-      .send(subscriptionData)
-      .then((response) => {
-        console.log(response);
-        expect(response.status).toBe(201);
-        expect(response.body.message).toBe("Inscrição realizada com sucesso!");
-      });
-
+    .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
+    .set("Content-Type", "application/json")
+    .send(subscriptionData)
+    .then((response) => {
+      console.log(response);
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe("Inscrição realizada com sucesso!");
+    });
+    
     // Player 1 already subscribed
     const secondSubscriptionData = tournamentSubscriptionFormFactory.build({
       torneioId: tournament_Ongoing.id,
       jogador1: subscriptionData.jogador1,
+      categoriaId: categoria.id,
     });
-
+    
     await supertest(app)
-      .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
-      .set("Content-Type", "application/json")
-      .send(secondSubscriptionData)
-      .then((response) => {
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe("One or both players are already subscribed to this tournament");
-      });
-
+    .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
+    .set("Content-Type", "application/json")
+    .send(secondSubscriptionData)
+    .then((response) => {
+      expect(response.status).toBe(400);
+      expect(response.body.message).toBe("Um ou mais jogadores já estão inscritos nessa categoria");
+    });
+    
     // Player 2 already subscribed
     const thirdSubscriptionData = tournamentSubscriptionFormFactory.build({
       torneioId: tournament_Ongoing.id,
       jogador2: subscriptionData.jogador2,
+      categoriaId: categoria.id,
     });
 
     await supertest(app)
@@ -179,7 +181,7 @@ describe("Integration tests for tournaments/:id/inscrever", () => {
       .send(thirdSubscriptionData)
       .then((response) => {
         expect(response.status).toBe(400);
-        expect(response.body.message).toBe("One or both players are already subscribed to this tournament");
+        expect(response.body.message).toBe("Um ou mais jogadores já estão inscritos nessa categoria");
       });
   });
 });
