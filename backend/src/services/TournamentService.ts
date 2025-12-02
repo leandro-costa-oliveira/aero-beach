@@ -42,8 +42,8 @@ export class TournamentService {
 
   // TODO: Retornar o torneio criado ao invés de uma mensagem fixa
   async createTournament(tournament: TorneioForm): Promise<string> {
-    if (tournament.dataLimiteInscricao < tournament.dataInicio) {
-      throw new BadRequestError("Data limite de inscrição não pode ser menor que a data de início do torneio.");
+    if (tournament.dataLimiteInscricao > tournament.dataInicio) {
+      throw new BadRequestError("Data limite de inscrição não pode ser maior que a data de início do torneio.");
     }
 
     await this.databaseService.createTournament(tournament);

@@ -5,11 +5,12 @@ import supertest from "supertest";
 import app from "../src/app";
 import { tournamentFormFactory, tournamentSubscriptionFormFactory } from "./Factories";
 
-import { Torneios } from "../generated/prisma/index";
+import { Categorias, Torneios } from "../generated/prisma/index";
 import { TorneioForm } from "../src/DTOs/TorneioForm";
-import DatabaseService from "../src/services/DatabaseService";
+import DatabaseService, { prisma } from "../src/services/DatabaseService";
 
 let tournament_Ongoing: Torneios;
+let categoria: Categorias;
 let tournament_Done: Torneios;
 
 describe("Integration tests for tournaments/torneios", () => {
@@ -23,25 +24,6 @@ describe("Integration tests for tournaments/torneios", () => {
       .then((response) => {
         expect(response.status).toBe(201);
         expect(response.body.message).toBe("Torneio criado com sucesso!");
-      });
-  });
-
-  it("checks if throws error when dataInicio is later than dataRealizacao", async () => {
-    const diaInicio = 20;
-    const diaRealizacao = 10;
-    const diaLimiteInscricao = 15;
-    const data: TorneioForm = tournamentFormFactory.build({
-      dataInicio: new Date(`2023-10-${diaInicio}`),
-      dataLimiteInscricao: new Date(`2023-10-${diaLimiteInscricao}`),
-    });
-
-    await supertest(app)
-      .post("/torneios")
-      .set("Content-Type", "application/json")
-      .send(data)
-      .then((response) => {
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe("Data de início não pode ser maior que a data de realização do torneio.");
       });
   });
 
@@ -61,7 +43,7 @@ describe("Integration tests for tournaments/torneios", () => {
       .then((response) => {
         expect(response.status).toBe(400);
         expect(response.body.message).toBe(
-          "Data limite de inscrição não pode ser maior que a data de realização do torneio."
+          "Data limite de inscrição não pode ser maior que a data de início do torneio."
         );
       });
   });
@@ -75,6 +57,16 @@ describe("Integration tests for tournaments/:id/inscrever", () => {
         dataLimiteInscricao: new Date("2500-11-19"),
       })
     );
+
+    categoria = await prisma.categorias.create({data: {
+      torneioId: tournament_Ongoing.id,
+      genero: "feminino",
+      modalidade: "duplas",
+      nivel: "a",
+      valorInscricao: 30,
+      dataRealizacao: null,
+    }})
+
     tournament_Done = await new DatabaseService().createTournament(
       tournamentFormFactory.build({
         dataInicio: new Date("2022-09-10"),
@@ -86,6 +78,7 @@ describe("Integration tests for tournaments/:id/inscrever", () => {
   it("Checks if tournament subscription works with valid data", async () => {
     const subscriptionData = tournamentSubscriptionFormFactory.build({
       torneioId: tournament_Ongoing.id,
+      categoriaId: categoria.id,
     });
 
     await supertest(app)
@@ -147,37 +140,40 @@ describe("Integration tests for tournaments/:id/inscrever", () => {
   it("Checks if throws error when trying to subscribe a team with already subscribed players", async () => {
     const subscriptionData = tournamentSubscriptionFormFactory.build({
       torneioId: tournament_Ongoing.id,
+      categoriaId: categoria.id,
     });
-
+    
     await supertest(app)
-      .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
-      .set("Content-Type", "application/json")
-      .send(subscriptionData)
-      .then((response) => {
-        console.log(response.body.message);
-        expect(response.status).toBe(201);
-        expect(response.body.message).toBe("Inscrição realizada com sucesso!");
-      });
-
+    .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
+    .set("Content-Type", "application/json")
+    .send(subscriptionData)
+    .then((response) => {
+      console.log(response);
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe("Inscrição realizada com sucesso!");
+    });
+    
     // Player 1 already subscribed
     const secondSubscriptionData = tournamentSubscriptionFormFactory.build({
       torneioId: tournament_Ongoing.id,
       jogador1: subscriptionData.jogador1,
+      categoriaId: categoria.id,
     });
-
+    
     await supertest(app)
-      .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
-      .set("Content-Type", "application/json")
-      .send(secondSubscriptionData)
-      .then((response) => {
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe("One or both players are already subscribed to this tournament");
-      });
-
+    .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
+    .set("Content-Type", "application/json")
+    .send(secondSubscriptionData)
+    .then((response) => {
+      expect(response.status).toBe(400);
+      expect(response.body.message).toBe("Um ou mais jogadores já estão inscritos nessa categoria");
+    });
+    
     // Player 2 already subscribed
     const thirdSubscriptionData = tournamentSubscriptionFormFactory.build({
       torneioId: tournament_Ongoing.id,
       jogador2: subscriptionData.jogador2,
+      categoriaId: categoria.id,
     });
 
     await supertest(app)
@@ -186,7 +182,7 @@ describe("Integration tests for tournaments/:id/inscrever", () => {
       .send(thirdSubscriptionData)
       .then((response) => {
         expect(response.status).toBe(400);
-        expect(response.body.message).toBe("One or both players are already subscribed to this tournament");
+        expect(response.body.message).toBe("Um ou mais jogadores já estão inscritos nessa categoria");
       });
   });
 });
