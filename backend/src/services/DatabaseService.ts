@@ -80,11 +80,12 @@ export default class DatabaseService {
       const inscritos = await tx.inscricoes.findMany({
         where: {
           torneioId: tournamentForm.torneioId,
+          categoriasId: tournamentForm.categoriaId,
           jogadorId: { in: [player1.id, player2.id] },
         },
       });
       if (inscritos.length > 0) {
-        throw new BadRequestError("One or both players are already subscribed to this tournament");
+        throw new BadRequestError("Um ou mais jogadores já está incritos nessa categoria");
       }
 
       const inscricao1 = await tx.inscricoes.create({
