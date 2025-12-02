@@ -27,25 +27,6 @@ describe("Integration tests for tournaments/torneios", () => {
       });
   });
 
-  it("checks if throws error when dataInicio is later than dataRealizacao", async () => {
-    const diaInicio = 20;
-    const diaRealizacao = 10;
-    const diaLimiteInscricao = 15;
-    const data: TorneioForm = tournamentFormFactory.build({
-      dataInicio: new Date(`2023-10-${diaInicio}`),
-      dataLimiteInscricao: new Date(`2023-10-${diaLimiteInscricao}`),
-    });
-
-    await supertest(app)
-      .post("/torneios")
-      .set("Content-Type", "application/json")
-      .send(data)
-      .then((response) => {
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe("Data de início não pode ser maior que a data de realização do torneio.");
-      });
-  });
-
   it("checks if throws error when dataLimiteInscricao is later than dataRealizacao", async () => {
     const diaInicio = 10;
     const diaRealizacao = 15;

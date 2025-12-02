@@ -9,7 +9,7 @@ import { TorneioInscricaoForm } from "../src/DTOs/TorneioInscricaoForm";
 export const tournamentFormFactory = Factory.define<TorneioForm>(() => ({
   nome: faker.person.firstName(),
   dataInicio: new Date("2023-10-10"),
-  dataLimiteInscricao: new Date("2023-10-15"),
+  dataLimiteInscricao: new Date("2023-10-09"),
   federado: faker.datatype.boolean(),
   situacao: "aberto",
 }));
