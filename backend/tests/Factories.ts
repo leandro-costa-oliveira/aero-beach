@@ -1,8 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { Factory } from "fishery";
 import { randomUUID } from "node:crypto";
-
-import { CategoriaTorneio, ModalidadeTorneio, TipoTorneio } from "../generated/prisma";
 import { TorneioForm } from "../src/DTOs/TorneioForm";
 import { TorneioInscricaoForm } from "../src/DTOs/TorneioInscricaoForm";
 

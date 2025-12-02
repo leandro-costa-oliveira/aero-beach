@@ -78,6 +78,7 @@ describe("Integration tests for tournaments/:id/inscrever", () => {
   it("Checks if tournament subscription works with valid data", async () => {
     const subscriptionData = tournamentSubscriptionFormFactory.build({
       torneioId: tournament_Ongoing.id,
+      categoriaId: categoria.id,
     });
 
     await supertest(app)
