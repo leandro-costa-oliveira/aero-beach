@@ -43,7 +43,7 @@ CREATE TABLE "new_Duplas" (
     CONSTRAINT "Duplas_categoriasId_fkey" FOREIGN KEY ("categoriasId") REFERENCES "Categorias" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
-INSERT INTO "new_Duplas" ("id", "participante1", "participante2", "torneioId", categoriasId) 
+INSERT INTO "new_Duplas" ("id", "participante1", "participante2", "torneioId", "categoriasId") 
 SELECT 
 	d.id, 
 	d.participante1, 

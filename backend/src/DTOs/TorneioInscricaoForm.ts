@@ -1,13 +1,14 @@
-import { IsOptional, IsUUID } from 'class-validator';
-import { JogadorForm } from './JogadorForm';
+import { IsOptional, IsUUID } from "class-validator";
+import { JogadorForm } from "./JogadorForm";
 
 export class TorneioInscricaoForm {
-
   @IsUUID()
-  torneioId!: string
+  torneioId!: string;
 
-  jogador1!: JogadorForm
+  categoriaId!: string;
+
+  jogador1!: JogadorForm;
 
   @IsOptional()
-  jogador2!: JogadorForm
+  jogador2!: JogadorForm;
 }

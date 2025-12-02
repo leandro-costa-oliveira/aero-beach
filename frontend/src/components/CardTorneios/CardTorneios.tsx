@@ -1,5 +1,7 @@
-import { Button, Card, Col, ListGroup, Row } from "react-bootstrap";
+import { Badge, Button, Card, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
+//import { AuthContext } from "../../Context/AuthContext";
+//import { useContext } from "react";
 
 type TorneioProps = {
   id: string;
@@ -7,33 +9,96 @@ type TorneioProps = {
   federado: boolean;
   realizadoEm: string;
   limiteInscricao: string;
-  preco: number;
+  preco: number | null;
 };
 
-export function CardTorneios({ id, nome, federado, realizadoEm, limiteInscricao, preco }: TorneioProps) {
+export function CardTorneios({
+  id,
+  nome,
+  federado,
+  realizadoEm,
+  limiteInscricao,
+  preco,
+}: TorneioProps) {
+  const isFederado = federado ? "success" : "secondary";
+  const inscricoesStatus =
+    realizadoEm > limiteInscricao
+      ? { status: "success", data: "inscrições abertas" }
+      : { status: "secondary", data: "inscrições encerradas" };
+
+  const dataLimiteInscricaoFormatada = new Date(
+    limiteInscricao
+  ).toLocaleDateString("pt-BR");
+  const dataRealizacaoFormatada = new Date(realizadoEm).toLocaleDateString(
+    "pt-BR"
+  );
+
+  //const { accessToken } = useContext(AuthContext);
+  const securePrice = preco ?? 0;
 
   return (
-    <Card className="border-dark">
-      <Card.Header className="bg-dark text-light">
-        <Row>
-          <Col>{nome}</Col>
-          <Col className="d-flex justify-content-end">{federado ? "Federado" : "Não Federado"}</Col>
-        </Row>
+    <Card className="shadow-sm big-hover">
+      <Card.Header className="bg-light d-flex align-items-center">
+        <span className="text-truncate fw-bold me-2 flex-grow-1" title={nome}>
+          {nome}
+        </span>
+        <Badge bg={isFederado} className="p-2 flex-shrink-0">
+          {federado ? "Torneio Federado" : "Não Federado"}
+        </Badge>
       </Card.Header>
       <Card.Body>
-        <div className="d-flex justify-content-end text-secondary">{new Date(realizadoEm).toLocaleDateString()}</div>
-        <ListGroup className="mt-1 mb-3">
-          <ListGroup.Item className="border-secondary">
-            Inscrições até: {new Date(limiteInscricao).toLocaleDateString()}
+        <Badge bg={inscricoesStatus.status} className="p-2 flex-shrink-0">
+          {inscricoesStatus.data}
+        </Badge>
+        <ListGroup className="mt-1 mb-3" variant="flush">
+          <ListGroup.Item className="border-secondary fw-semibold">
+            Realização:
+            <span className="float-end text-primary  fw-bold">
+              {dataRealizacaoFormatada}
+            </span>
           </ListGroup.Item>
-          <ListGroup.Item className="border-secondary">Valor do incrição: {preco}</ListGroup.Item>
+          <ListGroup.Item className="border-secondary fw-semibold">
+            Inscrições até:
+            <span className="float-end text-secondary  fw-bold">
+              {dataLimiteInscricaoFormatada}
+            </span>
+          </ListGroup.Item>
+          <ListGroup.Item className="bg-light fw-semibold">
+            Inscrições a partir de:
+            <span className="float-end text-success fw-bold">
+              {securePrice.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
+            </span>
+          </ListGroup.Item>
         </ListGroup>
-        <Link to={`/torneios/${id}`}>
-          <Button variant="outline-primary" className="w-100">
-            Ver Detalhes
-          </Button>
-        </Link>
       </Card.Body>
+      <Card.Footer>
+        {//accessToken ? (
+          <Link to={`/torneios/${id}`}>
+            <Button
+              variant="outline-primary"
+              className="w-100 btn-anim fw-semibold"
+            >
+              Ver Detalhes
+            </Button>
+          </Link>
+       
+         /**  ) : (
+          <Link to={`/login?redirect=/torneios/${id}`}>
+            <Button
+              variant="outline-secondary"
+              className="w-100 btn-anim fw-semibold"
+            >
+              faça login para ver detalhes
+            </Button>
+          </Link>
+        ) **/
+        
+        }
+        
+      </Card.Footer>
     </Card>
   );
 }

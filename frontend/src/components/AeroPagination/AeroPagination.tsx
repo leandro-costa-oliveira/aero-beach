@@ -2,13 +2,13 @@
 import React, { type JSX } from 'react';
 import { Pagination } from 'react-bootstrap';
 
-interface TournamentPaginationProps {
+interface AeroPaginationProps {
   totalPages: number;
   currentPage: number;
   onPageChange: (page: number) => void;
 }
 
-export const TournamentPagination: React.FC<TournamentPaginationProps> = ({
+export const AeroPagination: React.FC<AeroPaginationProps> = ({
   totalPages,
   currentPage,
   onPageChange,

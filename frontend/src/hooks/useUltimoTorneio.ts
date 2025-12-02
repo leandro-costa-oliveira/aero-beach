@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { apiClient } from "./api-client";
-import { QueryKeys } from "./queryKeys";
-import type { Torneio } from "./torneio.t";
+import { apiClient } from "../api/api-client";
+import { QueryKeys } from "../api/queryKeys";
+import type { Torneio } from "../api/torneio.t";
 
 export function useUltimoTorneio() {
   return useQuery({

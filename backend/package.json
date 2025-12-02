@@ -6,6 +6,7 @@
     "build": "tsc",
     "dev": "ts-node-dev src/aero-beach.ts",
     "test": "jest",
+    "db:reset": "prisma migrate reset --force",
     "db:generate": "prisma generate",
     "db:migrate:dev": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",

@@ -20,7 +20,10 @@ export class TournamentController {
   constructor(private tournamentService: TournamentService) {}
 
   @Get("/")
-  async getAll(@QueryParam("page") page: number, @QueryParam("perPage") perPage: number) {
+  async getAll(
+    @QueryParam("page") page: number,
+    @QueryParam("perPage") perPage: number
+  ) {
     return this.tournamentService.getAll(page, perPage);
   }
 
@@ -43,5 +46,10 @@ export class TournamentController {
   async tournamentSubscription(@Body() body: TorneioInscricaoForm) {
     await this.tournamentService.subscribeTournamentAsDouble(body);
     return { message: "Inscrição realizada com sucesso!" };
+  }
+
+  @Get("/:id")
+  async getById(@Param("id") id: string) {
+    return this.tournamentService.getById(id);
   }
 }

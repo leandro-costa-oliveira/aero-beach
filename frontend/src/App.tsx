@@ -1,13 +1,14 @@
-import { useState } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { useState } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { queryClient } from "./api/queryClient";
+import { AuthContext } from "./Context/AuthContext";
 import { Layout } from "./layouts/Layout";
 import { HomePage } from "./pages/HomePage";
-import { TorneiosPage } from "./pages/TorneiosPage.tsx";
 import { Login } from "./pages/Login";
 import { Profile } from "./pages/Profile";
-import { AuthContext } from "./Context/AuthContext";
+import { TorneioDetalhesPage } from "./pages/TorneioDetalhesPage.tsx";
+import { TorneiosPage } from "./pages/TorneiosPage.tsx";
 
 export default function App() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -21,6 +22,7 @@ export default function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/torneios" element={<TorneiosPage />} />
+              <Route path="/torneios/:id" element={<TorneioDetalhesPage />} />
               <Route path="/profile" element={<Profile />} />
             </Route>
           </Routes>
