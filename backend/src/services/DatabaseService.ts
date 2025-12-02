@@ -85,7 +85,7 @@ export default class DatabaseService {
         },
       });
       if (inscritos.length > 0) {
-        throw new BadRequestError("Um ou mais jogadores já está incritos nessa categoria");
+        throw new BadRequestError("Um ou mais jogadores já está inscritos nessa categoria");
       }
 
       const inscricao1 = await tx.inscricoes.create({
