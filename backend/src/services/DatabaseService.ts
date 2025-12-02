@@ -91,12 +91,14 @@ export default class DatabaseService {
         data: {
           torneioId: tournamentForm.torneioId,
           jogadorId: player1.id,
+          categoriasId: tournamentForm.categoriaId,
         },
       });
       const inscricao2 = await tx.inscricoes.create({
         data: {
           torneioId: tournamentForm.torneioId,
           jogadorId: player2.id,
+          categoriasId: tournamentForm.categoriaId,
         },
       });
 
