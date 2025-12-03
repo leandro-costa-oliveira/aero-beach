@@ -1,5 +1,8 @@
 import { Card, Badge, ListGroup, Button } from "react-bootstrap";
 import type { Categoria } from "../../api/torneio.t";
+import { Link } from "react-router-dom";
+//import { AuthContext } from "../../Context/AuthContext";
+//import { useContext } from "react";
 
 interface CategoriaProps{
     categoria: Categoria;
@@ -15,7 +18,7 @@ export function CardCategorias({categoria} : CategoriaProps) {
     style: "currency",
     currency: "BRL",
   }).format(categoria.valorInscricao);
-
+  //const { accessToken } = useContext(AuthContext);
   return (
     <Card className="shadow-sm h-100">
       <Card.Header className="bg-light d-flex justify-content-between align-items-center">
@@ -43,9 +46,24 @@ export function CardCategorias({categoria} : CategoriaProps) {
         </ListGroup>
       </Card.Body>
       <Card.Footer>
+        {//accessToken ? (
+        <Link to={`/inscricao/${categoria.id}`}> 
         <Button variant="outline-success" className="w-100 fw-semibold btn-anim">
           Realizar inscrição: {price}
         </Button>
+        </Link>
+        /**) : (
+          <Link to={`/login?redirect=/torneios/inscricoes/${categoria.id}`}>
+            <Button
+              variant="outline-secondary"
+              className="w-100 btn-anim fw-semibold"
+            >
+              Entre para inscrever-se
+            </Button>
+          </Link>
+        ) 
+        
+         **/}
       </Card.Footer>
     </Card>
   );

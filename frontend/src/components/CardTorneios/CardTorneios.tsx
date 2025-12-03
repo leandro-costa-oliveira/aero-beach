@@ -1,7 +1,6 @@
 import { Badge, Button, Card, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
-//import { AuthContext } from "../../Context/AuthContext";
-//import { useContext } from "react";
+
 
 type TorneioProps = {
   id: string;
@@ -33,7 +32,6 @@ export function CardTorneios({
     "pt-BR"
   );
 
-  //const { accessToken } = useContext(AuthContext);
   const securePrice = preco ?? 0;
 
   return (
@@ -75,7 +73,6 @@ export function CardTorneios({
         </ListGroup>
       </Card.Body>
       <Card.Footer>
-        {//accessToken ? (
           <Link to={`/torneios/${id}`}>
             <Button
               variant="outline-primary"
@@ -84,20 +81,6 @@ export function CardTorneios({
               Ver Detalhes
             </Button>
           </Link>
-       
-         /**  ) : (
-          <Link to={`/login?redirect=/torneios/${id}`}>
-            <Button
-              variant="outline-secondary"
-              className="w-100 btn-anim fw-semibold"
-            >
-              faça login para ver detalhes
-            </Button>
-          </Link>
-        ) **/
-        
-        }
-        
       </Card.Footer>
     </Card>
   );
