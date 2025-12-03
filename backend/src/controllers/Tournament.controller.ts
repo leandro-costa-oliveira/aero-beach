@@ -41,7 +41,7 @@ export class TournamentController {
     return { tournament: lastTournament || null };
   }
 
-  @Post("/:id/inscrever")
+  @Post("/inscrever/:id")
   @HttpCode(201)
   async tournamentSubscription(@Body() body: TorneioInscricaoForm) {
     await this.tournamentService.subscribeTournamentAsDouble(body);
@@ -51,5 +51,10 @@ export class TournamentController {
   @Get("/:id")
   async getById(@Param("id") id: string) {
     return this.tournamentService.getById(id);
+  }
+
+  @Get("/:id/inscrever/:cateId")
+  async getCategory(@Param("id") id: string, @Param("cateId") cateId: string) {
+    return this.tournamentService.getCategory(id, cateId);
   }
 }

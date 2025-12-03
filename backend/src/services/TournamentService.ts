@@ -43,21 +43,27 @@ export class TournamentService {
   // TODO: Retornar o torneio criado ao invés de uma mensagem fixa
   async createTournament(tournament: TorneioForm): Promise<string> {
     if (tournament.dataLimiteInscricao > tournament.dataInicio) {
-      throw new BadRequestError("Data limite de inscrição não pode ser maior que a data de início do torneio.");
+      throw new BadRequestError(
+        "Data limite de inscrição não pode ser maior que a data de início do torneio."
+      );
     }
 
     await this.databaseService.createTournament(tournament);
     return "Torneio criado com sucesso!";
   }
 
-  async subscribeTournamentAsDouble(torneioInscricaoForm: TorneioInscricaoForm): Promise<{
+  async subscribeTournamentAsDouble(
+    torneioInscricaoForm: TorneioInscricaoForm
+  ): Promise<{
     subscriptions: Inscricoes[];
     double: Duplas;
   }> {
     if (!torneioInscricaoForm.jogador2) {
       throw new BadRequestError("Inscrição de dupla requer dois jogadores.");
     }
-    return await this.databaseService.subscribeTournamentAsDouble(torneioInscricaoForm);
+    return await this.databaseService.subscribeTournamentAsDouble(
+      torneioInscricaoForm
+    );
   }
 
   async getById(id: string) {
@@ -75,5 +81,18 @@ export class TournamentService {
     }
 
     return torneio;
+  }
+
+  async getCategory(id: string, cateId: string) {
+    if (!id || !cateId || null) {
+      throw new BadRequestError("ID inválido.");
+    }
+
+    const categoria = await prisma.categorias.findUnique({
+      where: { id: cateId, torneioId: id },
+      include: { inscricoes: true, duplas: true },
+    });
+
+    return categoria;
   }
 }
