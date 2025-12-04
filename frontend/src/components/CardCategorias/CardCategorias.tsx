@@ -50,7 +50,7 @@ export function CardCategorias({categoria, torneioId} : CategoriaProps ) {
         {//accessToken ? (
         <Link to={`/torneios/${torneioId}/inscrever/${categoria.id}`}> 
         <Button variant="outline-success" className="w-100 fw-semibold btn-anim">
-          Realizar inscrição: {price}
+          Realizar inscrição
         </Button>
         </Link>
         /**) : (
