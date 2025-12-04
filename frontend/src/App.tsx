@@ -25,7 +25,7 @@ export default function App() {
               <Route path="/torneios" element={<TorneiosPage />} />
               <Route path="/torneios/:id" element={<TorneioDetalhesPage />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/inscricao/:id" element={<SubscribePage />}/>
+              <Route path="/torneios/:id/inscrever/:cateId" element={<SubscribePage />}/>
             </Route>
           </Routes>
         </Router>

@@ -6,9 +6,10 @@ import { Link } from "react-router-dom";
 
 interface CategoriaProps{
     categoria: Categoria;
+    torneioId: string
 }
 
-export function CardCategorias({categoria} : CategoriaProps) {
+export function CardCategorias({categoria, torneioId} : CategoriaProps ) {
 
   const realizationDate = categoria.dataRealizacao
     ? new Date(categoria.dataRealizacao).toLocaleDateString("pt-BR")
@@ -23,7 +24,7 @@ export function CardCategorias({categoria} : CategoriaProps) {
     <Card className="shadow-sm h-100">
       <Card.Header className="bg-light d-flex justify-content-between align-items-center">
         <h5 className="mb-0 text-capitalize">
-          {categoria.genero} - {categoria.nivel}
+ {categoria.genero} - {categoria.nivel}
         </h5>
         <Badge bg="primary" className="fs-6">
           {categoria.modalidade}
@@ -47,7 +48,7 @@ export function CardCategorias({categoria} : CategoriaProps) {
       </Card.Body>
       <Card.Footer>
         {//accessToken ? (
-        <Link to={`/inscricao/${categoria.id}`}> 
+        <Link to={`/torneios/${torneioId}/inscrever/${categoria.id}`}> 
         <Button variant="outline-success" className="w-100 fw-semibold btn-anim">
           Realizar inscrição: {price}
         </Button>

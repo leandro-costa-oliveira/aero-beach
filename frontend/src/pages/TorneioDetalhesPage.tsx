@@ -135,7 +135,7 @@ export function TorneioDetalhesPage() {
         <Row xs={1} md={2} lg={3} className="g-4 mb-2">
           {(torneio.categorias || []).map((cate) => (
             <Col key={cate.id}>
-              <CardCategorias categoria={cate} />
+              <CardCategorias categoria={cate} torneioId={id} />
             </Col>
           ))}
         </Row>
