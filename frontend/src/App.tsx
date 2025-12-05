@@ -9,7 +9,7 @@ import { Login } from "./pages/Login";
 import { Profile } from "./pages/Profile";
 import { TorneioDetalhesPage } from "./pages/TorneioDetalhesPage.tsx";
 import { TorneiosPage } from "./pages/TorneiosPage.tsx";
-import { SubscribePage } from "./pages/SubscribePage.tsx";
+import { SubscriptionPage } from "./pages/SubscriptionPage.tsx";
 
 export default function App() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -25,7 +25,7 @@ export default function App() {
               <Route path="/torneios" element={<TorneiosPage />} />
               <Route path="/torneios/:id" element={<TorneioDetalhesPage />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/torneios/:id/inscrever/:cateId" element={<SubscribePage />}/>
+              <Route path="/torneios/:id/inscrever/:cateId" element={<SubscriptionPage />}/>
             </Route>
           </Routes>
         </Router>
