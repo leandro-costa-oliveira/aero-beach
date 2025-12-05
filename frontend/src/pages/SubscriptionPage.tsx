@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { useCategory } from "../hooks/useCategory.ts";
 import { CardSubscription } from "../components/CardSubscription/CardSubscription.tsx";
 import { useTorneioById } from "../hooks/useTorneioById.ts";
-import { CardCategorias } from "../components/CardCategorias/CardCategorias.tsx";
 
 export function SubscriptionPage() {
   const { id } = useParams();
@@ -76,49 +75,19 @@ export function SubscriptionPage() {
     );
   }
 
-  const date = categoria.dataRealizacao
-    ? new Date(categoria.dataRealizacao).toLocaleDateString("pt-BR")
-    : "A definir";
-
   return (
     <Container>
-      <Row>
-        
-        <h1 className="mb-4 text-primary display-4 border-bottom pb-2 text-truncate justify-content-between d-flex">
-          <span>
-            {categoria.genero} - {categoria.nivel} <span className="text-muted fs-5">Página de inscrição</span>
-          </span>{" "}
-          <span>{date}</span>
+      <Row className="mb-4"> 
+        <h1 className="text-primary display-4 border-bottom pb-2 text-truncate">
+            {categoria.genero} - {categoria.nivel} 
         </h1>
+        <span className="text-muted fs-6">Página de inscrição</span>
       </Row>
-      <Row>
-        <Col>
+      <Row className="justify-content-center">
+        <Col xs={12} md={8} lg={10}>
           <CardSubscription categoria={categoria}></CardSubscription>
         </Col>
       </Row>
-      <Row>
-        <h1 className="mb-4 mt-4 text-primary display-6 border-bottom pb-2 text-truncate justify-content-between d-flex">
-          Outras categorias
-        </h1>
-      </Row>
-      <Row xs={1} md={2} lg={3} className="g-4 mb-2" id="categorias">
-        
-        {
-        (torneio.categorias || []).map((cate) => (
-          cateId != cate.id && 
-          <Col key={cate.id}>
-            <CardCategorias categoria={cate} torneioId={id} />
-            </Col>
-          )
-        )
-        }
-        
-      </Row>
-      <span className="text-muted mt-3 text-center">
-        *Sua inscrição é individual por categoria. Escolha a categoria desejada,
-        clique em "Realizar inscrição", pague o valor apresentado e pronto.
-        Automaticamente você estará na lista dos jogadores.*
-      </span>
     </Container>
   );
 }
