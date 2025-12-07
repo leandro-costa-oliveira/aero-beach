@@ -18,3 +18,11 @@ export type Torneio = {
   situacao: string;
   categorias: Categoria[];
 };
+
+export type TorneioForm = {
+  nome: string;
+  dataInicio: Date;
+  dataLimiteInscricao: Date;
+  federado: boolean;
+  situacao?: boolean;
+};

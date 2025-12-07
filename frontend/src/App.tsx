@@ -9,6 +9,8 @@ import { Login } from "./pages/Login";
 import { Profile } from "./pages/Profile";
 import { TorneioDetalhesPage } from "./pages/TorneioDetalhesPage.tsx";
 import { TorneiosPage } from "./pages/TorneiosPage.tsx";
+import { Admin } from "./pages/Admin.tsx";
+import { TorneioAdd } from "./pages/TorneioAdd.tsx";
 
 export default function App() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -23,7 +25,9 @@ export default function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/torneios" element={<TorneiosPage />} />
               <Route path="/torneios/:id" element={<TorneioDetalhesPage />} />
+              <Route path="/torneios/add" element={<TorneioAdd />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/admin" element={<Admin />} />
             </Route>
           </Routes>
         </Router>

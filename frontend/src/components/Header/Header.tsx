@@ -43,6 +43,12 @@ export function Header() {
           <Link to={"/sobre"} className="lightLink align-content-center">
             Sobre
           </Link>
+
+          {/* TODO: adicionar validacao de role */}
+          <Link to={"/admin"} className="lightLink align-content-center">
+            Admin
+          </Link>
+
         </Nav>
       </Navbar.Collapse>
       <Link to={accessToken ? "/profile" : "/login"}>
