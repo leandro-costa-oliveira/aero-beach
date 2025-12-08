@@ -1,7 +1,6 @@
 import {
   Alert,
   Badge,
-  Button,
   Card,
   Col,
   Container,
@@ -74,13 +73,15 @@ export function TorneioDetalhesPage() {
   ).toLocaleDateString("pt-BR");
 
   const isFederado = torneio.federado ? "success" : "secondary";
-
   return (
-    <Container className="my-5 gap-3">
+    <Container className="my-5">
+      <Row className="mb-4">
+        <h1 className=" text-primary display-4 border-bottom pb-2 text-truncate">
+          {torneio.nome}
+        </h1>
+        <span className="text-muted fs-6">Página do torneio</span>
+      </Row>
       <Row className="justify-content-center">
-      <h1 className="mb-4 text-primary display-4 border-bottom pb-2 text-truncate">
-        {torneio.nome}
-      </h1>
         <Col xs={12} md={8} lg={10}>
           <Card className="shadow-lg border-light">
             <Card.Header className="bg-light d-flex justify-content-between align-items-center">
@@ -111,75 +112,25 @@ export function TorneioDetalhesPage() {
                 </ListGroup.Item>
               </ListGroup>
             </Card.Body>
-            <Card.Footer>
-              <Button
-                variant="outline-primary"
-                className="w-100 fw-semibold btn-anim"
-                onClick={() =>
-                  document.getElementById("categorias")?.scrollIntoView({
-                    behavior: "smooth",
-                  })
-                }
-              >
-                Ver categorias
-              </Button>
-            </Card.Footer>
           </Card>
         </Col>
-
       </Row>
       <h2 className="my-5 text-primary display-6 border-bottom pb-2">
         Categorias Disponíveis
       </h2>
-      <Container className="p-0" id="categorias">
-        <Row xs={1} md={2} lg={3} className="g-4 mb-2">
-          {(torneio.categorias || []).map((cate) => (
-            <Col key={cate.id}>
-              <CardCategorias categoria={cate} torneioId={id} />
-            </Col>
-          ))}
-        </Row>
-        <span className="text-muted mt-3 text-center">
-          *Sua inscrição é individual por categoria. Escolha a categoria desejada, clique em
-          "Realizar inscrição", pague o valor apresentado e pronto. Automaticamente você
-          estará na lista dos jogadores.*
-        </span>
-      </Container>
-      <Container className="p-0" id="">
-        <Row xs={1} md={2} lg={3} className="g-4 mb-2">
-        </Row>
-      </Container>
+
+      <Row xs={1} md={2} lg={3} className="g-4 mb-2" id="categorias">
+        {(torneio.categorias || []).map((cate) => (
+          <Col key={cate.id}>
+            <CardCategorias categoria={cate} torneioId={id} />
+          </Col>
+        ))}
+      </Row>
+      <span className="text-muted mt-3 text-center">
+        *Sua inscrição é individual por categoria. Escolha a categoria desejada,
+        clique em "Realizar inscrição", pague o valor apresentado e pronto.
+        Automaticamente você estará na lista dos jogadores.*
+      </span>
     </Container>
   );
 }
-
-/**
-  model Torneios {
-  id                  String            @id @default(uuid())
-  nome                String?
-  dataInicio          DateTime
-  dataLimiteInscricao DateTime
-  federado            Boolean           @default(false)
-  situacao            SituacaoTorneio   @default(aberto)
-
-  categorias Categorias[]
-  inscricoes Inscricoes[] 
-  duplas     Duplas[]
-}
-
-model Categorias {
-  id             String            @id @default(uuid())
-  torneioId      String
-  genero         TipoTorneio
-  modalidade     ModalidadeTorneio
-  nivel          CategoriaTorneio
-  valorInscricao Float
-  dataRealizacao DateTime?
-
-  torneio    Torneios     @relation(fields: [torneioId], references: [id])
-  inscricoes Inscricoes[]
-  duplas     Duplas[]
-
-  @@unique([torneioId, genero, modalidade, nivel])
-}
-**/

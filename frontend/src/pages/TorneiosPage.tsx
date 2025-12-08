@@ -48,10 +48,14 @@ export const TorneiosPage = () => {
 
   return (
     <Container className="my-3">
-      <div className="d-flex flex-row justify justify-content-between mb-2">
-        <p className="mb-4 text-primary display-6 border-bottom pb-2 "> Um total de {data.total} torneios</p>
+      <Row className="justify justify-content-between mb-4">
+        <p className="text-primary display-6 border-bottom pb-2 ">
+          {" "}
+          Um total de {data.total} torneios{" "}
+        </p>
         {accessToken && <Button variant="success">Novo torneio</Button>}
-      </div>
+        <span className="text-muted fs-6">Página dos torneios</span>
+      </Row>
 
       <Row xs={1} md={2} lg={3} className="g-4">
         {data.data.map((torneio) => (

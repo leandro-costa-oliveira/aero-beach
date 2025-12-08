@@ -1,7 +1,6 @@
 import { Badge, Button, Card, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-
 type TorneioProps = {
   id: string;
   nome: string;
@@ -35,7 +34,7 @@ export function CardTorneios({
   const securePrice = preco ?? 0;
 
   return (
-    <Card className="shadow-sm big-hover">
+    <Card className="shadow-sm">
       <Card.Header className="bg-light d-flex align-items-center">
         <span className="text-truncate fw-bold me-2 flex-grow-1" title={nome}>
           {nome}
@@ -73,14 +72,14 @@ export function CardTorneios({
         </ListGroup>
       </Card.Body>
       <Card.Footer>
-          <Link to={`/torneios/${id}`}>
-            <Button
-              variant="outline-primary"
-              className="w-100 btn-anim fw-semibold"
-            >
-              Ver Detalhes
-            </Button>
-          </Link>
+        <Link to={`/torneios/${id}`}>
+          <Button
+            variant="outline-primary"
+            className="w-100 btn-anim fw-semibold"
+          >
+            Ver Detalhes
+          </Button>
+        </Link>
       </Card.Footer>
     </Card>
   );

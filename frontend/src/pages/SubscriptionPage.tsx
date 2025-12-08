@@ -39,7 +39,6 @@ export function SubscriptionPage() {
     return (
       <Alert variant="danger text-center">
         <h3>Erro ao procurar o torneio</h3>
-
         <p>Não foi possível encontrar esse torneio no servidor.</p>
       </Alert>
     );
@@ -77,15 +76,18 @@ export function SubscriptionPage() {
 
   return (
     <Container>
-      <Row className="mb-4"> 
+      <Row className="mb-4">
         <h1 className="text-primary display-4 border-bottom pb-2 text-truncate">
-            {categoria.genero} - {categoria.nivel} 
+          {categoria.genero} - {categoria.nivel}
         </h1>
         <span className="text-muted fs-6">Página de inscrição</span>
       </Row>
       <Row className="justify-content-center">
-        <Col xs={12} md={8} lg={10}>
-          <CardSubscription categoria={categoria}></CardSubscription>
+        <Col xs={12} md={10} lg={10}>
+          <CardSubscription
+            categoria={categoria}
+            torneio={torneio.nome}
+          ></CardSubscription>
         </Col>
       </Row>
     </Container>
