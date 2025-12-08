@@ -51,19 +51,35 @@ export function CardSubscription({
         </ListGroup>
         <form action="post">
           <Row className="mb-3 gap-2 justify-content-between" xs={1} lg={2}>
-            <Col xs={12} lg={5}>
-              <input
-                type="text"
-                placeholder="Seu nome de usuário"
-                className="input"
+            <Col xs={12} lg={5} >
+            <span className="fw-semibold">Jogador Um</span>
+            <div className="gap-1 d-flex flex-column">
+            <input
+              type="text"
+              placeholder="Seu nome de usuário"
+              className="input"
               />
+              <input
+                type="email"
+                placeholder="Seu email"
+                className="input"
+                />
+                </div>
             </Col>
-            <Col xs={12} lg={5}>
+            <Col xs={12} lg={5} >
+            <span className="fw-semibold">Jogador dois</span>
+            <div className="gap-1 d-flex flex-column">
               <input
                 type="text"
-                placeholder="Nome de usuário de sua dupla"
+                placeholder="Nome de usuário da dupla"
                 className="input"
               />
+              <input
+                type="email"
+                placeholder="email dupla"
+                className="input"
+              />
+            </div>
             </Col>
           </Row>
           <Button variant="success" className="w-100 btn-anim fw-semibold">
