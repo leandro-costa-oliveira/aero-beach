@@ -85,6 +85,8 @@ export function SubscriptionPage() {
       <Row className="justify-content-center">
         <Col xs={12} md={10} lg={10}>
           <CardSubscription
+            torneioId={id}
+            categoriaId={cateId}
             categoria={categoria}
             torneio={torneio.nome}
           ></CardSubscription>
