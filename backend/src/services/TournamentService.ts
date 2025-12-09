@@ -4,6 +4,7 @@ import { Duplas, Inscricoes } from "../../generated/prisma";
 import { TorneioForm } from "../DTOs/TorneioForm";
 import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
 import DatabaseService, { prisma } from "./DatabaseService";
+import { JogadorFormDouble } from "../DTOs/JogadorFormDouble";
 
 @Service()
 export class TournamentService {
@@ -52,19 +53,21 @@ export class TournamentService {
     return "Torneio criado com sucesso!";
   }
 
-  async subscribeTournamentAsDouble(
-    torneioInscricaoForm: TorneioInscricaoForm
-  ): Promise<{
-    subscriptions: Inscricoes[];
-    double: Duplas;
-  }> {
-    if (!torneioInscricaoForm.jogador2) {
-      throw new BadRequestError("Inscrição de dupla requer dois jogadores.");
-    }
-    return await this.databaseService.subscribeTournamentAsDouble(
-      torneioInscricaoForm
-    );
-  }
+async subscribeTournamentAsDouble(
+  torneioId: string,
+  categoriaId: string,
+  jogadores: JogadorFormDouble
+): Promise<{ subscriptions: Inscricoes[]; double: Duplas }> {
+  const torneioInscricaoForm: TorneioInscricaoForm = {
+    torneioId,
+    categoriaId,
+    ...jogadores
+  };
+  
+  return await this.databaseService.subscribeTournamentAsDouble(
+    torneioInscricaoForm
+  );
+}
 
   async getById(id: string) {
     if (!id || null) {
