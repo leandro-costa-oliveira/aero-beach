@@ -5,6 +5,7 @@ export class TorneioInscricaoForm {
   @IsUUID()
   torneioId!: string;
 
+  @IsUUID()
   categoriaId!: string;
 
   jogador1!: JogadorForm;
