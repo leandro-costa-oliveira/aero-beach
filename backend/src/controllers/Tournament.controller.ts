@@ -13,6 +13,7 @@ import { Service } from "typedi";
 import { TournamentService } from "../services/TournamentService";
 import { TorneioForm } from "../DTOs/TorneioForm";
 import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
+import { JogadorFormDouble } from "../DTOs/JogadorFormDouble";
 
 @JsonController("/torneios")
 @Service()
@@ -41,12 +42,20 @@ export class TournamentController {
     return { tournament: lastTournament || null };
   }
 
-  @Post("/inscrever/:id")
-  @HttpCode(201)
-  async tournamentSubscription(@Body() body: TorneioInscricaoForm) {
-    await this.tournamentService.subscribeTournamentAsDouble(body);
-    return { message: "Inscrição realizada com sucesso!" };
-  }
+@Post("/:id/inscrever/:cateId")
+@HttpCode(201)
+async tournamentSubscription(
+  @Param("id") torneioId: string,
+  @Param("cateId") categoriaId: string,
+  @Body() body: JogadorFormDouble
+) {
+  await this.tournamentService.subscribeTournamentAsDouble(
+    torneioId,
+    categoriaId,
+    body
+  );
+  return { message: "Inscrição realizada com sucesso!" };
+}
 
   @Get("/:id")
   async getById(@Param("id") id: string) {
