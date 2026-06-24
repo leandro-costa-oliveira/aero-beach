@@ -341,6 +341,7 @@ Criar e priorizar as issues em sequência, usando este plano como guia:
 - #80, #82 e #84 entram como suporte direto ao fluxo administrativo e devem ficar no **M4**.
 - #81 e #83 devem ser revisados caso a interface do torneio/visualização de jogadores mude de prioridade.
 - #85 e #87 ficam com `status:needs-triage` até ganhar contexto suficiente para encaixe definitivo.
+- a triagem detalhada das issues #80–#87 está registrada em `docs/planejamento/triagem-legado-issues-80-87.md`.
 
 ## 10. Mapa das issues abertas no Forgejo
 
