@@ -336,12 +336,11 @@ Criar e priorizar as issues em sequência, usando este plano como guia:
 | #93 | M6 | `tipo:feature`, `area:rankings`, `prioridade:p2` |
 | #94 | M7 | `tipo:chore`, `area:qualidade`, `prioridade:p0` |
 
-### Itens herdados que precisam de triagem fina
+### Itens herdados já absorvidos ou encerrados
 
-- #80, #82 e #84 entram como suporte direto ao fluxo administrativo e devem ficar no **M4**.
-- #81 e #83 devem ser revisados caso a interface do torneio/visualização de jogadores mude de prioridade.
-- #85 e #87 ficam com `status:needs-triage` até ganhar contexto suficiente para encaixe definitivo.
-- a triagem detalhada das issues #80–#87 está registrada em `docs/planejamento/triagem-legado-issues-80-87.md`.
+- as issues legadas `#46` e `#80–#94` foram revisadas nesta organização e fechadas por redundância, duplicidade ou falta de contexto acionável.
+- o backlog ativo passou a ser o conjunto `#95–#101`, que representa o MVP reorganizado.
+- a triagem detalhada do legado inicial (#80–#87) permanece registrada em `docs/planejamento/triagem-legado-issues-80-87.md` para referência histórica.
 
 ## 10. Mapa das issues abertas no Forgejo
 

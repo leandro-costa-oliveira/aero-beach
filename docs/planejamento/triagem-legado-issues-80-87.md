@@ -134,4 +134,6 @@ A triagem inicial conclui que o caminho mais seguro para continuar o projeto é:
 5. melhorar o detalhe do torneio com os jogadores
 6. limpar as issues herdadas sem descrição clara
 
-Esse documento deve ser a referência da fase de legado antes de abrir novas frentes maiores.
+Após a reorganização do backlog, as issues legadas `#46` e `#80–#94` foram fechadas ou absorvidas pelo novo MVP, deixando `#95–#101` como o conjunto ativo de trabalho.
+
+Esse documento permanece como referência histórica da fase de legado antes da consolidação do roadmap.
