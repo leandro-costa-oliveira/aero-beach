@@ -27,12 +27,14 @@ A definição das entidades centrais está em `docs/planejamento/entidades-do-do
 
 **Epic:** `#96 — MVP 02 — Área pública da arena`
 
-| Issue | Tema | Link |
-|---|---|---|
-| #106 | Estruturar home pública | https://git.lhprovedor.com.br/leandro/aero-beach/issues/106 |
-| #107 | Criar seção de campeonatos em destaque | https://git.lhprovedor.com.br/leandro/aero-beach/issues/107 |
-| #108 | Criar bloco de ranking e resumo público | https://git.lhprovedor.com.br/leandro/aero-beach/issues/108 |
-| #109 | Ajustar rotas e navegação pública | https://git.lhprovedor.com.br/leandro/aero-beach/issues/109 |
+Os wireframes de referência desta frente estão em `docs/planejamento/wireframes-frontend.md`.
+
+| Issue | Tema | Wireframe | Link |
+|---|---|---|---|
+| #106 | Estruturar home pública | home pública | `docs/planejamento/wireframes-frontend.md` |
+| #107 | Criar seção de campeonatos em destaque | campeonatos em destaque | `docs/planejamento/wireframes-frontend.md` |
+| #108 | Criar bloco de ranking e resumo público | ranking e resumo público | `docs/planejamento/wireframes-frontend.md` |
+| #109 | Ajustar rotas e navegação pública | navegação pública | `docs/planejamento/wireframes-frontend.md` |
 
 ---
 
@@ -53,14 +55,16 @@ A definição das entidades centrais está em `docs/planejamento/entidades-do-do
 
 **Epic:** `#98 — MVP 04 — Autorização por perfil e base do painel administrativo`
 
-| Issue | Tema | Link |
-|---|---|---|
-| #114 | Estruturar rotas /admin | https://git.lhprovedor.com.br/leandro/aero-beach/issues/114 |
-| #115 | Criar lista de ações administrativas | https://git.lhprovedor.com.br/leandro/aero-beach/issues/115 |
-| #116 | Proteger ações administrativas por perfil | https://git.lhprovedor.com.br/leandro/aero-beach/issues/116 |
-| #117 | Implementar cadastro de torneio | https://git.lhprovedor.com.br/leandro/aero-beach/issues/117 |
-| #118 | Endpoint para adicionar categoria ao torneio | https://git.lhprovedor.com.br/leandro/aero-beach/issues/118 |
-| #119 | Tela para adicionar categoria ao torneio | https://git.lhprovedor.com.br/leandro/aero-beach/issues/119 |
+Os wireframes de referência da interface administrativa estão em `docs/planejamento/wireframes-frontend.md`.
+
+| Issue | Tema | Wireframe | Link |
+|---|---|---|---|
+| #114 | Estruturar rotas /admin | navegação admin | `docs/planejamento/wireframes-frontend.md` |
+| #115 | Criar lista de ações administrativas | painel admin | `docs/planejamento/wireframes-frontend.md` |
+| #116 | Proteger ações administrativas por perfil | fluxo de acesso | `docs/planejamento/wireframes-frontend.md` |
+| #117 | Implementar cadastro de torneio | formulário de torneio | `docs/planejamento/wireframes-frontend.md` |
+| #118 | Endpoint para adicionar categoria ao torneio | formulário de categoria | `docs/planejamento/wireframes-frontend.md` |
+| #119 | Tela para adicionar categoria ao torneio | formulário de categoria | `docs/planejamento/wireframes-frontend.md` |
 
 ---
 

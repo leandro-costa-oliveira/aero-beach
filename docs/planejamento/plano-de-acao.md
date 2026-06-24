@@ -376,4 +376,6 @@ O detalhamento bite size do backlog está registrado em `docs/planejamento/backl
 
 A definição das entidades centrais está em `docs/planejamento/entidades-do-dominio.md`.
 
+Os wireframes de referência para as issues de frontend estão em `docs/planejamento/wireframes-frontend.md`.
+
 A triagem específica da M1 está em `docs/planejamento/triagem-m1-fundacao.md`.
