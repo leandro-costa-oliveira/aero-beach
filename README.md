@@ -35,10 +35,20 @@ O repositório já possui uma base funcional com:
 - estrutura inicial de inscrições em torneios
 - infraestrutura de deploy e CI/CD
 
-### Próximo passo
+## MVP em andamento
 
-Os arquivos de planejamento do projeto ficam em:
+O plano de MVP está sendo organizado em camadas para reduzir retrabalho e entregar valor cedo:
+
+1. **Base de domínio e contratos**
+2. **Área pública da arena**
+3. **Cadastro e autenticação completa**
+4. **Autorização por perfil e painel administrativo**
+5. **Área autenticada do jogador**
+6. **Rankings e dados públicos**
+7. **Testes, documentação e estabilização**
+
+O detalhamento está em:
 
 - `docs/planejamento/plano-de-acao.md`
 
-Esse documento descreve o entendimento atual do código e a ordem sugerida de implementação.
+As issues de acompanhamento do MVP foram abertas no Forgejo e seguem a mesma ordem do plano.

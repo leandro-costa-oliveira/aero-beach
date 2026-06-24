@@ -294,38 +294,30 @@ Criar e priorizar as issues em sequência, usando este plano como guia:
 
 ## 9. Mapa das issues abertas no Forgejo
 
-### Issues novas criadas nesta etapa
+### Issues do MVP criadas nesta etapa
 
-| Ordem sugerida | Issue | Tema |
-|---|---:|---|
-| 1 | #88 | Base de domínio e contratos da plataforma |
-| 2 | #89 | Área pública da arena |
-| 3 | #90 | Cadastro de jogadores e autenticação completa |
-| 4 | #91 | Autorização por perfil e base do painel administrativo |
-| 5 | #92 | Área autenticada do jogador |
-| 6 | #93 | Rankings e dados públicos da arena |
-| 7 | #94 | Testes, documentação e estabilização |
-
-### Issues já abertas que se encaixam no roadmap atual
-
-| Issue | Tema | Observação |
-|---|---:|---|
-| #80 | Endpoint para adicionar categoria ao torneio | Suporte ao fluxo administrativo de torneios |
-| #81 | Página de Cadastro do Torneio | Frontend administrativo já iniciado |
-| #82 | Adicionar Categoria ao Torneio | Complementa o fluxo de gestão de torneios |
-| #83 | Adicionar Card de Jogadores | Complementa a apresentação de jogadores no detalhe do torneio |
-| #84 | Rotas /admin e /torneios/add | Estrutura inicial do backoffice |
-| #85 | issue49 | Issue herdada do histórico atual |
-| #87 | issue86 | Issue herdada do histórico atual |
+| Ordem sugerida | Issue | Tema | Link |
+|---|---:|---|---|
+| 1 | #95 | Base de domínio e contratos da plataforma | `https://git.lhprovedor.com.br/leandro/aero-beach/issues/95` |
+| 2 | #96 | Área pública da arena | `https://git.lhprovedor.com.br/leandro/aero-beach/issues/96` |
+| 3 | #97 | Cadastro de jogadores e autenticação completa | `https://git.lhprovedor.com.br/leandro/aero-beach/issues/97` |
+| 4 | #98 | Autorização por perfil e base do painel administrativo | `https://git.lhprovedor.com.br/leandro/aero-beach/issues/98` |
+| 5 | #99 | Área autenticada do jogador | `https://git.lhprovedor.com.br/leandro/aero-beach/issues/99` |
+| 6 | #100 | Rankings e dados públicos da arena | `https://git.lhprovedor.com.br/leandro/aero-beach/issues/100` |
+| 7 | #101 | Testes, documentação e estabilização | `https://git.lhprovedor.com.br/leandro/aero-beach/issues/101` |
 
 ### Leitura prática do backlog
 
 O fluxo cronológico recomendado fica assim:
 
 1. consolidar domínio e contratos
-2. concluir as telas e endpoints administrativos que já estão em andamento
-3. entregar a área pública da arena
-4. fechar cadastro/login e persistência de sessão
+2. entregar a área pública da arena
+3. fechar cadastro/login e persistência de sessão
+4. estruturar autorização por perfil e painel administrativo
 5. entregar a área autenticada do jogador
 6. implementar rankings e visão pública de dados esportivos
 7. estabilizar com testes, documentação e ajustes de deploy
+
+### Observação operacional
+
+Nesta revisão, o backlog foi alinhado ao estado atual do repositório e às novas issues abertas no Forgejo. As referências antigas #88–#94 foram substituídas por issues válidas do MVP, mantendo a ordem cronológica sugerida.
