@@ -371,3 +371,5 @@ O fluxo cronológico recomendado fica assim:
 ### Observação operacional
 
 Nesta revisão, o backlog foi alinhado ao estado atual do repositório e às novas issues abertas no Forgejo. As referências antigas #88–#94 foram substituídas por issues válidas do MVP, mantendo a ordem cronológica sugerida.
+
+O detalhamento bite size do backlog está registrado em `docs/planejamento/backlog-detalhado.md`.
