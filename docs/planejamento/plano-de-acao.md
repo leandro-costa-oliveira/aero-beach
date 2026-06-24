@@ -4,6 +4,9 @@
 
 O AeroBeach é uma plataforma para gestão de arenas de beach tennis. A solução deve atender três públicos:
 
+> Pesquisa de referência para o MVP: `docs/planejamento/pesquisas/benchmark-arenas-beach-tennis.md`
+> Base consolidada de fontes: `docs/planejamento/pesquisas/fontes-sites-beach-tennis.json`
+
 - **visitantes**: acessam a área pública para ver campeonatos, rankings, jogadores e informações da arena
 - **administradores**: autenticados, gerenciam a operação da arena, torneios e regras do sistema
 - **jogadores**: autenticados, conseguem se cadastrar, entrar em campeonatos e acompanhar sua participação
