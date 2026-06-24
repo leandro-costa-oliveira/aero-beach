@@ -42,12 +42,14 @@ Os wireframes de referência desta frente estão em `docs/planejamento/wireframe
 
 **Epic:** `#97 — MVP 03 — Cadastro de jogadores e autenticação completa`
 
-| Issue | Tema | Link |
-|---|---|---|
-| #110 | Implementar cadastro de jogador | https://git.lhprovedor.com.br/leandro/aero-beach/issues/110 |
-| #111 | Revisar login e persistência de sessão | https://git.lhprovedor.com.br/leandro/aero-beach/issues/111 |
-| #112 | Recuperar sessão no carregamento | https://git.lhprovedor.com.br/leandro/aero-beach/issues/112 |
-| #113 | Cobrir autenticação com testes | https://git.lhprovedor.com.br/leandro/aero-beach/issues/113 |
+Os wireframes de referência desta frente estão em `docs/planejamento/wireframes-frontend.md`.
+
+| Issue | Tema | Wireframe | Link |
+|---|---|---|---|
+| #110 | Implementar cadastro de jogador | cadastro de jogador | `docs/planejamento/wireframes-frontend.md` |
+| #111 | Revisar login e persistência de sessão | login | `docs/planejamento/wireframes-frontend.md` |
+| #112 | Recuperar sessão no carregamento | recuperação de sessão | `docs/planejamento/wireframes-frontend.md` |
+| #113 | Cobrir autenticação com testes | fluxo de autenticação | `docs/planejamento/wireframes-frontend.md` |
 
 ---
 
@@ -59,10 +61,10 @@ Os wireframes de referência da interface administrativa estão em `docs/planeja
 
 | Issue | Tema | Wireframe | Link |
 |---|---|---|---|
-| #114 | Estruturar rotas /admin | navegação admin | `docs/planejamento/wireframes-frontend.md` |
+| #114 | Estruturar rotas /admin | /admin | `docs/planejamento/wireframes-frontend.md` |
 | #115 | Criar lista de ações administrativas | painel admin | `docs/planejamento/wireframes-frontend.md` |
-| #116 | Proteger ações administrativas por perfil | fluxo de acesso | `docs/planejamento/wireframes-frontend.md` |
-| #117 | Implementar cadastro de torneio | formulário de torneio | `docs/planejamento/wireframes-frontend.md` |
+| #116 | Proteger ações administrativas por perfil | acesso restrito | `docs/planejamento/wireframes-frontend.md` |
+| #117 | Implementar cadastro de torneio | cadastro de torneio | `docs/planejamento/wireframes-frontend.md` |
 | #118 | Endpoint para adicionar categoria ao torneio | formulário de categoria | `docs/planejamento/wireframes-frontend.md` |
 | #119 | Tela para adicionar categoria ao torneio | formulário de categoria | `docs/planejamento/wireframes-frontend.md` |
 
@@ -72,12 +74,14 @@ Os wireframes de referência da interface administrativa estão em `docs/planeja
 
 **Epic:** `#99 — MVP 05 — Área autenticada do jogador`
 
-| Issue | Tema | Link |
-|---|---|---|
-| #120 | Criar página de perfil autenticado | https://git.lhprovedor.com.br/leandro/aero-beach/issues/120 |
-| #121 | Exibir inscrições ativas | https://git.lhprovedor.com.br/leandro/aero-beach/issues/121 |
-| #122 | Exibir histórico de participação | https://git.lhprovedor.com.br/leandro/aero-beach/issues/122 |
-| #123 | Mostrar status por torneio e categoria | https://git.lhprovedor.com.br/leandro/aero-beach/issues/123 |
+Os wireframes de referência desta frente estão em `docs/planejamento/wireframes-frontend.md`.
+
+| Issue | Tema | Wireframe | Link |
+|---|---|---|---|
+| #120 | Criar página de perfil autenticado | perfil do jogador | `docs/planejamento/wireframes-frontend.md` |
+| #121 | Exibir inscrições ativas | inscrições ativas | `docs/planejamento/wireframes-frontend.md` |
+| #122 | Exibir histórico de participação | histórico | `docs/planejamento/wireframes-frontend.md` |
+| #123 | Mostrar status por torneio e categoria | status por torneio | `docs/planejamento/wireframes-frontend.md` |
 
 ---
 
@@ -85,12 +89,14 @@ Os wireframes de referência da interface administrativa estão em `docs/planeja
 
 **Epic:** `#100 — MVP 06 — Rankings e dados públicos da arena`
 
-| Issue | Tema | Link |
-|---|---|---|
-| #124 | Criar ranking público de jogadores | https://git.lhprovedor.com.br/leandro/aero-beach/issues/124 |
-| #125 | Criar ranking de duplas | https://git.lhprovedor.com.br/leandro/aero-beach/issues/125 |
-| #126 | Adicionar filtros por categoria e período | https://git.lhprovedor.com.br/leandro/aero-beach/issues/126 |
-| #127 | Expor dados de ranking no backend | https://git.lhprovedor.com.br/leandro/aero-beach/issues/127 |
+Os wireframes de referência desta frente estão em `docs/planejamento/wireframes-frontend.md`.
+
+| Issue | Tema | Wireframe | Link |
+|---|---|---|---|
+| #124 | Criar ranking público de jogadores | ranking de jogadores | `docs/planejamento/wireframes-frontend.md` |
+| #125 | Criar ranking de duplas | ranking de duplas | `docs/planejamento/wireframes-frontend.md` |
+| #126 | Adicionar filtros por categoria e período | filtros de ranking | `docs/planejamento/wireframes-frontend.md` |
+| #127 | Expor dados de ranking no backend | contrato de ranking | `docs/planejamento/wireframes-frontend.md` |
 
 ---
 
