@@ -12,6 +12,8 @@ Este documento complementa o plano de ação do AeroBeach com a versão **bite s
 
 **Epic:** `#95 — MVP 01 — Base de domínio e contratos da plataforma`
 
+A triagem detalhada desta milestone está em `docs/planejamento/triagem-m1-fundacao.md`.
+
 | Issue | Tema | Link |
 |---|---|---|
 | #102 | Mapear entidades centrais do domínio | https://git.lhprovedor.com.br/leandro/aero-beach/issues/102 |
