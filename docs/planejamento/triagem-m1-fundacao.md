@@ -25,9 +25,9 @@ Isso reduz retrabalho nas milhas seguintes (`M2` a `M7`) e evita que o frontend 
 
 | Ordem | Issue | Tema | Dependência principal |
 |---|---:|---|---|
-| 1 | #102 | Mapear entidades centrais do domínio | nenhuma |
-| 2 | #103 | Ajustar schema Prisma do MVP | #102 |
-| 3 | #104 | Definir contratos e DTOs compartilhados | #102 e #103 |
+| 1 | `docs/planejamento/entidades-do-dominio.md` | Definição das entidades centrais do domínio | nenhuma |
+| 2 | #103 | Ajustar schema Prisma do MVP | documento de entidades |
+| 3 | #104 | Definir contratos e DTOs compartilhados | documento de entidades e #103 |
 | 4 | #105 | Padronizar validação e erros da API | #104 |
 
 ---

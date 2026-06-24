@@ -374,4 +374,6 @@ Nesta revisão, o backlog foi alinhado ao estado atual do repositório e às nov
 
 O detalhamento bite size do backlog está registrado em `docs/planejamento/backlog-detalhado.md`.
 
+A definição das entidades centrais está em `docs/planejamento/entidades-do-dominio.md`.
+
 A triagem específica da M1 está em `docs/planejamento/triagem-m1-fundacao.md`.

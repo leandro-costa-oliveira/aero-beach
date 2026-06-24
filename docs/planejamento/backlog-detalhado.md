@@ -12,11 +12,11 @@ Este documento complementa o plano de ação do AeroBeach com a versão **bite s
 
 **Epic:** `#95 — MVP 01 — Base de domínio e contratos da plataforma`
 
-A triagem detalhada desta milestone está em `docs/planejamento/triagem-m1-fundacao.md`.
+A definição das entidades centrais está em `docs/planejamento/entidades-do-dominio.md` e a triagem operacional desta milestone está em `docs/planejamento/triagem-m1-fundacao.md`.
 
-| Issue | Tema | Link |
+| Issue / doc | Tema | Link |
 |---|---|---|
-| #102 | Mapear entidades centrais do domínio | https://git.lhprovedor.com.br/leandro/aero-beach/issues/102 |
+| `docs/planejamento/entidades-do-dominio.md` | Definição das entidades centrais do domínio | `docs/planejamento/entidades-do-dominio.md` |
 | #103 | Ajustar schema Prisma do MVP | https://git.lhprovedor.com.br/leandro/aero-beach/issues/103 |
 | #104 | Definir contratos e DTOs compartilhados | https://git.lhprovedor.com.br/leandro/aero-beach/issues/104 |
 | #105 | Padronizar validação e erros da API | https://git.lhprovedor.com.br/leandro/aero-beach/issues/105 |
@@ -92,7 +92,7 @@ A triagem detalhada desta milestone está em `docs/planejamento/triagem-m1-funda
 
 ## M7 — Qualidade e operação
 
-**Epic:** `#101 — MVP 07 — Testes, documentação e estabilização`
+**Epic histórica:** `#101 — MVP 07 — Testes, documentação e estabilização` (fechada após o desdobramento em `#128` a `#131`)
 
 | Issue | Tema | Link |
 |---|---|---|
