@@ -292,7 +292,57 @@ Criar e priorizar as issues em sequência, usando este plano como guia:
 
 ---
 
-## 9. Mapa das issues abertas no Forgejo
+## 9. Organização do backlog por labels e marcos
+
+### Labels propostas
+
+| Label | Uso |
+|---|---|
+| `tipo:feature` | entregas novas de produto |
+| `tipo:chore` | ajustes de suporte, estrutura ou manutenção |
+| `tipo:docs` | documentação e planejamento |
+| `area:fundacao` | contratos, modelos, arquitetura e base do produto |
+| `area:publica` | home, campeonatos e páginas públicas |
+| `area:auth` | cadastro, login e sessão |
+| `area:player` | área do jogador |
+| `area:admin` | painel e operações administrativas |
+| `area:rankings` | rankings e reputação |
+| `area:qualidade` | testes, docs, deploy e observabilidade |
+| `prioridade:p0` | bloqueia a sequência de entrega |
+| `prioridade:p1` | próxima entrega após a base atual |
+| `prioridade:p2` | importante, mas pode esperar |
+| `status:blocked` | depende de base anterior ou validação externa |
+| `status:needs-triage` | ainda não foi enquadrada no roadmap |
+
+### Marcos propostos
+
+1. **M1 — Fundação do domínio**
+2. **M2 — Área pública**
+3. **M3 — Cadastro e autenticação**
+4. **M4 — Administração**
+5. **M5 — Jornada do jogador**
+6. **M6 — Rankings**
+7. **M7 — Qualidade e operação**
+
+### Aplicação inicial ao backlog
+
+| Issue | Marco sugerido | Labels sugeridas |
+|---|---|---|
+| #88 | M1 | `tipo:feature`, `area:fundacao`, `prioridade:p0` |
+| #89 | M2 | `tipo:feature`, `area:publica`, `prioridade:p1` |
+| #90 | M3 | `tipo:feature`, `area:auth`, `prioridade:p0` |
+| #91 | M4 | `tipo:feature`, `area:admin`, `prioridade:p1` |
+| #92 | M5 | `tipo:feature`, `area:player`, `prioridade:p1` |
+| #93 | M6 | `tipo:feature`, `area:rankings`, `prioridade:p2` |
+| #94 | M7 | `tipo:chore`, `area:qualidade`, `prioridade:p0` |
+
+### Itens herdados que precisam de triagem fina
+
+- #80, #82 e #84 entram como suporte direto ao fluxo administrativo e devem ficar no **M4**.
+- #81 e #83 devem ser revisados caso a interface do torneio/visualização de jogadores mude de prioridade.
+- #85 e #87 ficam com `status:needs-triage` até ganhar contexto suficiente para encaixe definitivo.
+
+## 10. Mapa das issues abertas no Forgejo
 
 ### Issues do MVP criadas nesta etapa
 
