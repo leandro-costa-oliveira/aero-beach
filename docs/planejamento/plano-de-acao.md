@@ -374,6 +374,8 @@ Nesta revisão, o backlog foi alinhado ao estado atual do repositório e às nov
 
 O detalhamento bite size do backlog está registrado em `docs/planejamento/backlog-detalhado.md`.
 
+Cada milestone é executada em ordem, com uma issue pequena por entrega e com dependências explícitas entre elas.
+
 A definição das entidades centrais está em `docs/planejamento/entidades-do-dominio.md`.
 
 Os wireframes de referência para as issues de frontend estão em `docs/planejamento/wireframes-frontend.md`.

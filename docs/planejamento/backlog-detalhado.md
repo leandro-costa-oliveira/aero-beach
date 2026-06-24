@@ -21,6 +21,13 @@ A definição das entidades centrais está em `docs/planejamento/entidades-do-do
 | #104 | Definir contratos e DTOs compartilhados | https://git.lhprovedor.com.br/leandro/aero-beach/issues/104 |
 | #105 | Padronizar validação e erros da API | https://git.lhprovedor.com.br/leandro/aero-beach/issues/105 |
 
+### Ordem de execução da M1
+
+1. fechar a definição de domínio em `docs/planejamento/entidades-do-dominio.md`
+2. alinhar o schema Prisma em `#103`
+3. publicar os contratos e DTOs em `#104`
+4. padronizar validação e erros em `#105`
+
 ---
 
 ## M2 — Área pública
@@ -36,6 +43,13 @@ Os wireframes de referência desta frente estão em `docs/planejamento/wireframe
 | #108 | Criar bloco de ranking e resumo público | ranking e resumo público | `docs/planejamento/wireframes-frontend.md` |
 | #109 | Ajustar rotas e navegação pública | navegação pública | `docs/planejamento/wireframes-frontend.md` |
 
+### Ordem de execução da M2
+
+1. montar a home pública em `#106`
+2. inserir campeonatos em destaque em `#107`
+3. publicar ranking/resumo público em `#108`
+4. fechar navegação e rotas em `#109`
+
 ---
 
 ## M3 — Cadastro e autenticação
@@ -50,6 +64,13 @@ Os wireframes de referência desta frente estão em `docs/planejamento/wireframe
 | #111 | Revisar login e persistência de sessão | login | `docs/planejamento/wireframes-frontend.md` |
 | #112 | Recuperar sessão no carregamento | recuperação de sessão | `docs/planejamento/wireframes-frontend.md` |
 | #113 | Cobrir autenticação com testes | fluxo de autenticação | `docs/planejamento/wireframes-frontend.md` |
+
+### Ordem de execução da M3
+
+1. criar a tela de cadastro em `#110`
+2. estabilizar login e persistência em `#111`
+3. recuperar sessão automaticamente em `#112`
+4. cobrir os fluxos com testes em `#113`
 
 ---
 
@@ -68,6 +89,15 @@ Os wireframes de referência da interface administrativa estão em `docs/planeja
 | #118 | Endpoint para adicionar categoria ao torneio | formulário de categoria | `docs/planejamento/wireframes-frontend.md` |
 | #119 | Tela para adicionar categoria ao torneio | formulário de categoria | `docs/planejamento/wireframes-frontend.md` |
 
+### Ordem de execução da M4
+
+1. abrir a área `/admin` em `#114`
+2. estruturar as ações administrativas em `#115`
+3. bloquear acessos indevidos em `#116`
+4. cadastrar torneios em `#117`
+5. expor o endpoint de categoria em `#118`
+6. ligar a tela de categoria ao fluxo em `#119`
+
 ---
 
 ## M5 — Jornada do jogador
@@ -82,6 +112,13 @@ Os wireframes de referência desta frente estão em `docs/planejamento/wireframe
 | #121 | Exibir inscrições ativas | inscrições ativas | `docs/planejamento/wireframes-frontend.md` |
 | #122 | Exibir histórico de participação | histórico | `docs/planejamento/wireframes-frontend.md` |
 | #123 | Mostrar status por torneio e categoria | status por torneio | `docs/planejamento/wireframes-frontend.md` |
+
+### Ordem de execução da M5
+
+1. montar o perfil autenticado em `#120`
+2. exibir inscrições ativas em `#121`
+3. exibir histórico em `#122`
+4. consolidar status por torneio em `#123`
 
 ---
 
@@ -98,6 +135,13 @@ Os wireframes de referência desta frente estão em `docs/planejamento/wireframe
 | #126 | Adicionar filtros por categoria e período | filtros de ranking | `docs/planejamento/wireframes-frontend.md` |
 | #127 | Expor dados de ranking no backend | contrato de ranking | `docs/planejamento/wireframes-frontend.md` |
 
+### Ordem de execução da M6
+
+1. publicar ranking de jogadores em `#124`
+2. publicar ranking de duplas em `#125`
+3. adicionar filtros de categoria/período em `#126`
+4. expor o contrato no backend em `#127`
+
 ---
 
 ## M7 — Qualidade e operação
@@ -110,6 +154,13 @@ Os wireframes de referência desta frente estão em `docs/planejamento/wireframe
 | #129 | Criar testes de frontend dos fluxos críticos | https://git.lhprovedor.com.br/leandro/aero-beach/issues/129 |
 | #130 | Atualizar documentação do produto e fluxos | https://git.lhprovedor.com.br/leandro/aero-beach/issues/130 |
 | #131 | Revisar CI/CD, deploy e limpeza final | https://git.lhprovedor.com.br/leandro/aero-beach/issues/131 |
+
+### Ordem de execução da M7
+
+1. ampliar cobertura do backend em `#128`
+2. cobrir os fluxos críticos do frontend em `#129`
+3. atualizar documentação em `#130`
+4. revisar CI/CD, deploy e limpeza final em `#131`
 
 ---
 
