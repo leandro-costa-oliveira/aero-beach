@@ -1,14 +1,17 @@
+import { Container } from "react-bootstrap";
 import { Outlet } from "react-router-dom";
-import { Header } from "../components/Header/Header";
 import { Footer } from "../components/Footer/Footer";
+import { Header } from "../components/Header/Header";
 
 export function Layout() {
   return (
-    <div className="d-flex flex-column min-vh-100 min-vw-100">
+    <div className="d-flex flex-column min-vh-100 w-100">
       <Header />
-      <main className="flex-fill container">
+
+      <Container className="my-4">
         <Outlet />
-      </main>
+      </Container>
+
       <Footer />
     </div>
   );

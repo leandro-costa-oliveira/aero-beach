@@ -1,57 +1,52 @@
-import { Container } from "react-bootstrap";
+import { Alert, Col, Row, Spinner } from "react-bootstrap";
 import { CardTorneios } from "../components/CardTorneios/CardTorneios.tsx";
-import { useEffect, useState } from "react";
-
-type Torneio = {
-  id: string;
-  nome: string;
-  federado: boolean;
-  dataRealizacao: string;
-  dataLimiteInscricao: string;
-  valorInscricao: number;
-};
-
-function useGetLastTorneio(
-  torneios: (torneios: Torneio) => void,
-  errMensage: (mensagem: string) => void
-) {
-  useEffect(() => {
-    fetch("http://localhost:3000/torneios/latest")
-      .then((res) => res.json())
-      .then((jsonRes) => torneios(jsonRes.tournament))
-      .catch((err) => {
-        console.error(err);
-        if (err instanceof Error) {
-          errMensage(err.message);
-        }
-      });
-  }, []);
-}
-
+import { useUltimoTorneio } from "../hooks/useUltimoTorneio.ts";
 
 export function HomePage() {
-  const [torneio, setTorneio] = useState<Torneio | null>(null);
+  const { data: torneio, isLoading, error } = useUltimoTorneio();
 
-  useGetLastTorneio(
-    (torneios) => setTorneio(torneios),
-    (errMensage) => console.log(errMensage)
-  );
+  if (isLoading) {
+    return (
+      <div className="text-center">
+        <Spinner animation="border" role="status" variant="primary" />
+        <p className="mt-2">Carregando torneio...</p>
+      </div>
+    );
+  }
 
-  console.log(torneio)
+  if (error) {
+    return (
+      <Alert variant="danger text-center">
+        <h3>Erro ao carregar o torneio mais recente </h3>
+        <p>Não foi possível encontrar o torneio no servidor. Erro: {String(error)}</p>
+      </Alert>
+    );
+  }
+
+  if (!torneio) {
+    return (
+      <Alert variant="info text-center">
+        <h3>Nenhum torneio encontrado</h3>
+        <p>Não existem torneios no momento. Volte mais tarde!</p>
+      </Alert>
+    );
+  }
+
+  const minPrice = torneio?.categorias?.length ? Math.min(...torneio.categorias.map((c) => c.valorInscricao)) : 0;
   return (
-    <Container className="col-2 col-md-8">
-      {torneio ? (
+    <Row className="justify-content-center">
+      <Col xs={12} md={8} lg={6}>
+        <h1 className="mb-4 text-primary display-6 border-bottom pb-2">O Torneio Mais Recente:</h1>
+
         <CardTorneios
           id={torneio.id}
           nome={torneio.nome}
           federado={torneio.federado}
-          realizadoEm={torneio.dataRealizacao}
+          realizadoEm={torneio.dataInicio}
           limiteInscricao={torneio.dataLimiteInscricao}
-          preco={torneio.valorInscricao}
+          preco={minPrice}
         />
-      ) : (
-        <p className="text-center">Carregando o ultimo torneio...</p>
-      )}
-    </Container>
+      </Col>
+    </Row>
   );
 }

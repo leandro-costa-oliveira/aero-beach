@@ -1,39 +1,31 @@
-import logo from "../../assets/img/aero-logo.png";
-import { Nav, Navbar } from "react-bootstrap";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { Nav, Navbar } from "react-bootstrap";
 import "../../index.css";
+
 import { Avatar } from "../Avatar/Avatar";
 import menu from "../../assets/img/menu.png";
+import logo from "../../assets/img/aero-logo.png";
+import { AuthContext } from "../../Context/AuthContext";
 
 export function Header() {
+  const { accessToken } = useContext(AuthContext);
   return (
-    <Navbar
-      expand="sm"
-      className="bg-dark navbar-dark px-4 mb-3"
-    >
+    <Navbar expand="sm" className="bg-dark navbar-dark px-4">
       <Link to={"/"} className="text-decoration-none d-block d-sm-none">
-        <Navbar.Brand
-          style={{ backgroundColor: "#343b41" }}
-          className="gap-1 px-3 rounded-5 d-flex"
-        >
+        <Navbar.Brand style={{ backgroundColor: "#343b41" }} className="gap-1 px-3 rounded-5 d-flex">
           <img src={logo} height="30" />
         </Navbar.Brand>
       </Link>
       <Link to={"/"} className="text-decoration-none d-none d-sm-block">
-        <Navbar.Brand
-          style={{ backgroundColor: "#343b41" }}
-          className="gap-1 px-4 rounded-5 d-flex"
-        >
+        <Navbar.Brand style={{ backgroundColor: "#343b41" }} className="gap-1 px-4 rounded-5 d-flex">
           <img src={logo} height="30" />
           AeroBeach
         </Navbar.Brand>
       </Link>
-      <Navbar.Toggle
-        aria-controls="basic-navbar-nav"
-        className="d-flex gap-3 d-sm-none ms-auto"
-      >
+      <Navbar.Toggle aria-controls="basic-navbar-nav" className="d-flex gap-3 d-sm-none ms-auto">
         <img src={menu} height={36} />
-        <Link to={"/Profile"}>
+        <Link to={accessToken ? "/profile" : "/login"}>
           <Avatar />
         </Link>
       </Navbar.Toggle>
@@ -42,18 +34,18 @@ export function Header() {
           <Link to={"/"} className="lightLink align-content-center">
             Inicio
           </Link>
-          <Link to={"/"} className="lightLink align-content-center">
+          <Link to={"/torneios"} className="lightLink align-content-center">
             Torneios
           </Link>
-          <Link to={"/"} className="lightLink align-content-center">
+          <Link to={"/rankings"} className="lightLink align-content-center">
             Rankings
           </Link>
-          <Link to={"/"} className="lightLink align-content-center">
+          <Link to={"/sobre"} className="lightLink align-content-center">
             Sobre
           </Link>
         </Nav>
       </Navbar.Collapse>
-      <Link to={"/Profile"}>
+      <Link to={accessToken ? "/profile" : "/login"}>
         <Avatar className="d-none d-sm-block" />
       </Link>
     </Navbar>

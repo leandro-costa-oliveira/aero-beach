@@ -1,0 +1,73 @@
+[
+  {
+    "site": "BT Match",
+    "url": "https://btmatch.com.br/",
+    "type": "SaaS operacional",
+    "observacoes": [
+      "mensagem central: parar de administrar por WhatsApp e planilhas",
+      "módulos: agenda, relatórios de ocupação, aulas e turmas, clientes, CRM, financeiro, PDV, torneios, configurações",
+      "demo com agenda por dia/semana/mês/quadra, nova reserva, lista de espera, busca e bloqueio"
+    ]
+  },
+  {
+    "site": "SisQuad",
+    "url": "https://sisquad.com.br/",
+    "type": "SaaS operacional avançado",
+    "observacoes": [
+      "reservas avulsas e recorrentes",
+      "escolinha com níveis ilimitados",
+      "tabela de preços granular por quadra/modalidade/nível/instrutor/faixa horária/dia",
+      "cupons e campanhas online",
+      "aluguel de equipamentos",
+      "financeiro com PIX, Stripe e Mercado Pago",
+      "API aberta, webhooks e MCP server",
+      "roadmap com torneios, matchmaking, PWA, multiunidade e BI"
+    ]
+  },
+  {
+    "site": "Quadras Online",
+    "url": "https://www.quadras.online/",
+    "type": "Marketplace / portal público",
+    "observacoes": [
+      "reserva rápida de quadras",
+      "busca por modalidades e clubes",
+      "matchmaking, eventos, aulas e rankings",
+      "orientado ao jogador e à comunidade"
+    ]
+  },
+  {
+    "site": "MatchZoom",
+    "url": "https://matchzoom.com/",
+    "type": "Marketplace / app de jogadores",
+    "observacoes": [
+      "instant booking",
+      "find players",
+      "secure payments",
+      "nearby clubs",
+      "manage your calendar",
+      "ranking system",
+      "separação clara entre player e club"
+    ]
+  },
+  {
+    "site": "Arena On Play",
+    "url": "https://arenaonplay.online/",
+    "type": "Agenda visual / booking simples",
+    "observacoes": [
+      "calendário por mês/semana/dia",
+      "seleção por quadra",
+      "slots de reserva por horário",
+      "login/cadastro e contato via WhatsApp"
+    ]
+  },
+  {
+    "site": "HD Arena Beach / Cucco",
+    "url": "https://hdarenabeach.cucco.com.br/",
+    "type": "White-label / onboarding de arena",
+    "observacoes": [
+      "wizard de configuração inicial",
+      "dados do negócio, políticas, serviços e agendas",
+      "áreas para clientes, planilhas e estatísticas"
+    ]
+  }
+]

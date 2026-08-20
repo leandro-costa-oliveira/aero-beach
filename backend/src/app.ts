@@ -9,13 +9,14 @@ useContainer(Container);
 
 const app = createExpressServer({
   cors: true,
+  classTransformer: true,
   validation: true,
   controllers: [path.join(__dirname, "/controllers/*.{j,t}s")],
   middlewares: [path.join(__dirname, "/middlewares/*.{j,t}s")],
   interceptors: [path.join(__dirname, "/interceptors/*.{j,t}s")],
   authorizationChecker: async (action: Action) => {
     const token = action.request.headers['authorization'];
-    const user = await new AuthService().getCredentials(token);
+    const user = await Container.get(AuthService).getCredentials(token);
     if (user) {
       action.request.credentials = user;
       return true;

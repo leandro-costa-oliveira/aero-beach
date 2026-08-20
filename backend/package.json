@@ -5,10 +5,12 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node-dev src/aero-beach.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio",
+    "test": "jest",
+    "db:reset": "prisma migrate reset --force",
+    "db:generate": "prisma generate",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:studio": "prisma studio",
     "build:docker": "docker build -t leandrocostaaca/aero-beach-backend .",
     "test:jest": "jest"
   },
@@ -20,6 +22,7 @@
     "@prisma/client": "^6.15.0",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
+    "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
@@ -31,6 +34,7 @@
     "typedi": "^0.10.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.9.0",
     "@jest/globals": "^30.2.0",
     "@types/bcrypt": "^6.0.0",
     "@types/body-parser": "^1.19.6",
@@ -39,6 +43,7 @@
     "@types/multer": "^2.0.0",
     "@types/node": "^24.2.0",
     "@types/supertest": "^6.0.3",
+    "fishery": "^2.3.1",
     "jest": "^30.2.0",
     "prisma": "^6.15.0",
     "supertest": "^7.1.4",
