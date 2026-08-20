@@ -2,7 +2,7 @@ name: AeroBeach Backend
 on:
   push:
     branches:
-      - master
+      - main
       - development
   pull_request:
     branches:
@@ -55,7 +55,7 @@ jobs:
   build-docker:
     name: Build Docker image
     needs: [build-and-test]
-    if: github.ref == 'refs/heads/development' || github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/development' || github.ref == 'refs/heads/main'
     runs-on: docker
     container:
       image: node:20-alpine
