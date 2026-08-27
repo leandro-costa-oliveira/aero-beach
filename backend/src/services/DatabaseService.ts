@@ -80,7 +80,7 @@ export default class DatabaseService {
       const inscritos = await tx.inscricao.findMany({
         where: {
           torneioId: tournamentForm.torneioId,
-          categoriasId: tournamentForm.categoriaId,
+          categoriaId: tournamentForm.categoriaId,
           jogadorId: { in: [player1.id, player2.id] },
         },
       });
@@ -92,14 +92,14 @@ export default class DatabaseService {
         data: {
           torneioId: tournamentForm.torneioId,
           jogadorId: player1.id,
-          categoriasId: tournamentForm.categoriaId,
+          categoriaId: tournamentForm.categoriaId,
         },
       });
       const inscricao2 = await tx.inscricao.create({
         data: {
           torneioId: tournamentForm.torneioId,
           jogadorId: player2.id,
-          categoriasId: tournamentForm.categoriaId,
+          categoriaId: tournamentForm.categoriaId,
         },
       });
 
