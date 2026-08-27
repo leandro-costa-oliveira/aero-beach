@@ -1,8 +1,8 @@
 import { Type } from 'class-transformer';
 import { IsBoolean, IsDate, IsEnum, IsNumber, IsOptional, IsString, Matches} from 'class-validator';
-import { CategoriaTorneio, ModalidadeTorneio, SituacaoTorneio, TipoTorneio, Torneios } from '../../generated/prisma';
+import { CategoriaTorneio, ModalidadeTorneio, SituacaoTorneio, TipoTorneio, Torneio } from '../../generated/prisma';
 
-export class TorneioForm implements Omit<Torneios, "id"> {
+export class TorneioForm implements Omit<Torneio, "id"> {
 
   @IsString()
   @Matches(/^(?=.*[a-zA-Z])[a-zA-Z\s]+$/, { message: "Nome inválido. Deve conter pelo menos uma letra e não pode ser vazio." })

@@ -52,7 +52,7 @@ enum Role {
   admin
 }
 
-model Usuarios {
+model Usuario {
   id       String  @id @default(uuid())
   nome     String
   email    String  @unique
@@ -60,49 +60,11 @@ model Usuarios {
   telefone String?
   senha    String?
   salt     String?
+
+  jogador Jogador?
 }
 
-model Jogadores {
-  id       String  @id @default(uuid())
-  nome     String
-  email    String  @unique
-  cpf      String?
-  telefone String?
-
-  inscricoes Inscricoes[]
-  duplas1    Duplas[]     @relation("duplaParticipante1")
-  duplas2    Duplas[]     @relation("duplaParticipante2")
-}
-
-model Inscricoes {
-  id            String    @id @default(uuid())
-  torneioId     String
-  jogadorId     String
-  pago          Boolean   @default(false)
-  dataPagamento DateTime?
-  categoriasId  String
-
-  torneio    Torneios    @relation(fields: [torneioId], references: [id])
-  jogador    Jogadores   @relation(fields: [jogadorId], references: [id])
-  categorias Categorias? @relation(fields: [categoriasId], references: [id])
-}
-
-model Duplas {
-  id            String @id @default(uuid())
-  torneioId     String
-  participante1 String
-  participante2 String
-  categoriasId  String
-
-  torneio    Torneios   @relation(fields: [torneioId], references: [id])
-  jogador1   Jogadores  @relation("duplaParticipante1", fields: [participante1], references: [id])
-  jogador2   Jogadores  @relation("duplaParticipante2", fields: [participante2], references: [id])
-  categorias Categorias @relation(fields: [categoriasId], references: [id])
-
-  @@unique([participante1, participante2, categoriasId])
-}
-
-model Torneios {
+model Torneio {
   id                  String          @id @default(uuid())
   nome                String?
   dataInicio          DateTime
@@ -110,12 +72,55 @@ model Torneios {
   federado            Boolean         @default(false)
   situacao            SituacaoTorneio @default(aberto)
 
-  categorias Categorias[]
-  inscricoes Inscricoes[]
-  duplas     Duplas[]
+  categorias Categoria[]
+  inscricoes Inscricao[]
+  duplas     Dupla[]
 }
 
-model Categorias {
+model Jogador {
+  id       String  @id @default(uuid())
+  nome     String
+  email    String  @unique
+  cpf      String?
+  telefone String?
+
+  usuarioId String?  @unique
+  usuario   Usuario? @relation(fields: [usuarioId], references: [id])
+
+  inscricoes Inscricao[]
+  duplas1    Dupla[]     @relation("duplaParticipante1")
+  duplas2    Dupla[]     @relation("duplaParticipante2")
+}
+
+model Inscricao {
+  id            String    @id @default(uuid())
+  torneioId     String
+  jogadorId     String
+  pago          Boolean   @default(false)
+  dataPagamento DateTime?
+  categoriaId   String?
+
+  torneio   Torneio    @relation(fields: [torneioId], references: [id])
+  jogador   Jogador    @relation(fields: [jogadorId], references: [id])
+  categoria Categoria? @relation(fields: [categoriaId], references: [id])
+}
+
+model Dupla {
+  id            String @id @default(uuid())
+  torneioId     String
+  participante1 String
+  participante2 String
+  categoriaId   String
+
+  torneio   Torneio   @relation(fields: [torneioId], references: [id])
+  jogador1  Jogador   @relation("duplaParticipante1", fields: [participante1], references: [id])
+  jogador2  Jogador   @relation("duplaParticipante2", fields: [participante2], references: [id])
+  categoria Categoria @relation(fields: [categoriaId], references: [id])
+
+  @@unique([participante1, participante2, categoriaId])
+}
+
+model Categoria {
   id             String            @id @default(uuid())
   torneioId      String
   genero         TipoTorneio
@@ -124,9 +129,9 @@ model Categorias {
   valorInscricao Float
   dataRealizacao DateTime?
 
-  torneio    Torneios     @relation(fields: [torneioId], references: [id])
-  inscricoes Inscricoes[]
-  duplas     Duplas[]
+  torneio    Torneio     @relation(fields: [torneioId], references: [id])
+  inscricoes Inscricao[]
+  duplas     Dupla[]
 
   @@unique([torneioId, genero, modalidade, nivel])
 }
