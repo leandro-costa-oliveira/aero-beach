@@ -1,16 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "../api/api-client";
 import { QueryKeys } from "../api/queryKeys";
-import type { Torneio } from "../api/torneio.t";
-//import { queryClient } from "./queryClient";
-
-interface ListaTorneios<T> {
-  data: T[];
-  total: number;
-  page: number;
-  perPage: number;
-  totalPages: number;
-}
+import type { Torneio, ListaTorneios } from "../api/torneio.t";
 
 export function useListarTorneios(page: number = 1, perPage: number = 6) {
   return useQuery({
@@ -20,9 +11,6 @@ export function useListarTorneios(page: number = 1, perPage: number = 6) {
         `/torneios/?page=${page}&perPage=${perPage}`
       );
 
-      // resp.data.data.forEach((torneio) => {
-      //   queryClient.setQueryData(QueryKeys.useTorneio(torneio.id), torneio);
-      // });
       return resp.data;
     },
   });
