@@ -23,6 +23,7 @@ jobs:
         with:
           openai_api_key: ${{ secrets.OPENAI_API_KEY }}
           forgejo_token: ${{ forgejo.token }}
+          review_token: ${{ secrets.CODEX_REVIEW_TOKEN }}
           base_ref: ${{ forgejo.event.pull_request.base.ref }}
           pull_request_number: ${{ forgejo.event.pull_request.number }}
           server_url: ${{ forgejo.server_url }}
