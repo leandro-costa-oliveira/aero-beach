@@ -18,14 +18,8 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Git Clone
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
       - name: Run Codex review
-        uses: https://git.lhprovedor.com.br/leandro/devops/.forgejo/actions/codex-review@main
+        uses: https://git.lhprovedor.com.br/leandro/devops/.forgejo/actions/codex-review@a9aa99c92493e01c802df74f0216f72065d02780
         with:
           openai_api_key: ${{ secrets.OPENAI_API_KEY }}
           forgejo_token: ${{ forgejo.token }}
