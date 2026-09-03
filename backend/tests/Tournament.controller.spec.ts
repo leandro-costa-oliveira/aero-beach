@@ -5,13 +5,13 @@ import supertest from "supertest";
 import app from "../src/app";
 import { tournamentFormFactory, tournamentSubscriptionFormFactory } from "./Factories";
 
-import { Categorias, Torneios } from "../generated/prisma/index";
+import { Categoria, Torneio } from "../generated/prisma/index";
 import { TorneioForm } from "../src/DTOs/TorneioForm";
 import DatabaseService, { prisma } from "../src/services/DatabaseService";
 
-let tournament_Ongoing: Torneios;
-let categoria: Categorias;
-let tournament_Done: Torneios;
+let tournament_Ongoing: Torneio;
+let categoria: Categoria;
+let tournament_Done: Torneio;
 
 describe("Integration tests for tournaments/torneios", () => {
   it("checks if tournament creation works with valid data", async () => {
@@ -58,7 +58,7 @@ describe("Integration tests for tournaments/:id/inscrever", () => {
       })
     );
 
-    categoria = await prisma.categorias.create({data: {
+    categoria = await prisma.categoria.create({data: {
       torneioId: tournament_Ongoing.id,
       genero: "feminino",
       modalidade: "duplas",

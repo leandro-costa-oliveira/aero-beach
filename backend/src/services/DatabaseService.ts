@@ -1,6 +1,6 @@
 import { BadRequestError, NotFoundError } from "routing-controllers";
 import { Service } from "typedi";
-import { Duplas, Inscricoes, PrismaClient, Torneios, Usuarios } from "../../generated/prisma";
+import { Dupla, Inscricao, PrismaClient, Torneio, Usuario } from "../../generated/prisma";
 import { TorneioForm } from "../DTOs/TorneioForm";
 import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
 
@@ -8,28 +8,28 @@ export const prisma = new PrismaClient();
 
 @Service()
 export default class DatabaseService {
-  async getUserByEmail(email: string): Promise<Usuarios | null> {
-    return await prisma.usuarios.findFirst({
+  async getUserByEmail(email: string): Promise<Usuario | null> {
+    return await prisma.usuario.findFirst({
       where: { email: email },
     });
   }
 
-  async createTournament(tournament: TorneioForm): Promise<Torneios> {
-    return await prisma.torneios.create({
+  async createTournament(tournament: TorneioForm): Promise<Torneio> {
+    return await prisma.torneio.create({
       data: tournament,
     });
   }
 
   async subscribeTournamentAsDouble(tournamentForm: TorneioInscricaoForm): Promise<{
-    subscriptions: Inscricoes[];
-    double: Duplas;
+    subscriptions: Inscricao[];
+    double: Dupla;
   }> {
     if (!tournamentForm.jogador2) {
       throw new BadRequestError("É preciso fornecer os dados do segundo jogador para inscrição em dupla.");
     }
 
     const result = await prisma.$transaction(async (tx) => {
-      const tournament = await tx.torneios.findUnique({
+      const tournament = await tx.torneio.findUnique({
         where: { id: tournamentForm.torneioId },
       });
       if (!tournament) {
@@ -39,7 +39,7 @@ export default class DatabaseService {
         throw new BadRequestError("O prazo de inscrição para este torneio já expirou.");
       }
 
-      await tx.usuarios.upsert({
+      await tx.usuario.upsert({
         where: { email: tournamentForm.jogador1.email },
         update: {},
         create: {
@@ -49,7 +49,7 @@ export default class DatabaseService {
         },
       });
 
-      await tx.usuarios.upsert({
+      await tx.usuario.upsert({
         where: { email: tournamentForm.jogador2.email },
         update: {},
         create: {
@@ -59,7 +59,7 @@ export default class DatabaseService {
         },
       });
 
-      const player1 = await tx.jogadores.upsert({
+      const player1 = await tx.jogador.upsert({
         where: { email: tournamentForm.jogador1.email },
         update: {},
         create: {
@@ -68,7 +68,7 @@ export default class DatabaseService {
         },
       });
 
-      const player2 = await tx.jogadores.upsert({
+      const player2 = await tx.jogador.upsert({
         where: { email: tournamentForm.jogador2.email },
         update: {},
         create: {
@@ -77,10 +77,10 @@ export default class DatabaseService {
         },
       });
 
-      const inscritos = await tx.inscricoes.findMany({
+      const inscritos = await tx.inscricao.findMany({
         where: {
           torneioId: tournamentForm.torneioId,
-          categoriasId: tournamentForm.categoriaId,
+          categoriaId: tournamentForm.categoriaId,
           jogadorId: { in: [player1.id, player2.id] },
         },
       });
@@ -88,25 +88,25 @@ export default class DatabaseService {
         throw new BadRequestError("Um ou mais jogadores já estão inscritos nessa categoria");
       }
 
-      const inscricao1 = await tx.inscricoes.create({
+      const inscricao1 = await tx.inscricao.create({
         data: {
           torneioId: tournamentForm.torneioId,
           jogadorId: player1.id,
-          categoriasId: tournamentForm.categoriaId,
+          categoriaId: tournamentForm.categoriaId,
         },
       });
-      const inscricao2 = await tx.inscricoes.create({
+      const inscricao2 = await tx.inscricao.create({
         data: {
           torneioId: tournamentForm.torneioId,
           jogadorId: player2.id,
-          categoriasId: tournamentForm.categoriaId,
+          categoriaId: tournamentForm.categoriaId,
         },
       });
 
-      const double = await tx.duplas.create({
+      const double = await tx.dupla.create({
         data: {
           torneioId: tournamentForm.torneioId,
-          categoriasId: tournamentForm.categoriaId,
+          categoriaId: tournamentForm.categoriaId,
           participante1: player1.id,
           participante2: player2.id,
         },

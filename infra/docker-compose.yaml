@@ -1,34 +1,42 @@
 services:
-  traefik:
-    image: traefik:v3.0
-    container_name: traefik
+  frontend:
+    image: leandrocostaaca/aero-beach-frontend
     restart: unless-stopped
-    command:
-      - "--api.dashboard=true"
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
-      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
-      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
-      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.email=contato+aerobeach@leandrocosta.pro.br"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
-      - "80:80"
-      - "8080:8080"
-      - "443:443"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "/dados/letsencrypt:/letsencrypt"
-  aero-beach-frontend-dev:
-    image: leandrocostaaca/aero-beach-frontend-dev
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.aero-beach-frontend-dev.rule=Host(`dev.aero-beach-aracati.com.br`)
-      - traefik.http.routers.aero-beach-frontend-dev.entrypoints=web
-    depends_on:
-      - traefik
+      - 80:80
+  backend:
+    image: leandrocostaaca/aero-beach-backend
     restart: unless-stopped
+    environment:
+      JWT_SECRET: REDACTED
+    ports:
+      - 3000:3000
+    volumes:
+      - ./aerobeach.db:/app/aerobeach.db
+
+  frontend-dev:
+    image: leandrocostaaca/aero-beach-frontend-dev
+    restart: unless-stopped
+    ports:
+      - 81:80
+  backend-dev:
+    image: leandrocostaaca/aero-beach-backend-dev
+    restart: unless-stopped
+    environment:
+      JWT_SECRET: REDACTED
+    ports:
+      - 3001:3000
+    volumes:
+      - ./aerobeach-dev.db:/app/aerobeach.db
+
+  watchtower:
+    image: containrrr/watchtower
+    restart: unless-stopped
+    command: --schedule "0 */5 * * * *" --cleanup --rolling-restart
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $HOME/.docker/config.json:/config.json
+      - /etc/hostname:/etc/hostname:ro
+    environment:
+      TZ: America/Fortaleza
+      DOCKER_API_VERSION: 1.44

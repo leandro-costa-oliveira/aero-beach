@@ -1,6 +1,6 @@
 import { BadRequestError } from "routing-controllers";
 import { Service } from "typedi";
-import { Duplas, Inscricoes } from "../../generated/prisma";
+import { Dupla, Inscricao } from "../../generated/prisma";
 import { TorneioForm } from "../DTOs/TorneioForm";
 import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
 import DatabaseService, { prisma } from "./DatabaseService";
@@ -13,13 +13,13 @@ export class TournamentService {
     const skip = (page - 1) * perPage;
 
     const [data, total] = await Promise.all([
-      prisma.torneios.findMany({
+      prisma.torneio.findMany({
         skip,
         take: perPage,
         orderBy: { dataInicio: "desc" },
         include: { categorias: true },
       }),
-      prisma.torneios.count(),
+      prisma.torneio.count(),
     ]);
 
     return {
@@ -32,7 +32,7 @@ export class TournamentService {
   }
 
   public async lastTournament() {
-    return prisma.torneios.findFirst({
+    return prisma.torneio.findFirst({
       orderBy: {
         dataInicio: "desc",
       },
@@ -51,8 +51,8 @@ export class TournamentService {
   }
 
   async subscribeTournamentAsDouble(torneioInscricaoForm: TorneioInscricaoForm): Promise<{
-    subscriptions: Inscricoes[];
-    double: Duplas;
+    subscriptions: Inscricao[];
+    double: Dupla;
   }> {
     if (!torneioInscricaoForm.jogador2) {
       throw new BadRequestError("Inscrição de dupla requer dois jogadores.");
@@ -65,7 +65,7 @@ export class TournamentService {
       throw new BadRequestError("ID inválido.");
     }
 
-    const torneio = await prisma.torneios.findUnique({
+    const torneio = await prisma.torneio.findUnique({
       where: { id: id },
       include: { categorias: true },
     });
