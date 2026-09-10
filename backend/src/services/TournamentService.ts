@@ -1,14 +1,55 @@
-import { BadRequestError } from "../errors/BadRequestError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Service } from "typedi";
-import { Dupla, Inscricao } from "../../generated/prisma";
+import { Dupla, Inscricao, Torneio } from "../../generated/prisma";
 import { TorneioForm } from "../DTOs/TorneioForm";
 import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
+import type {
+  Categoria,
+  CriarTorneioDTO,
+  Torneio as TorneioDTO,
+} from "../../../api-schema/TorneioDTO";
 import DatabaseService, { prisma } from "./DatabaseService";
 
 @Service()
 export class TournamentService {
   constructor(private databaseService: DatabaseService) {}
+
+  private mapCategoria(categoria: {
+    id: string;
+    torneioId: string;
+    genero: any;
+    modalidade: any;
+    nivel: any;
+    valorInscricao: number;
+    dataRealizacao: Date | null;
+  }): Categoria {
+    return {
+      id: categoria.id,
+      torneioId: categoria.torneioId,
+      genero: categoria.genero,
+      modalidade: categoria.modalidade,
+      nivel: categoria.nivel,
+      valorInscricao: categoria.valorInscricao,
+      dataRealizacao: categoria.dataRealizacao
+        ? categoria.dataRealizacao.toISOString()
+        : null,
+    };
+  }
+
+  private mapTorneio(
+    torneio: Torneio,
+    categorias: Categoria[] = []
+  ): TorneioDTO {
+    return {
+      id: torneio.id,
+      nome: torneio.nome,
+      federado: torneio.federado,
+      dataInicio: torneio.dataInicio.toISOString(),
+      dataLimiteInscricao: torneio.dataLimiteInscricao.toISOString(),
+      situacao: torneio.situacao,
+      categorias,
+    };
+  }
 
   async getAll(page: number = 1, perPage: number = 6) {
     const skip = (page - 1) * perPage;
@@ -23,8 +64,17 @@ export class TournamentService {
       prisma.torneio.count(),
     ]);
 
+    const tournaments = data.map((torneio) =>
+      this.mapTorneio(
+        torneio,
+        torneio.categorias.map((categoria) =>
+          this.mapCategoria(categoria)
+        )
+      )
+    );
+
     return {
-      data,
+      data: tournaments,
       total,
       page,
       perPage,
@@ -32,25 +82,37 @@ export class TournamentService {
     };
   }
 
-  public async lastTournament() {
-    return prisma.torneio.findFirst({
+  public async lastTournament(): Promise<TorneioDTO | null> {
+    const torneio = await prisma.torneio.findFirst({
       orderBy: {
         dataInicio: "desc",
       },
       include: { categorias: true },
     });
-  }
 
-  // TODO: Retornar o torneio criado ao invés de uma mensagem fixa
-  async createTournament(tournament: TorneioForm): Promise<string> {
-    if (tournament.dataLimiteInscricao > tournament.dataInicio) {
-      throw new BadRequestError(
-        "Data limite de inscrição não pode ser maior que a data de início do torneio."
-      );
+    if (!torneio) {
+      return null;
     }
 
-    await this.databaseService.createTournament(tournament);
-    return "Torneio criado com sucesso!";
+    return this.mapTorneio(
+      torneio,
+      torneio.categorias.map((categoria) =>
+        this.mapCategoria(categoria)
+      )
+    );
+  }
+
+  async createTournament(tournament: TorneioForm): Promise<TorneioDTO> {
+    const createdTournament =
+      await this.databaseService.createTournament({
+        nome: tournament.nome,
+        federado: tournament.federado,
+        dataInicio: tournament.dataInicio.toISOString(),
+        dataLimiteInscricao:
+          tournament.dataLimiteInscricao.toISOString(),
+      });
+
+    return this.mapTorneio(createdTournament);
   }
 
   async subscribeTournamentAsDouble(
@@ -60,9 +122,7 @@ export class TournamentService {
     double: Dupla;
   }> {
     if (!torneioInscricaoForm.jogador2) {
-      throw new BadRequestError(
-        "Inscrição de dupla requer dois jogadores."
-      );
+      throw new Error("Inscrição de dupla requer dois jogadores.");
     }
 
     return await this.databaseService.subscribeTournamentAsDouble(
@@ -70,13 +130,13 @@ export class TournamentService {
     );
   }
 
-  async getById(id: string) {
+  async getById(id: string): Promise<TorneioDTO> {
     if (!id) {
-      throw new BadRequestError("ID inválido.");
+      throw new Error("ID inválido.");
     }
 
     const torneio = await prisma.torneio.findUnique({
-      where: { id: id },
+      where: { id },
       include: { categorias: true },
     });
 
@@ -84,6 +144,11 @@ export class TournamentService {
       throw new NotFoundError("Torneio não encontrado.");
     }
 
-    return torneio;
+    return this.mapTorneio(
+      torneio,
+      torneio.categorias.map((categoria) =>
+        this.mapCategoria(categoria)
+      )
+    );
   }
 }

@@ -2,7 +2,8 @@ import { useContext } from "react";
 import { apiClient } from "../api/api-client";
 import { useMutation } from "@tanstack/react-query";
 import { AuthContext } from "../Context/AuthContext";
-import type { LoginDTO } from '../../../api-schema/LoginDTO';
+import type {LoginDTO, LoginResponseDTO, } from "../../../api-schema/LoginDTO";
+
 export function useEfetuarLogin() {
   const { setAccessToken } = useContext(AuthContext);
 
@@ -20,15 +21,18 @@ export function useEfetuarLogin() {
   });
 }
 
-async function fetchLogin({ email, password }: LoginDTO) {
-
-  const response = await apiClient.post<{ accessToken: string }>(
+async function fetchLogin({
+  email,
+  password,
+}: LoginDTO): Promise<LoginResponseDTO> {
+  const response = await apiClient.post<LoginResponseDTO>(
     "/auth/login",
     { email, password }
   );
 
   if (response.status === 200) {
-    apiClient.defaults.headers.common["Authorization"] = response.data.accessToken;
+    apiClient.defaults.headers.common["Authorization"] =
+      response.data.accessToken;
   }
   return response.data;
 }

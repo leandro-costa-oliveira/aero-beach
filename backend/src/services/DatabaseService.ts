@@ -1,9 +1,9 @@
 import { BadRequestError } from "../errors/BadRequestError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Service } from "typedi";
-import { Dupla, Inscricao, PrismaClient, Torneio, Usuario } from "../../generated/prisma";
-import { TorneioForm } from "../DTOs/TorneioForm";
+import { Dupla, Inscricao, PrismaClient, Torneio, Usuario, } from "../../generated/prisma";
 import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
+import type { CriarTorneioDTO, CriarCategoriaDTO } from "../../../api-schema/TorneioDTO";
 
 export const prisma = new PrismaClient();
 
@@ -11,15 +11,35 @@ export const prisma = new PrismaClient();
 export default class DatabaseService {
   async getUserByEmail(email: string): Promise<Usuario | null> {
     return await prisma.usuario.findFirst({
-      where: { email: email },
+      where: { email },
     });
   }
 
-  async createTournament(tournament: TorneioForm): Promise<Torneio> {
-    return await prisma.torneio.create({
-      data: tournament,
-    });
-  }
+async createTournament(tournament: CriarTorneioDTO): Promise<Torneio> {
+  return await prisma.torneio.create({
+    data: {
+      nome: tournament.nome,
+      dataInicio: new Date(tournament.dataInicio),
+      dataLimiteInscricao: new Date(tournament.dataLimiteInscricao),
+      federado: tournament.federado,
+    },
+  });
+}
+
+async createCategory(category: CriarCategoriaDTO) {
+  return await prisma.categoria.create({
+    data: {
+      torneioId: category.torneioId,
+      genero: category.genero,
+      modalidade: category.modalidade,
+      nivel: category.nivel,
+      valorInscricao: category.valorInscricao,
+      dataRealizacao: category.dataRealizacao
+        ? new Date(category.dataRealizacao)
+        : null,
+    },
+  });
+}
 
   async subscribeTournamentAsDouble(
     tournamentForm: TorneioInscricaoForm
@@ -90,7 +110,9 @@ export default class DatabaseService {
         where: {
           torneioId: tournamentForm.torneioId,
           categoriaId: tournamentForm.categoriaId,
-          jogadorId: { in: [player1.id, player2.id] },
+          jogadorId: {
+            in: [player1.id, player2.id],
+          },
         },
       });
 
@@ -125,9 +147,10 @@ export default class DatabaseService {
         },
       });
 
-      const subscriptions = [inscricao1, inscricao2];
-
-      return { subscriptions, double };
+      return {
+        subscriptions: [inscricao1, inscricao2],
+        double,
+      };
     });
 
     return {

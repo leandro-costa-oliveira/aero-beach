@@ -1,17 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
+
 import { apiClient } from "../api/api-client";
-import type { Torneio } from "../api/torneio.t";
+
+import type { CriarTorneioDTO, Torneio } from "../api/torneio.t";
 
 export function useCadastrarTorneio() {
   return useMutation({
-    mutationFn: async (payload: TorneioForm) => {
-      return apiClient.post<{ tournament: Torneio }>("/torneios", payload).then((resp) => resp.data.tournament);
+    mutationFn: async (payload: CriarTorneioDTO) => {
+      return apiClient
+        .post<{ tournament: Torneio }>("/torneios", payload)
+        .then((resp) => resp.data.tournament);
     },
   });
 }
-
-// TODO: Importar o DTO do backend
-type TorneioForm = {
-  nome: string;
-  federado: boolean;
-};
