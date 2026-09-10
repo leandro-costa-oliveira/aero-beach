@@ -1,9 +1,17 @@
 import { BadRequestError } from "../errors/BadRequestError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Service } from "typedi";
-import { Dupla, Inscricao, PrismaClient, Torneio, Usuario } from "../../generated/prisma";
+import {
+  Categoria,
+  Dupla,
+  Inscricao,
+  PrismaClient,
+  Torneio,
+  Usuario,
+} from "../../generated/prisma";
 import { TorneioForm } from "../DTOs/TorneioForm";
 import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
+import type { CriarCategoriaDTO } from "../../../api-schema/TorneioDTO";
 
 export const prisma = new PrismaClient();
 
@@ -18,6 +26,21 @@ export default class DatabaseService {
   async createTournament(tournament: TorneioForm): Promise<Torneio> {
     return await prisma.torneio.create({
       data: tournament,
+    });
+  }
+
+  async createCategory(data: CriarCategoriaDTO): Promise<Categoria> {
+    return await prisma.categoria.create({
+      data: {
+        torneioId: data.torneioId,
+        genero: data.genero,
+        modalidade: data.modalidade,
+        nivel: data.nivel,
+        valorInscricao: data.valorInscricao,
+        dataRealizacao: data.dataRealizacao
+          ? new Date(data.dataRealizacao)
+          : null,
+      },
     });
   }
 
