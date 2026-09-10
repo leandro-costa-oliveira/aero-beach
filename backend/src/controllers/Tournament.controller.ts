@@ -1,14 +1,4 @@
-import {
-  Authorized,
-  BadRequestError,
-  Body,
-  Get,
-  HttpCode,
-  JsonController,
-  Param,
-  Post,
-  QueryParam,
-} from "routing-controllers";
+import { Body, Get, HttpCode, JsonController, Param, Post, QueryParam } from "routing-controllers";
 import { Service } from "typedi";
 import { TournamentService } from "../services/TournamentService";
 import { TorneioForm } from "../DTOs/TorneioForm";
