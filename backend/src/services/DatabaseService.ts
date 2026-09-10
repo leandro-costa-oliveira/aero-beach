@@ -1,9 +1,9 @@
 import { BadRequestError } from "../errors/BadRequestError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Service } from "typedi";
-import { Dupla, Inscricao, PrismaClient, Torneio, Usuario, } from "../../generated/prisma";
+import { Dupla, Inscricao, PrismaClient, Torneio, Usuario } from "../../generated/prisma";
+import { TorneioForm } from "../DTOs/TorneioForm";
 import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
-import type { CriarTorneioDTO, CriarCategoriaDTO } from "../../../api-schema/TorneioDTO";
 
 export const prisma = new PrismaClient();
 
@@ -11,35 +11,15 @@ export const prisma = new PrismaClient();
 export default class DatabaseService {
   async getUserByEmail(email: string): Promise<Usuario | null> {
     return await prisma.usuario.findFirst({
-      where: { email },
+      where: { email: email },
     });
   }
 
-async createTournament(tournament: CriarTorneioDTO): Promise<Torneio> {
-  return await prisma.torneio.create({
-    data: {
-      nome: tournament.nome,
-      dataInicio: new Date(tournament.dataInicio),
-      dataLimiteInscricao: new Date(tournament.dataLimiteInscricao),
-      federado: tournament.federado,
-    },
-  });
-}
-
-async createCategory(category: CriarCategoriaDTO) {
-  return await prisma.categoria.create({
-    data: {
-      torneioId: category.torneioId,
-      genero: category.genero,
-      modalidade: category.modalidade,
-      nivel: category.nivel,
-      valorInscricao: category.valorInscricao,
-      dataRealizacao: category.dataRealizacao
-        ? new Date(category.dataRealizacao)
-        : null,
-    },
-  });
-}
+  async createTournament(tournament: TorneioForm): Promise<Torneio> {
+    return await prisma.torneio.create({
+      data: tournament,
+    });
+  }
 
   async subscribeTournamentAsDouble(
     tournamentForm: TorneioInscricaoForm
@@ -110,9 +90,7 @@ async createCategory(category: CriarCategoriaDTO) {
         where: {
           torneioId: tournamentForm.torneioId,
           categoriaId: tournamentForm.categoriaId,
-          jogadorId: {
-            in: [player1.id, player2.id],
-          },
+          jogadorId: { in: [player1.id, player2.id] },
         },
       });
 
@@ -147,10 +125,9 @@ async createCategory(category: CriarCategoriaDTO) {
         },
       });
 
-      return {
-        subscriptions: [inscricao1, inscricao2],
-        double,
-      };
+      const subscriptions = [inscricao1, inscricao2];
+
+      return { subscriptions, double };
     });
 
     return {

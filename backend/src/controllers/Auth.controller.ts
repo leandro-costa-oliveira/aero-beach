@@ -3,15 +3,18 @@ import { Service } from "typedi";
 import { UnauthorizedError } from "../errors/UnauthorizedError";
 import { AuthService } from "../services/AuthService";
 import { LoginForm } from "../forms/LoginForms";
-import type { LoginResponseDTO } from "../../../api-schema/LoginDTO";
 
 @JsonController("/auth")
 @Service()
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService
+  ) {}
 
   @Post("/login")
-  async login(@Body() body: LoginForm): Promise<LoginResponseDTO> {
+  async login(
+    @Body() body: LoginForm
+  ) {
     const accessToken = await this.authService.login(
       body.email,
       body.password
