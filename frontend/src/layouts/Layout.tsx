@@ -5,12 +5,14 @@ import { Header } from "../components/Header/Header";
 
 export function Layout() {
   return (
-    <div className="d-flex flex-column min-vh-100 w-100">
+    <div className="d-flex flex-column min-vh-100">
       <Header />
 
-      <Container className="my-4">
-        <Outlet />
-      </Container>
+      <main className="flex-grow-1">
+        <Container className="py-4">
+          <Outlet />
+        </Container>
+      </main>
 
       <Footer />
     </div>
