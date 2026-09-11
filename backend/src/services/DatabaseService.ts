@@ -11,7 +11,7 @@ import {
 } from "../../generated/prisma";
 import { TorneioForm } from "../DTOs/TorneioForm";
 import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
-import type { CriarCategoriaDTO } from "../../../api-schema/TorneioDTO";
+import type { CriarCategoriaDTO } from "@aero-beach/api-schema/TorneioDTO";
 
 export const prisma = new PrismaClient();
 

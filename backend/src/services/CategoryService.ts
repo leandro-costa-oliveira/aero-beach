@@ -1,6 +1,6 @@
 import { Service } from "typedi";
 import { Categoria } from "../../generated/prisma";
-import type { CriarCategoriaDTO } from "../../../api-schema/TorneioDTO";
+import type { CriarCategoriaDTO } from "@aero-beach/api-schema/TorneioDTO";
 import { CategoriaForm } from "../DTOs/CategoriaForm";
 import DatabaseService from "./DatabaseService";
 
