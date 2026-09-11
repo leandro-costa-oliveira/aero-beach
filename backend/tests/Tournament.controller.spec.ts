@@ -15,6 +15,7 @@ import DatabaseService, { prisma } from "../src/services/DatabaseService";
 let tournament_Ongoing: Torneio;
 let categoria: Categoria;
 let tournament_Done: Torneio;
+let tournament_Category: Torneio;
 
 describe("Integration tests for tournaments/torneios", () => {
   it("checks if tournament creation works with valid data", async () => {
@@ -204,5 +205,53 @@ describe("Integration tests for tournaments/:id/inscrever", () => {
           "Um ou mais jogadores já estão inscritos nessa categoria"
         );
       });
+  });
+});
+
+describe("Integration tests for categories/categorias", () => {
+  beforeAll(async () => {
+    tournament_Category = await new DatabaseService().createTournament({
+      nome: "Torneio Categoria Teste",
+      federado: false,
+      dataInicio: new Date("2025-10-10"),
+      dataLimiteInscricao: new Date("2025-10-09"),
+    });
+  });
+
+  it("accepts null as dataRealizacao", async () => {
+    const data = {
+      torneioId: tournament_Category.id,
+      genero: "feminino",
+      modalidade: "duplas",
+      nivel: "a",
+      valorInscricao: 30,
+      dataRealizacao: null,
+    };
+
+    const response = await supertest(app)
+      .post("/categorias/")
+      .set("Content-Type", "application/json")
+      .send(data);
+
+    expect(response.status).toBe(201);
+    expect(response.body.categoria.dataRealizacao).toBeNull();
+  });
+
+  it("rejects an invalid dataRealizacao", async () => {
+    const data = {
+      torneioId: tournament_Category.id,
+      genero: "feminino",
+      modalidade: "duplas",
+      nivel: "a",
+      valorInscricao: 30,
+      dataRealizacao: "data-invalida",
+    };
+
+    const response = await supertest(app)
+      .post("/categorias/")
+      .set("Content-Type", "application/json")
+      .send(data);
+
+    expect(response.status).toBe(400);
   });
 });

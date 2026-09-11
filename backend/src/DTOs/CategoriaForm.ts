@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsNumber,
   IsString,
+  IsOptional
 } from "class-validator";
 
 import {
@@ -39,7 +40,8 @@ export class CategoriaForm {
 
   @IsNumber()
   valorInscricao!: number;
-
+  
+  @IsOptional()
   @Type(() => Date)
   @IsDate({
     message: "Data de realização inválida. Deve ser uma data válida.",

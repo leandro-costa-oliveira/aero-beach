@@ -1,4 +1,4 @@
-import { ExpressErrorMiddlewareInterface, Middleware } from "routing-controllers";
+import { ExpressErrorMiddlewareInterface, HttpError, Middleware,} from "routing-controllers";
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "../errors/AppError";
 
@@ -16,6 +16,17 @@ export class ErrorHandler implements ExpressErrorMiddlewareInterface {
           code: error.code,
           message: error.message,
           details: error.details ?? null,
+        },
+      });
+      return;
+    }
+
+    if (error instanceof HttpError) {
+      response.status(error.httpCode).json({
+        error: {
+          code: "HTTP_ERROR",
+          message: error.message,
+          details: null,
         },
       });
       return;
