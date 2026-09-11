@@ -1,8 +1,17 @@
-import { BadRequestError, NotFoundError } from "routing-controllers";
+import { BadRequestError } from "../errors/BadRequestError";
+import { NotFoundError } from "../errors/NotFoundError";
 import { Service } from "typedi";
-import { Dupla, Inscricao, PrismaClient, Torneio, Usuario } from "../../generated/prisma";
+import {
+  Categoria,
+  Dupla,
+  Inscricao,
+  PrismaClient,
+  Torneio,
+  Usuario,
+} from "../../generated/prisma";
 import { TorneioForm } from "../DTOs/TorneioForm";
 import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
+import type { CriarCategoriaDTO } from "@aero-beach/api-schema/TorneioDTO";
 
 export const prisma = new PrismaClient();
 
@@ -20,23 +29,46 @@ export default class DatabaseService {
     });
   }
 
-  async subscribeTournamentAsDouble(tournamentForm: TorneioInscricaoForm): Promise<{
+  async createCategory(data: CriarCategoriaDTO): Promise<Categoria> {
+    return await prisma.categoria.create({
+      data: {
+        torneioId: data.torneioId,
+        genero: data.genero,
+        modalidade: data.modalidade,
+        nivel: data.nivel,
+        valorInscricao: data.valorInscricao,
+        dataRealizacao: data.dataRealizacao
+          ? new Date(data.dataRealizacao)
+          : null,
+      },
+    });
+  }
+
+  async subscribeTournamentAsDouble(
+    tournamentForm: TorneioInscricaoForm
+  ): Promise<{
     subscriptions: Inscricao[];
     double: Dupla;
   }> {
     if (!tournamentForm.jogador2) {
-      throw new BadRequestError("É preciso fornecer os dados do segundo jogador para inscrição em dupla.");
+      throw new BadRequestError(
+        "É preciso fornecer os dados do segundo jogador para inscrição em dupla."
+      );
     }
 
     const result = await prisma.$transaction(async (tx) => {
       const tournament = await tx.torneio.findUnique({
         where: { id: tournamentForm.torneioId },
       });
+
       if (!tournament) {
         throw new NotFoundError("Torneio não encontrado.");
       }
+
       if (new Date() > tournament.dataLimiteInscricao) {
-        throw new BadRequestError("O prazo de inscrição para este torneio já expirou.");
+        throw new BadRequestError(
+          "O prazo de inscrição para este torneio já expirou."
+        );
       }
 
       await tx.usuario.upsert({
@@ -84,8 +116,11 @@ export default class DatabaseService {
           jogadorId: { in: [player1.id, player2.id] },
         },
       });
+
       if (inscritos.length > 0) {
-        throw new BadRequestError("Um ou mais jogadores já estão inscritos nessa categoria");
+        throw new BadRequestError(
+          "Um ou mais jogadores já estão inscritos nessa categoria"
+        );
       }
 
       const inscricao1 = await tx.inscricao.create({
@@ -95,6 +130,7 @@ export default class DatabaseService {
           categoriaId: tournamentForm.categoriaId,
         },
       });
+
       const inscricao2 = await tx.inscricao.create({
         data: {
           torneioId: tournamentForm.torneioId,

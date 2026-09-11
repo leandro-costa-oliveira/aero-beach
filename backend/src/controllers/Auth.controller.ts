@@ -1,12 +1,12 @@
-import { Body, JsonController, Post, UnauthorizedError } from "routing-controllers";
+import { Body, JsonController, Post } from "routing-controllers";
 import { Service } from "typedi";
+import { UnauthorizedError } from "../errors/UnauthorizedError";
 import { AuthService } from "../services/AuthService";
 import { LoginForm } from "../forms/LoginForms";
 
 @JsonController("/auth")
 @Service()
 export class AuthController {
-
   constructor(
     private authService: AuthService
   ) {}
@@ -15,7 +15,6 @@ export class AuthController {
   async login(
     @Body() body: LoginForm
   ) {
-
     const accessToken = await this.authService.login(
       body.email,
       body.password

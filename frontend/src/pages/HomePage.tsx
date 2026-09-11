@@ -17,8 +17,11 @@ export function HomePage() {
   if (error) {
     return (
       <Alert variant="danger text-center">
-        <h3>Erro ao carregar o torneio mais recente </h3>
-        <p>Não foi possível encontrar o torneio no servidor. Erro: {String(error)}</p>
+        <h3>Erro ao carregar o torneio mais recente</h3>
+        <p>
+          Não foi possível encontrar o torneio no servidor. Erro:{" "}
+          {String(error)}
+        </p>
       </Alert>
     );
   }
@@ -32,18 +35,21 @@ export function HomePage() {
     );
   }
 
-  const minPrice = torneio?.categorias?.length ? Math.min(...torneio.categorias.map((c) => c.valorInscricao)) : 0;
+  const minPrice = torneio.categorias?.length
+    ? Math.min(
+        ...torneio.categorias.map((c) => c.valorInscricao)
+      )
+    : 0;
+
   return (
     <Row className="justify-content-center">
       <Col xs={12} md={8} lg={6}>
-        <h1 className="mb-4 text-primary display-6 border-bottom pb-2">O Torneio Mais Recente:</h1>
+        <h1 className="mb-4 text-primary display-6 border-bottom pb-2">
+          O Torneio Mais Recente:
+        </h1>
 
         <CardTorneios
-          id={torneio.id}
-          nome={torneio.nome}
-          federado={torneio.federado}
-          realizadoEm={torneio.dataInicio}
-          limiteInscricao={torneio.dataLimiteInscricao}
+          torneio={torneio}
           preco={minPrice}
         />
       </Col>
