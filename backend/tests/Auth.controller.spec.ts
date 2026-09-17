@@ -1,18 +1,26 @@
 import { describe, it, expect } from "@jest/globals";
+import supertest from "supertest";
+import app from "../src/app";
 
-// TODO: Reimplementar os testes quando o endpoint de criar usuário for implementado.
-describe("AuthController Unit Tests, route: auth/login/", () => {
+describe("AuthController", () => {
+  it("returns 400 when login body is invalid", async () => {
+    const response = await supertest(app)
+      .post("/auth/login")
+      .set("Content-Type", "application/json")
+      .send({});
 
-  it('checks if jest is working', () => {
-    expect(true).toBe(true)
-  })
+    expect(response.status).toBe(400);
+  });
 
-  // it("checks if /login returns a token for valid credentials", async () => {
-  // })
+  it("returns 401 when credentials are invalid", async () => {
+    const response = await supertest(app)
+      .post("/auth/login")
+      .set("Content-Type", "application/json")
+      .send({
+        email: "usuario-inexistente@example.com",
+        password: "senha-invalida",
+      });
 
-  // it("checks if /login throws error for invalid email", async () => {
-  // })
-
-  // it("checks if /login throws error for invalid password", async () => {
-  // })
+    expect(response.status).toBe(401);
+  });
 });

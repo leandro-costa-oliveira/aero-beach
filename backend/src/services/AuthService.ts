@@ -42,16 +42,28 @@ export class AuthService {
 
     return accessToken;
   }
+async getCredentials(
+  authorizationToken: string
+): Promise<CredentialsDTO | null> {
+  try {
+    const decoded = jwt.verify(
+      authorizationToken,
+      process.env.JWT_SECRET!
+    );
 
-  async getCredentials(authorizationToken: string): Promise<CredentialsDTO | null> {
-    const decoded = jwt.verify(authorizationToken, process.env.JWT_SECRET!)
-    if (!decoded || typeof decoded === 'string') {
+    if (typeof decoded === "string") {
       return null;
     }
+
     const { userId, username } = decoded;
+
     if (!userId || !username) {
       return null;
     }
+
     return { userId, username };
+  } catch {
+    return null;
   }
-} 
+}
+}

@@ -19,6 +19,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@aero-beach/api-schema": "file:../api-schema",
     "@prisma/client": "^6.15.0",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
