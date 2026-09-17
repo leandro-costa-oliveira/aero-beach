@@ -35,7 +35,7 @@ export function Header() {
         className="d-flex gap-3 d-sm-none ms-auto"
       >
         <img src={menu} height={36} alt="Menu" />
-        <Link to={accessToken ? "/profile" : "/login"}>
+        <Link to={accessToken ? "/perfil" : "/login"}>
           <Avatar />
         </Link>
       </Navbar.Toggle>
@@ -49,17 +49,13 @@ export function Header() {
             Torneios
           </Link>
 
-          <Link to="/rankings" className="lightLink align-content-center">
-            Rankings
-          </Link>
-
-          <Link to="/sobre" className="lightLink align-content-center">
-            Sobre
+          <Link to="/ranking" className="lightLink align-content-center">
+            Ranking
           </Link>
         </Nav>
       </Navbar.Collapse>
       {accessToken ? (
-        <Link to="/profile">
+        <Link to="/perfil">
           <Avatar className="d-none d-sm-block" />
         </Link>
       ) : (
