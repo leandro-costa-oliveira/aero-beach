@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Alert, Col, ListGroup, Row, Spinner } from "react-bootstrap";
+import { Alert, Card, Col, Row, Spinner } from "react-bootstrap";
 import { CardTorneios } from "../components/CardTorneios/CardTorneios";
 import { useUltimoTorneio } from "../hooks/useUltimoTorneio";
 
@@ -15,7 +15,10 @@ export function HomePage() {
       <section className="text-center mb-5 pb-3">
         <h1 className="display-5 fw-bold mb-3">Bem-vindo ao AeroBeach</h1>
 
-        <p className="lead text-muted mx-auto mb-4" style={{ maxWidth: "720px" }}>
+        <p
+          className="lead text-muted mx-auto mb-4"
+          style={{ maxWidth: "720px" }}
+        >
           Encontre torneios, acompanhe o ranking e participe das competições.
         </p>
 
@@ -66,22 +69,11 @@ export function HomePage() {
       <section className="mb-4">
         <h2 className="mb-4">Ranking resumido</h2>
 
-        <ListGroup className="shadow-sm">
-          <ListGroup.Item className="d-flex justify-content-between align-items-center">
-            <span>Jogador 1</span>
-            <strong>1º</strong>
-          </ListGroup.Item>
-
-          <ListGroup.Item className="d-flex justify-content-between align-items-center">
-            <span>Jogador 2</span>
-            <strong>2º</strong>
-          </ListGroup.Item>
-
-          <ListGroup.Item className="d-flex justify-content-between align-items-center">
-            <span>Jogador 3</span>
-            <strong>3º</strong>
-          </ListGroup.Item>
-        </ListGroup>
+        <Card className="shadow-sm border-0">
+          <Card.Body className="text-muted">
+            Ranking ainda indisponível no momento.
+          </Card.Body>
+        </Card>
       </section>
     </div>
   );
