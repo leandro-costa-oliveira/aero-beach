@@ -1,58 +1,80 @@
-import { Alert, Col, Row, Spinner } from "react-bootstrap";
-import { CardTorneios } from "../components/CardTorneios/CardTorneios.tsx";
-import { useUltimoTorneio } from "../hooks/useUltimoTorneio.ts";
+import { Link } from "react-router-dom";
+import { Alert, Card, Col, Row, Spinner } from "react-bootstrap";
+import { CardTorneios } from "../components/CardTorneios/CardTorneios";
+import { useUltimoTorneio } from "../hooks/useUltimoTorneio";
 
 export function HomePage() {
   const { data: torneio, isLoading, error } = useUltimoTorneio();
 
-  if (isLoading) {
-    return (
-      <div className="text-center">
-        <Spinner animation="border" role="status" variant="primary" />
-        <p className="mt-2">Carregando torneio...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <Alert variant="danger text-center">
-        <h3>Erro ao carregar o torneio mais recente</h3>
-        <p>
-          Não foi possível encontrar o torneio no servidor. Erro:{" "}
-          {String(error)}
-        </p>
-      </Alert>
-    );
-  }
-
-  if (!torneio) {
-    return (
-      <Alert variant="info text-center">
-        <h3>Nenhum torneio encontrado</h3>
-        <p>Não existem torneios no momento. Volte mais tarde!</p>
-      </Alert>
-    );
-  }
-
-  const minPrice = torneio.categorias?.length
-    ? Math.min(
-        ...torneio.categorias.map((c) => c.valorInscricao)
-      )
+  const minPrice = torneio?.categorias?.length
+    ? Math.min(...torneio.categorias.map((c) => c.valorInscricao))
     : 0;
 
   return (
-    <Row className="justify-content-center">
-      <Col xs={12} md={8} lg={6}>
-        <h1 className="mb-4 text-primary display-6 border-bottom pb-2">
-          O Torneio Mais Recente:
-        </h1>
+    <div className="py-4 py-md-5">
+      <section className="text-center mb-5 pb-3">
+        <h1 className="display-5 fw-bold mb-3">Bem-vindo ao AeroBeach</h1>
 
-        <CardTorneios
-          torneio={torneio}
-          preco={minPrice}
-        />
-      </Col>
-    </Row>
+        <p
+          className="lead text-muted mx-auto mb-4"
+          style={{ maxWidth: "720px" }}
+        >
+          Encontre torneios, acompanhe o ranking e participe das competições.
+        </p>
+
+        <div className="d-flex justify-content-center gap-4 flex-wrap">
+          <Link to="/torneios" className="btn btn-primary px-4">
+            Ver torneios
+          </Link>
+
+          <Link to="/rankings" className="btn btn-outline-primary px-4">
+            Ver rankings
+          </Link>
+        </div>
+      </section>
+
+      <section className="mb-5">
+        <div className="d-flex justify-content-between align-items-end flex-wrap gap-2 mb-4">
+          <h2 className="mb-0">Torneios em destaque</h2>
+        </div>
+
+        {isLoading && (
+          <div className="text-center py-5">
+            <Spinner animation="border" variant="primary" />
+            <p className="mt-3 mb-0">Carregando torneios...</p>
+          </div>
+        )}
+
+        {error && (
+          <Alert variant="danger" className="mb-0">
+            Não foi possível carregar os torneios.
+          </Alert>
+        )}
+
+        {!isLoading && !error && torneio && (
+          <Row className="g-4">
+            <Col xs={12} md={6} lg={4}>
+              <CardTorneios torneio={torneio} preco={minPrice} />
+            </Col>
+          </Row>
+        )}
+
+        {!isLoading && !error && !torneio && (
+          <Alert variant="info" className="mb-0">
+            Nenhum torneio disponível no momento.
+          </Alert>
+        )}
+      </section>
+
+      <section className="mb-4">
+        <h2 className="mb-4">Ranking resumido</h2>
+
+        <Card className="shadow-sm border-0">
+          <Card.Body className="text-muted">
+            Ranking ainda indisponível no momento.
+          </Card.Body>
+        </Card>
+      </section>
+    </div>
   );
 }

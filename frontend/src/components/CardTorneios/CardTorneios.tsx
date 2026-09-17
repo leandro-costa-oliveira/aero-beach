@@ -1,4 +1,4 @@
-import { Badge, Button, Card, ListGroup } from "react-bootstrap";
+import { Badge, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import type { Torneio } from "../../../../api-schema/TorneioDTO";
 
@@ -8,91 +8,68 @@ type TorneioProps = {
 };
 
 export function CardTorneios({ torneio, preco }: TorneioProps) {
-  const {
-    id,
-    nome,
-    federado,
-    dataInicio,
-    dataLimiteInscricao,
-  } = torneio;
-
-  const isFederado = federado ? "success" : "secondary";
-
-  const inscricoesStatus =
-    dataInicio > dataLimiteInscricao
-      ? { status: "success", data: "inscrições abertas" }
-      : { status: "secondary", data: "inscrições encerradas" };
+  const { id, nome, federado, dataInicio, dataLimiteInscricao } = torneio;
 
   const dataLimiteInscricaoFormatada = new Date(
     dataLimiteInscricao
   ).toLocaleDateString("pt-BR");
 
-  const dataRealizacaoFormatada = new Date(
-    dataInicio
-  ).toLocaleDateString("pt-BR");
+  const dataRealizacaoFormatada = new Date(dataInicio).toLocaleDateString(
+    "pt-BR"
+  );
 
   const securePrice = preco ?? 0;
+  const inscricoesAbertas = new Date(dataLimiteInscricao) >= new Date();
 
   return (
-    <Card className="shadow-sm big-hover">
-      <Card.Header className="bg-light d-flex align-items-center">
-        <span
-          className="text-truncate fw-bold me-2 flex-grow-1"
-          title={nome ?? ""}
-        >
-          {nome}
-        </span>
-
-        <Badge bg={isFederado} className="p-2 flex-shrink-0">
-          {federado ? "Torneio Federado" : "Não Federado"}
-        </Badge>
-      </Card.Header>
-
-      <Card.Body>
-        <Badge
-          bg={inscricoesStatus.status}
-          className="p-2 flex-shrink-0"
-        >
-          {inscricoesStatus.data}
-        </Badge>
-
-        <ListGroup className="mt-1 mb-3" variant="flush">
-          <ListGroup.Item className="border-secondary fw-semibold">
-            Realização:
-            <span className="float-end text-primary fw-bold">
+    <Card className="shadow-sm h-100 border-0">
+      <Card.Body className="p-4 d-flex flex-column gap-3">
+        <div className="d-flex justify-content-between align-items-start gap-3">
+          <div className="flex-grow-1">
+            <Card.Title className="mb-1 fs-5 text-truncate">
+              {nome}
+            </Card.Title>
+            <Card.Subtitle className="text-muted">
               {dataRealizacaoFormatada}
-            </span>
-          </ListGroup.Item>
+            </Card.Subtitle>
+          </div>
 
-          <ListGroup.Item className="border-secondary fw-semibold">
-            Inscrições até:
-            <span className="float-end text-secondary fw-bold">
-              {dataLimiteInscricaoFormatada}
-            </span>
-          </ListGroup.Item>
+          <Badge bg={federado ? "success" : "secondary"} className="text-nowrap">
+            {federado ? "Federado" : "Não federado"}
+          </Badge>
+        </div>
 
-          <ListGroup.Item className="bg-light fw-semibold">
-            Inscrições a partir de:
-            <span className="float-end text-success fw-bold">
+        <div className="d-flex flex-column gap-2">
+          <div className="d-flex justify-content-between gap-3">
+            <span className="text-muted">Inscrições até</span>
+            <strong>{dataLimiteInscricaoFormatada}</strong>
+          </div>
+
+          <div className="d-flex justify-content-between gap-3">
+            <span className="text-muted">Valor</span>
+            <strong>
               {securePrice.toLocaleString("pt-BR", {
                 style: "currency",
                 currency: "BRL",
               })}
-            </span>
-          </ListGroup.Item>
-        </ListGroup>
-      </Card.Body>
+            </strong>
+          </div>
+        </div>
 
-      <Card.Footer>
-        <Link to={`/torneios/${id}`}>
-          <Button
-            variant="outline-primary"
-            className="w-100 btn-anim fw-semibold"
-          >
-            Ver Detalhes
-          </Button>
+        <Badge
+          bg={inscricoesAbertas ? "success" : "secondary"}
+          className="align-self-start"
+        >
+          {inscricoesAbertas ? "Inscrições abertas" : "Inscrições encerradas"}
+        </Badge>
+
+        <Link
+          to={`/torneios/${id}`}
+          className="btn btn-outline-primary mt-2"
+        >
+          Ver detalhes
         </Link>
-      </Card.Footer>
+      </Card.Body>
     </Card>
   );
 }
