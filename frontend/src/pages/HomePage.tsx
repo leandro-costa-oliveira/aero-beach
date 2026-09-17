@@ -28,7 +28,7 @@ export function HomePage() {
             Ver torneios
           </Link>
 
-          <Link to="/rankings" className="btn btn-outline-primary px-4">
+          <Link to="/ranking" className="btn btn-outline-primary px-4">
             Ver rankings
           </Link>
         </div>

@@ -30,7 +30,7 @@ export function Login() {
                 Voltar para home
               </Link>
 
-              <Link to="/profile" className="btn btn-outline-secondary">
+              <Link to="/perfil" className="btn btn-outline-secondary">
                 Ir para perfil
               </Link>
             </div>
