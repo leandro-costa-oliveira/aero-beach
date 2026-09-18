@@ -35,34 +35,7 @@ async createJogador(data: {
     });
 
     if (usuarioExistente) {
-      if (usuarioExistente.senha) {
-        throw new BadRequestError("E-mail já cadastrado.");
-      }
-
-const usuario = await tx.usuario.update({
-  where: { id: usuarioExistente.id },
-  data: {
-    nome: data.nome,
-    senha: data.senha,
-    salt: data.salt,
-    role: "player",
-  },
-});
-
-      const jogador = await tx.jogador.upsert({
-        where: { email: data.email },
-        update: {
-          nome: data.nome,
-          usuarioId: usuario.id,
-        },
-        create: {
-          nome: data.nome,
-          email: data.email,
-          usuarioId: usuario.id,
-        },
-      });
-
-      return { usuario, jogador };
+      throw new BadRequestError("E-mail já cadastrado.");
     }
 
     const usuario = await tx.usuario.create({
@@ -75,8 +48,13 @@ const usuario = await tx.usuario.update({
       },
     });
 
-    const jogador = await tx.jogador.create({
-      data: {
+    const jogador = await tx.jogador.upsert({
+      where: { email: data.email },
+      update: {
+        nome: data.nome,
+        usuarioId: usuario.id,
+      },
+      create: {
         nome: data.nome,
         email: data.email,
         usuarioId: usuario.id,
@@ -86,6 +64,7 @@ const usuario = await tx.usuario.update({
     return { usuario, jogador };
   });
 }
+
   async createTournament(tournament: TorneioForm): Promise<Torneio> {
     return await prisma.torneio.create({
       data: tournament,
@@ -106,8 +85,6 @@ const usuario = await tx.usuario.update({
       },
     });
   }
-
-  
 
   async subscribeTournamentAsDouble(
     tournamentForm: TorneioInscricaoForm
@@ -135,26 +112,6 @@ const usuario = await tx.usuario.update({
           "O prazo de inscrição para este torneio já expirou."
         );
       }
-
-      await tx.usuario.upsert({
-        where: { email: tournamentForm.jogador1.email },
-        update: {},
-        create: {
-          nome: tournamentForm.jogador1.nome,
-          email: tournamentForm.jogador1.email,
-          role: "player",
-        },
-      });
-
-      await tx.usuario.upsert({
-        where: { email: tournamentForm.jogador2.email },
-        update: {},
-        create: {
-          nome: tournamentForm.jogador2.nome,
-          email: tournamentForm.jogador2.email,
-          role: "player",
-        },
-      });
 
       const player1 = await tx.jogador.upsert({
         where: { email: tournamentForm.jogador1.email },

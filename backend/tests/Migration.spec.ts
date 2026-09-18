@@ -4,6 +4,7 @@ import DatabaseService, { prisma } from "../src/services/DatabaseService";
 describe("Migration regression", () => {
   it("preserves category associations for existing doubles and subscriptions", async () => {
     const db = new DatabaseService();
+    const unique = Date.now();
 
     const tournament = await db.createTournament({
       nome: "Migration Test",
@@ -26,14 +27,14 @@ describe("Migration regression", () => {
     const jogador1 = await prisma.jogador.create({
       data: {
         nome: "Jogador 1",
-        email: "migration-j1@test.com",
+        email: `migration-j1-${unique}@test.com`,
       },
     });
 
     const jogador2 = await prisma.jogador.create({
       data: {
         nome: "Jogador 2",
-        email: "migration-j2@test.com",
+        email: `migration-j2-${unique}@test.com`,
       },
     });
 
