@@ -30,6 +30,41 @@ async createJogador(data: {
   salt: string;
 }) {
   return await prisma.$transaction(async (tx) => {
+    const usuarioExistente = await tx.usuario.findUnique({
+      where: { email: data.email },
+    });
+
+    if (usuarioExistente) {
+      if (usuarioExistente.senha) {
+        throw new BadRequestError("E-mail já cadastrado.");
+      }
+
+const usuario = await tx.usuario.update({
+  where: { id: usuarioExistente.id },
+  data: {
+    nome: data.nome,
+    senha: data.senha,
+    salt: data.salt,
+    role: "player",
+  },
+});
+
+      const jogador = await tx.jogador.upsert({
+        where: { email: data.email },
+        update: {
+          nome: data.nome,
+          usuarioId: usuario.id,
+        },
+        create: {
+          nome: data.nome,
+          email: data.email,
+          usuarioId: usuario.id,
+        },
+      });
+
+      return { usuario, jogador };
+    }
+
     const usuario = await tx.usuario.create({
       data: {
         nome: data.nome,
@@ -51,8 +86,6 @@ async createJogador(data: {
     return { usuario, jogador };
   });
 }
-  
-
   async createTournament(tournament: TorneioForm): Promise<Torneio> {
     return await prisma.torneio.create({
       data: tournament,
