@@ -62,6 +62,7 @@ model Usuario {
   salt     String?
 
   jogador Jogador?
+  tokensCadastro TokenCadastro[]
 }
 
 model Torneio {
@@ -134,4 +135,14 @@ model Categoria {
   duplas     Dupla[]
 
   @@unique([torneioId, genero, modalidade, nivel])
+}
+
+model TokenCadastro {
+  id         String   @id @default(uuid())
+  token      String   @unique
+  usuarioId  String
+  expiresAt  DateTime
+  used       Boolean  @default(false)
+
+  usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
 }
