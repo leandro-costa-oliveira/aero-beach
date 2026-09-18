@@ -23,6 +23,36 @@ export default class DatabaseService {
     });
   }
 
+async createJogador(data: {
+  nome: string;
+  email: string;
+  senha: string;
+  salt: string;
+}) {
+  return await prisma.$transaction(async (tx) => {
+    const usuario = await tx.usuario.create({
+      data: {
+        nome: data.nome,
+        email: data.email,
+        senha: data.senha,
+        salt: data.salt,
+        role: "player",
+      },
+    });
+
+    const jogador = await tx.jogador.create({
+      data: {
+        nome: data.nome,
+        email: data.email,
+        usuarioId: usuario.id,
+      },
+    });
+
+    return { usuario, jogador };
+  });
+}
+  
+
   async createTournament(tournament: TorneioForm): Promise<Torneio> {
     return await prisma.torneio.create({
       data: tournament,
@@ -43,6 +73,8 @@ export default class DatabaseService {
       },
     });
   }
+
+  
 
   async subscribeTournamentAsDouble(
     tournamentForm: TorneioInscricaoForm
@@ -159,3 +191,4 @@ export default class DatabaseService {
     };
   }
 }
+

@@ -1,0 +1,130 @@
+.modal-content {
+  border: none;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  animation: modalIn 0.35s ease;
+}
+
+.modal-backdrop.show {
+  opacity: 0.55;
+  backdrop-filter: blur(3px);
+}
+
+.success-animation {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: bounce 0.55s 0.75s
+    cubic-bezier(.175,.885,.32,1.275) both;
+}
+
+.checkmark {
+  width: 120px;
+  height: 120px;
+  overflow: visible;
+}
+
+.checkmark-circle-bg {
+  fill: #0d6efd;
+  transform-origin: center;
+  transform: scale(0);
+  filter: drop-shadow(0 10px 25px rgba(13, 110, 253, .35));
+  animation: fillCircle .35s ease forwards;
+}
+
+.checkmark-circle {
+  fill: none;
+  stroke: #0d6efd;
+  stroke-width: 2;
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  animation: stroke .55s ease forwards;
+}
+
+.checkmark-check {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: drawCheck .35s .45s ease forwards;
+}
+
+.success-btn {
+  min-width: 120px;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: all .2s ease;
+}
+
+.success-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(13, 110, 253, .25);
+}
+
+.success-btn:active {
+  transform: scale(.97);
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(.82);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fillCircle {
+  from {
+    transform: scale(0);
+  }
+
+  80% {
+    transform: scale(1.08);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes stroke {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes drawCheck {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+
+  35% {
+    transform: scale(1.12);
+  }
+
+  65% {
+    transform: scale(.96);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
