@@ -145,14 +145,16 @@ INSERT INTO "new_Jogador" (
     "email",
     "id",
     "nome",
-    "telefone"
+    "telefone",
+    "usuarioId"
 )
 SELECT
     "cpf",
     "email",
     "id",
     "nome",
-    "telefone"
+    "telefone",
+    "usuarioId"
 FROM "Jogador";
 
 DROP TABLE "Jogador";
