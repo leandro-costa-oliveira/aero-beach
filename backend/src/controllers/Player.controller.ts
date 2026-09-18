@@ -11,8 +11,17 @@ export class PlayerController {
   @Post("/")
   @HttpCode(201)
   async create(@Body() body: CadastroJogadorForm) {
-    const jogador = await this.jogadorService.create(body);
+    const result = await this.jogadorService.create(body);
 
-    return { jogador };
+    return {
+      jogador: {
+        id: result.jogador.id,
+        nome: result.jogador.nome,
+        email: result.jogador.email,
+        cpf: result.jogador.cpf,
+        telefone: result.jogador.telefone,
+        usuarioId: result.jogador.usuarioId,
+      },
+    };
   }
 }

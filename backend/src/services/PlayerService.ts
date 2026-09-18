@@ -8,8 +8,8 @@ export class PlayerService {
   constructor(private databaseService: DatabaseService) {}
 
   async create(player: CadastroJogadorForm) {
-    const salt = bcrypt.genSaltSync();
-    const senhaHash = bcrypt.hashSync(player.password, salt);
+    const salt = await bcrypt.genSalt();
+    const senhaHash = await bcrypt.hash(player.password, salt);
 
     return await this.databaseService.createJogador({
       nome: player.nome,
