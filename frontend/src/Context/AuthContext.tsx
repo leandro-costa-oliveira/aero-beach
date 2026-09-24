@@ -15,20 +15,24 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [accessToken, setAccessToken] = useState<string | null>(
-    () => localStorage.getItem("token")
-  );
+const initialToken = localStorage.getItem("token");
 
-useEffect(() => {
-  if (accessToken) {
-    localStorage.setItem("token", accessToken);
-    apiClient.defaults.headers.common["Authorization"] = accessToken;
-  } else {
-    localStorage.removeItem("token");
-    delete apiClient.defaults.headers.common["Authorization"];
-  }
-}, [accessToken]);
+if (initialToken) {
+  apiClient.defaults.headers.common["Authorization"] = initialToken;
+}
+
+export const AuthProvider = ({ children }: AuthProviderProps) => {
+  const [accessToken, setAccessToken] = useState<string | null>(initialToken);
+
+  useEffect(() => {
+    if (accessToken) {
+      localStorage.setItem("token", accessToken);
+      apiClient.defaults.headers.common["Authorization"] = accessToken;
+    } else {
+      localStorage.removeItem("token");
+      delete apiClient.defaults.headers.common["Authorization"];
+    }
+  }, [accessToken]);
 
   return (
     <AuthContext.Provider
