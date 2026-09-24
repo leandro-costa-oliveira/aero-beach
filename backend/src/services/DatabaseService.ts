@@ -23,6 +23,48 @@ export default class DatabaseService {
     });
   }
 
+async createJogador(data: {
+  nome: string;
+  email: string;
+  senha: string;
+  salt: string;
+}) {
+  return await prisma.$transaction(async (tx) => {
+    const usuarioExistente = await tx.usuario.findUnique({
+      where: { email: data.email },
+    });
+
+    if (usuarioExistente) {
+      throw new BadRequestError("E-mail já cadastrado.");
+    }
+
+    const usuario = await tx.usuario.create({
+      data: {
+        nome: data.nome,
+        email: data.email,
+        senha: data.senha,
+        salt: data.salt,
+        role: "player",
+      },
+    });
+
+    const jogador = await tx.jogador.upsert({
+      where: { email: data.email },
+      update: {
+        nome: data.nome,
+        usuarioId: usuario.id,
+      },
+      create: {
+        nome: data.nome,
+        email: data.email,
+        usuarioId: usuario.id,
+      },
+    });
+
+    return { usuario, jogador };
+  });
+}
+
   async createTournament(tournament: TorneioForm): Promise<Torneio> {
     return await prisma.torneio.create({
       data: tournament,
@@ -70,26 +112,6 @@ export default class DatabaseService {
           "O prazo de inscrição para este torneio já expirou."
         );
       }
-
-      await tx.usuario.upsert({
-        where: { email: tournamentForm.jogador1.email },
-        update: {},
-        create: {
-          nome: tournamentForm.jogador1.nome,
-          email: tournamentForm.jogador1.email,
-          role: "player",
-        },
-      });
-
-      await tx.usuario.upsert({
-        where: { email: tournamentForm.jogador2.email },
-        update: {},
-        create: {
-          nome: tournamentForm.jogador2.nome,
-          email: tournamentForm.jogador2.email,
-          role: "player",
-        },
-      });
 
       const player1 = await tx.jogador.upsert({
         where: { email: tournamentForm.jogador1.email },
@@ -159,3 +181,4 @@ export default class DatabaseService {
     };
   }
 }
+
