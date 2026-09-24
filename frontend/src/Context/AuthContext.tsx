@@ -1,10 +1,5 @@
-import {
-  createContext,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-  type ReactNode,
-} from "react";
+import { createContext, useEffect, useState, type Dispatch, type SetStateAction, type ReactNode, } from "react";
+import { apiClient } from "../api/api-client";
 
 interface AuthContextType {
   accessToken: string | null;
@@ -21,7 +16,19 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(
+    () => localStorage.getItem("token")
+  );
+
+useEffect(() => {
+  if (accessToken) {
+    localStorage.setItem("token", accessToken);
+    apiClient.defaults.headers.common["Authorization"] = accessToken;
+  } else {
+    localStorage.removeItem("token");
+    delete apiClient.defaults.headers.common["Authorization"];
+  }
+}, [accessToken]);
 
   return (
     <AuthContext.Provider
