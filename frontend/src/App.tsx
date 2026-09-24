@@ -10,6 +10,7 @@ import { Profile } from "./pages/Profile";
 import { Ranking } from "./pages/Ranking";
 import { TorneioDetalhesPage } from "./pages/TorneioDetalhesPage";
 import { TorneiosPage } from "./pages/TorneiosPage";
+import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
 
 export default function App() {
   return (
@@ -32,7 +33,12 @@ export default function App() {
                 element={<Navigate to="/ranking" replace />}
               />
 
-              <Route path="/perfil" element={<Profile />} />
+              <Route path="/perfil" element={ 
+              <ProtectedRoute>
+              <Profile />
+              </ProtectedRoute>
+              }
+              />
               <Route
                 path="/profile"
                 element={<Navigate to="/perfil" replace />}
