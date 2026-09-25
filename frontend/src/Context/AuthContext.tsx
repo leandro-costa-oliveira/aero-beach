@@ -15,14 +15,16 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-const initialToken = localStorage.getItem("token");
-
-if (initialToken) {
-  apiClient.defaults.headers.common["Authorization"] = initialToken;
-}
-
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [accessToken, setAccessToken] = useState<string | null>(initialToken);
+  const [accessToken, setAccessToken] = useState<string | null>(() => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    apiClient.defaults.headers.common["Authorization"] = token;
+  }
+
+  return token;
+});
 
   useEffect(() => {
     if (accessToken) {
