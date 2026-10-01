@@ -1,14 +1,55 @@
-import { Card } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
 
 export function Admin() {
   return (
-    <Card>
-      <Card.Body>
-        <h2>Painel Administrativo</h2>
-        <p className="text-muted">
-          Selecione uma opção do menu lateral para começar.
-        </p>
-      </Card.Body>
-    </Card>
+    <>
+      <h2 className="mb-4">Painel Administrativo</h2>
+
+      <Row className="g-3">
+        <Col md={6}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Torneios</Card.Title>
+              <Card.Text>
+                Gerenciar torneios cadastrados.
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col md={6}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Categorias</Card.Title>
+              <Card.Text>
+                Gerenciar categorias disponíveis.
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col md={6}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Jogadores</Card.Title>
+              <Card.Text>
+                Visualizar e administrar jogadores.
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col md={6}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Ranking</Card.Title>
+              <Card.Text>
+                Acompanhar e gerenciar o ranking.
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </>
   );
 }
