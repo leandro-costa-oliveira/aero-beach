@@ -11,6 +11,8 @@ import { Ranking } from "./pages/Ranking";
 import { TorneioDetalhesPage } from "./pages/TorneioDetalhesPage";
 import { TorneiosPage } from "./pages/TorneiosPage";
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
+import { AdminLayout } from "./layouts/AdminLayout";
+import { Admin } from "./pages/Admin";
 
 export default function App() {
   return (
@@ -46,6 +48,9 @@ export default function App() {
 
               <Route path="/login" element={<Login />} />
               <Route path="/cadastro" element={<Cadastro />} />
+              <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Admin />} />
+              </Route>
             </Route>
           </Routes>
         </Router>
