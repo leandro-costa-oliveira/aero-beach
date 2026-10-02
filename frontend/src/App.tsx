@@ -13,6 +13,7 @@ import { TorneiosPage } from "./pages/TorneiosPage";
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
 import { AdminLayout } from "./layouts/AdminLayout";
 import { Admin } from "./pages/Admin";
+import { AdminRoute } from "./components/AdminRoutes/AdminRoute";
 
 export default function App() {
   return (
@@ -48,9 +49,13 @@ export default function App() {
 
               <Route path="/login" element={<Login />} />
               <Route path="/cadastro" element={<Cadastro />} />
-              <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<Admin />} />
-              </Route>
+              <Route path="/admin"
+                element={
+                <AdminRoute>
+                <AdminLayout />
+                </AdminRoute> }>
+  <Route index element={<Admin />} />
+</Route>
             </Route>
           </Routes>
         </Router>

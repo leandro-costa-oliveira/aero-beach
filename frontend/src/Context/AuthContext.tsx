@@ -4,12 +4,16 @@ import { apiClient } from "../api/api-client";
 interface AuthContextType {
   accessToken: string | null;
   setAccessToken: Dispatch<SetStateAction<string | null>>;
+  role: "user" | "player" | "admin" | null;
+  setRole: Dispatch<SetStateAction<"user" | "player" | "admin" | null>>;
 }
 
 export const AuthContext = createContext<AuthContextType>({
   accessToken: null,
   setAccessToken: () => {},
-});
+  role: null,
+  setRole: () => {},
+});;
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -17,14 +21,16 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [accessToken, setAccessToken] = useState<string | null>(() => {
-  const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-  if (token) {
-    apiClient.defaults.headers.common["Authorization"] = token;
-  }
+    if (token) {
+      apiClient.defaults.headers.common["Authorization"] = token;
+    }
 
-  return token;
-});
+    return token;
+  });
+
+  const [role, setRole] = useState<"user" | "player" | "admin" | null>(null)
 
   useEffect(() => {
     if (accessToken) {
@@ -41,6 +47,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       value={{
         accessToken,
         setAccessToken,
+        role,
+        setRole,
       }}
     >
       {children}

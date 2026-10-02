@@ -31,16 +31,20 @@ export class AuthService {
     }
 
     const credentials: CredentialsDTO = {
-      userId: user.id,
-      username: user.nome
-    }
+  userId: user.id,
+  username: user.nome,
+  role: user.role,
+  };
     const accessToken = jwt.sign(
       credentials,
       process.env.JWT_SECRET!,
       { expiresIn: '3h' }
     );
 
-    return accessToken;
+    return {
+      accessToken,
+      role: user.role,
+    };
   }
 async getCredentials(
   authorizationToken: string
@@ -55,13 +59,13 @@ async getCredentials(
       return null;
     }
 
-    const { userId, username } = decoded;
+const { userId, username, role } = decoded;
 
-    if (!userId || !username) {
-      return null;
-    }
+if (!userId || !username || !role) {
+  return null;
+}
 
-    return { userId, username };
+return { userId, username, role, };
   } catch {
     return null;
   }
