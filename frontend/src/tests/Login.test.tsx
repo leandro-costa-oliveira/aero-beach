@@ -17,12 +17,14 @@ vi.mock("../hooks/useEfetuarLogin", () => ({
 describe("Login", () => {
   it("renderiza a tela de login quando o usuário não está autenticado", () => {
     render(
-      <AuthContext.Provider
-        value={{
-          accessToken: null,
-          setAccessToken: () => {},
-        }}
-      >
+<AuthContext.Provider
+  value={{
+    accessToken: null,
+    setAccessToken: () => {},
+    role: null,
+    setRole: () => {},
+  }}
+>
         <MemoryRouter>
           <Login />
         </MemoryRouter>
@@ -46,12 +48,14 @@ describe("Login", () => {
 
   it("redireciona para o perfil quando o usuário está autenticado", () => {
     render(
-      <AuthContext.Provider
-        value={{
-          accessToken: "token-teste",
-          setAccessToken: () => {},
-        }}
-      >
+<AuthContext.Provider
+  value={{
+    accessToken: null,
+    setAccessToken: () => {},
+    role: null,
+    setRole: () => {},
+  }}
+>
         <MemoryRouter initialEntries={["/login"]}>
           <Routes>
             <Route path="/login" element={<Login />} />
