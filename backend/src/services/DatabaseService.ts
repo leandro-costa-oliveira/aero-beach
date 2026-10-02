@@ -71,20 +71,45 @@ async createJogador(data: {
     });
   }
 
-  async createCategory(data: CriarCategoriaDTO): Promise<Categoria> {
-    return await prisma.categoria.create({
-      data: {
+async createCategory(data: CriarCategoriaDTO): Promise<Categoria> {
+  const torneio = await prisma.torneio.findUnique({
+    where: { id: data.torneioId },
+  });
+
+  if (!torneio) {
+    throw new NotFoundError("Torneio não encontrado.");
+  }
+
+  const categoriaExistente = await prisma.categoria.findUnique({
+    where: {
+      torneioId_genero_modalidade_nivel: {
         torneioId: data.torneioId,
         genero: data.genero,
         modalidade: data.modalidade,
         nivel: data.nivel,
-        valorInscricao: data.valorInscricao,
-        dataRealizacao: data.dataRealizacao
-          ? new Date(data.dataRealizacao)
-          : null,
       },
-    });
+    },
+  });
+
+  if (categoriaExistente) {
+    throw new BadRequestError(
+      "Essa categoria já existe neste torneio."
+    );
   }
+
+  return await prisma.categoria.create({
+    data: {
+      torneioId: data.torneioId,
+      genero: data.genero,
+      modalidade: data.modalidade,
+      nivel: data.nivel,
+      valorInscricao: data.valorInscricao,
+      dataRealizacao: data.dataRealizacao
+        ? new Date(data.dataRealizacao)
+        : null,
+    },
+  });
+}
 
   async subscribeTournamentAsDouble(
     tournamentForm: TorneioInscricaoForm
