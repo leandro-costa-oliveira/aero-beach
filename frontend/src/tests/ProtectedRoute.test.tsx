@@ -10,12 +10,12 @@ describe("ProtectedRoute", () => {
   it("renderiza o conteúdo quando o usuário está autenticado", () => {
     render(
       <AuthContext.Provider
-value={{
-  accessToken: "token",
-  setAccessToken: () => {},
-  role: "player",
-  setRole: () => {},
-}}
+        value={{
+          accessToken: "token",
+          setAccessToken: () => {},
+          role: "player",
+          setRole: () => {},
+        }}
       >
         <MemoryRouter initialEntries={["/perfil"]}>
           <Routes>
@@ -38,12 +38,12 @@ value={{
   it("redireciona para o login quando o usuário não está autenticado", () => {
     render(
       <AuthContext.Provider
-value={{
-  accessToken: "token",
-  setAccessToken: () => {},
-  role: "player",
-  setRole: () => {},
-}}
+        value={{
+          accessToken: null,
+          setAccessToken: () => {},
+          role: null,
+          setRole: () => {},
+        }}
       >
         <MemoryRouter initialEntries={["/perfil"]}>
           <Routes>
