@@ -7,63 +7,81 @@ import { CredentialsDTO } from '../DTOs/Crendentials';
 
 @Service()
 export class AuthService {
-
   constructor(
     private databaseService: DatabaseService
   ) {}
 
   async login(email: string, password: string) {
     const user = await this.databaseService.getUserByEmail(email);
+
     if (!user) {
       return null;
     }
+
     if (!user.salt) {
-      /*
-        TODO: Necessário serviço para atualizar o salt do usuário caso não exista,
-        para evitar erro durante o hash
-      */
       return null;
     }
 
     const hashPassword = bcrypt.hashSync(password, user.salt);
+
     if (hashPassword !== user.senha) {
       return null;
     }
 
     const credentials: CredentialsDTO = {
       userId: user.id,
-      username: user.nome
-    }
+      username: user.nome,
+      role: user.role,
+    };
+
     const accessToken = jwt.sign(
       credentials,
       process.env.JWT_SECRET!,
-      { expiresIn: '3h' }
+      { expiresIn: "3h" }
     );
 
-    return accessToken;
+    return {
+      accessToken,
+      role: user.role,
+    };
   }
-async getCredentials(
-  authorizationToken: string
-): Promise<CredentialsDTO | null> {
-  try {
-    const decoded = jwt.verify(
-      authorizationToken,
-      process.env.JWT_SECRET!
+
+  async isAdmin(
+    authorizationToken: string
+  ): Promise<boolean> {
+    const credentials = await this.getCredentials(
+      authorizationToken
     );
 
-    if (typeof decoded === "string") {
-      return null;
-    }
-
-    const { userId, username } = decoded;
-
-    if (!userId || !username) {
-      return null;
-    }
-
-    return { userId, username };
-  } catch {
-    return null;
+    return credentials?.role === "admin";
   }
-}
+
+  async getCredentials(
+    authorizationToken: string
+  ): Promise<CredentialsDTO | null> {
+    try {
+      const decoded = jwt.verify(
+        authorizationToken,
+        process.env.JWT_SECRET!
+      );
+
+      if (typeof decoded === "string") {
+        return null;
+      }
+
+      const { userId, username, role } = decoded;
+
+      if (!userId || !username || !role) {
+        return null;
+      }
+
+      return {
+        userId,
+        username,
+        role,
+      };
+    } catch {
+      return null;
+    }
+  }
 }

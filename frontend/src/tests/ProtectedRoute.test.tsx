@@ -11,8 +11,10 @@ describe("ProtectedRoute", () => {
     render(
       <AuthContext.Provider
         value={{
-          accessToken: "token-teste",
+          accessToken: "token",
           setAccessToken: () => {},
+          role: "player",
+          setRole: () => {},
         }}
       >
         <MemoryRouter initialEntries={["/perfil"]}>
@@ -39,6 +41,8 @@ describe("ProtectedRoute", () => {
         value={{
           accessToken: null,
           setAccessToken: () => {},
+          role: null,
+          setRole: () => {},
         }}
       >
         <MemoryRouter initialEntries={["/perfil"]}>

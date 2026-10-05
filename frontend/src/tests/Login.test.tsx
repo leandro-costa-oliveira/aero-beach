@@ -21,6 +21,8 @@ describe("Login", () => {
         value={{
           accessToken: null,
           setAccessToken: () => {},
+          role: null,
+          setRole: () => {},
         }}
       >
         <MemoryRouter>
@@ -48,8 +50,10 @@ describe("Login", () => {
     render(
       <AuthContext.Provider
         value={{
-          accessToken: "token-teste",
+          accessToken: "token",
           setAccessToken: () => {},
+          role: "player",
+          setRole: () => {},
         }}
       >
         <MemoryRouter initialEntries={["/login"]}>
