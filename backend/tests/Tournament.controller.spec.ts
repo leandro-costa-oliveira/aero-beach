@@ -209,6 +209,8 @@ describe("Integration tests for tournaments/:id/inscrever", () => {
 });
 
 describe("Integration tests for categories/categorias", () => {
+  let adminToken: string;
+
   beforeAll(async () => {
     tournament_Category = await new DatabaseService().createTournament({
       nome: "Torneio Categoria Teste",
@@ -216,6 +218,41 @@ describe("Integration tests for categories/categorias", () => {
       dataInicio: new Date("2025-10-10"),
       dataLimiteInscricao: new Date("2025-10-09"),
     });
+
+    const bcrypt = require("bcrypt");
+
+    const senha = "admin123";
+
+    const adminExistente = await prisma.usuario.findUnique({
+      where: { email: "admin@test.com" },
+    });
+
+    if (!adminExistente) {
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(senha, salt);
+
+      await prisma.usuario.create({
+        data: {
+          nome: "Administrador",
+          email: "admin@test.com",
+          senha: hash,
+          salt,
+          role: "admin",
+        },
+      });
+    }
+
+    const login = await supertest(app)
+      .post("/auth/login")
+      .set("Content-Type", "application/json")
+      .send({
+        email: "admin@test.com",
+        password: senha,
+      });
+
+    expect(login.status).toBe(200);
+
+    adminToken = login.body.accessToken;
   });
 
   it("accepts null as dataRealizacao", async () => {
@@ -230,6 +267,7 @@ describe("Integration tests for categories/categorias", () => {
 
     const response = await supertest(app)
       .post("/categorias/")
+      .set("Authorization", adminToken)
       .set("Content-Type", "application/json")
       .send(data);
 
@@ -249,6 +287,7 @@ describe("Integration tests for categories/categorias", () => {
 
     const response = await supertest(app)
       .post("/categorias/")
+      .set("Authorization", adminToken)
       .set("Content-Type", "application/json")
       .send(data);
 
