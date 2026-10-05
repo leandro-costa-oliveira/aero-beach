@@ -8,6 +8,7 @@ import {
   PrismaClient,
   Torneio,
   Usuario,
+  Prisma,
 } from "../../generated/prisma";
 import { TorneioForm } from "../DTOs/TorneioForm";
 import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
@@ -71,7 +72,8 @@ async createJogador(data: {
     });
   }
 
-  async createCategory(data: CriarCategoriaDTO): Promise<Categoria> {
+async createCategory(data: CriarCategoriaDTO): Promise<Categoria> {
+  try {
     return await prisma.categoria.create({
       data: {
         torneioId: data.torneioId,
@@ -84,7 +86,17 @@ async createJogador(data: {
           : null,
       },
     });
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      throw new BadRequestError("Categoria já cadastrada.");
+    }
+
+    throw error;
   }
+}
 
   async subscribeTournamentAsDouble(
     tournamentForm: TorneioInscricaoForm
