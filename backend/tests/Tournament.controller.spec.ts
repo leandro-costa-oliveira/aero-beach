@@ -370,4 +370,56 @@
 
       expect(response.status).toBe(401);
     });
-  });
+
+        it("rejects a category when the tournament does not exist", async () => {
+      const data = {
+        torneioId: randomUUID(),
+        genero: "masculino",
+        modalidade: "duplas",
+        nivel: "b",
+        valorInscricao: 30,
+        dataRealizacao: null,
+      };
+
+      const response = await supertest(app)
+        .post("/categorias/")
+        .set("Authorization", adminToken)
+        .set("Content-Type", "application/json")
+        .send(data);
+
+      expect(response.status).toBe(404);
+      expect(response.body.error.message).toBe(
+        "Torneio não encontrado."
+      );
+    });
+
+    it("rejects a duplicated category in the same tournament", async () => {
+      const data = {
+        torneioId: tournament_Category.id,
+        genero: "masculino",
+        modalidade: "simples",
+        nivel: "b",
+        valorInscricao: 30,
+        dataRealizacao: null,
+      };
+
+      const firstResponse = await supertest(app)
+        .post("/categorias/")
+        .set("Authorization", adminToken)
+        .set("Content-Type", "application/json")
+        .send(data);
+
+      expect(firstResponse.status).toBe(201);
+
+      const secondResponse = await supertest(app)
+        .post("/categorias/")
+        .set("Authorization", adminToken)
+        .set("Content-Type", "application/json")
+        .send(data);
+
+      expect(secondResponse.status).toBe(400);
+      expect(secondResponse.body.error.message).toBe(
+        "Categoria já cadastrada."
+      );
+    });
+});
