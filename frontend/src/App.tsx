@@ -15,6 +15,7 @@ import { AdminLayout } from "./layouts/AdminLayout";
 import { Admin } from "./pages/Admin";
 import { AdminRoute } from "./components/AdminRoutes/AdminRoute";
 import { CadastroTorneio } from "./pages/CadastroTorneio";
+import { CadastroCategoria, } from "./pages/CadastroCategoria";
 
 export default function App() {
   return (
@@ -62,6 +63,10 @@ export default function App() {
                 <Route
                   path="torneios/cadastro"
                   element={<CadastroTorneio />}
+                />
+                <Route
+                  path="categorias/cadastro"
+                  element={<CadastroCategoria />}
                 />
               </Route>
             </Route>
