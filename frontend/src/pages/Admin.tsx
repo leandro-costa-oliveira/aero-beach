@@ -1,4 +1,5 @@
-import { Card, Col, Row } from "react-bootstrap";
+import { Button, Card, Col, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 export function Admin() {
   return (
@@ -10,9 +11,15 @@ export function Admin() {
           <Card>
             <Card.Body>
               <Card.Title>Torneios</Card.Title>
+
               <Card.Text>
                 Gerenciar torneios cadastrados.
               </Card.Text>
+              <Link to="/admin/torneios/cadastro">
+              <Button>
+                Cadastrar torneio
+              </Button>
+            </Link>
             </Card.Body>
           </Card>
         </Col>
