@@ -84,9 +84,6 @@ async createCategory(data: CriarCategoriaDTO): Promise<Categoria> {
   const categoriaExistente = await prisma.categoria.findUnique({
     where: {
       torneioId_genero_modalidade_nivel: {
-  try {
-    return await prisma.categoria.create({
-      data: {
         torneioId: data.torneioId,
         genero: data.genero,
         modalidade: data.modalidade,
@@ -96,9 +93,21 @@ async createCategory(data: CriarCategoriaDTO): Promise<Categoria> {
   });
 
   if (categoriaExistente) {
-    throw new BadRequestError(
-      "Essa categoria já existe neste torneio."
-    );
+    throw new BadRequestError("Categoria já cadastrada.");
+  }
+
+  try {
+    return await prisma.categoria.create({
+      data: {
+        torneioId: data.torneioId,
+        genero: data.genero,
+        modalidade: data.modalidade,
+        nivel: data.nivel,
+        valorInscricao: data.valorInscricao,
+        dataRealizacao: data.dataRealizacao
+          ? new Date(data.dataRealizacao)
+          : null,
+      },
     });
   } catch (error) {
     if (
@@ -112,21 +121,7 @@ async createCategory(data: CriarCategoriaDTO): Promise<Categoria> {
   }
 }
 
-  return await prisma.categoria.create({
-    data: {
-      torneioId: data.torneioId,
-      genero: data.genero,
-      modalidade: data.modalidade,
-      nivel: data.nivel,
-      valorInscricao: data.valorInscricao,
-      dataRealizacao: data.dataRealizacao
-        ? new Date(data.dataRealizacao)
-        : null,
-    },
-  });
-}
-
-  async subscribeTournamentAsDouble(
+async subscribeTournamentAsDouble(
     tournamentForm: TorneioInscricaoForm
   ): Promise<{
     subscriptions: Inscricao[];
