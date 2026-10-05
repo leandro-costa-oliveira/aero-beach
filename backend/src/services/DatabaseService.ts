@@ -8,6 +8,7 @@ import {
   PrismaClient,
   Torneio,
   Usuario,
+  Prisma,
 } from "../../generated/prisma";
 import { TorneioForm } from "../DTOs/TorneioForm";
 import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
@@ -83,6 +84,9 @@ async createCategory(data: CriarCategoriaDTO): Promise<Categoria> {
   const categoriaExistente = await prisma.categoria.findUnique({
     where: {
       torneioId_genero_modalidade_nivel: {
+  try {
+    return await prisma.categoria.create({
+      data: {
         torneioId: data.torneioId,
         genero: data.genero,
         modalidade: data.modalidade,
@@ -95,7 +99,18 @@ async createCategory(data: CriarCategoriaDTO): Promise<Categoria> {
     throw new BadRequestError(
       "Essa categoria já existe neste torneio."
     );
+    });
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      throw new BadRequestError("Categoria já cadastrada.");
+    }
+
+    throw error;
   }
+}
 
   return await prisma.categoria.create({
     data: {
