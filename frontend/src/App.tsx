@@ -14,6 +14,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
 import { AdminLayout } from "./layouts/AdminLayout";
 import { Admin } from "./pages/Admin";
 import { AdminRoute } from "./components/AdminRoutes/AdminRoute";
+import { CadastroTorneio } from "./pages/CadastroTorneio";
 
 export default function App() {
   return (
@@ -49,13 +50,20 @@ export default function App() {
 
               <Route path="/login" element={<Login />} />
               <Route path="/cadastro" element={<Cadastro />} />
-              <Route path="/admin"
+              <Route
+                path="/admin"
                 element={
-                <AdminRoute>
-                <AdminLayout />
-                </AdminRoute> }>
-  <Route index element={<Admin />} />
-</Route>
+                  <AdminRoute>
+                    <AdminLayout />
+                  </AdminRoute>
+                }
+              >
+                <Route index element={<Admin />} />
+                <Route
+                  path="torneios/cadastro"
+                  element={<CadastroTorneio />}
+                />
+              </Route>
             </Route>
           </Routes>
         </Router>
