@@ -5,6 +5,8 @@ import jwt from "jsonwebtoken";
 import 'dotenv/config'
 import { CredentialsDTO } from '../DTOs/Crendentials';
 
+console.log("JWT_SECRET =", process.env.JWT_SECRET);
+
 @Service()
 export class AuthService {
   constructor(
