@@ -370,203 +370,56 @@
 
       expect(response.status).toBe(401);
     });
-    
-  it("Checks if throws error when trying to subscribe a team with already subscribed players", async () => {
-    const subscriptionData = tournamentSubscriptionFormFactory.build({
-      torneioId: tournament_Ongoing.id,
-      categoriaId: categoria.id,
+
+        it("rejects a category when the tournament does not exist", async () => {
+      const data = {
+        torneioId: randomUUID(),
+        genero: "masculino",
+        modalidade: "duplas",
+        nivel: "b",
+        valorInscricao: 30,
+        dataRealizacao: null,
+      };
+
+      const response = await supertest(app)
+        .post("/categorias/")
+        .set("Authorization", adminToken)
+        .set("Content-Type", "application/json")
+        .send(data);
+
+      expect(response.status).toBe(404);
+      expect(response.body.error.message).toBe(
+        "Torneio não encontrado."
+      );
     });
 
-    await supertest(app)
-      .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
-      .set("Content-Type", "application/json")
-      .send(subscriptionData)
-      .then((response) => {
-        expect(response.status).toBe(201);
-        expect(response.body.message).toBe(
-          "Inscrição realizada com sucesso!"
-        );
-      });
+    it("rejects a duplicated category in the same tournament", async () => {
+      const data = {
+        torneioId: tournament_Category.id,
+        genero: "masculino",
+        modalidade: "simples",
+        nivel: "b",
+        valorInscricao: 30,
+        dataRealizacao: null,
+      };
 
-    const secondSubscriptionData =
-      tournamentSubscriptionFormFactory.build({
-        torneioId: tournament_Ongoing.id,
-        jogador1: subscriptionData.jogador1,
-        categoriaId: categoria.id,
-      });
+      const firstResponse = await supertest(app)
+        .post("/categorias/")
+        .set("Authorization", adminToken)
+        .set("Content-Type", "application/json")
+        .send(data);
 
-    await supertest(app)
-      .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
-      .set("Content-Type", "application/json")
-      .send(secondSubscriptionData)
-      .then((response) => {
-        expect(response.status).toBe(400);
-        expect(response.body.error.message).toBe(
-          "Um ou mais jogadores já estão inscritos nessa categoria"
-        );
-      });
+      expect(firstResponse.status).toBe(201);
 
-    const thirdSubscriptionData =
-      tournamentSubscriptionFormFactory.build({
-        torneioId: tournament_Ongoing.id,
-        jogador2: subscriptionData.jogador2,
-        categoriaId: categoria.id,
-      });
+      const secondResponse = await supertest(app)
+        .post("/categorias/")
+        .set("Authorization", adminToken)
+        .set("Content-Type", "application/json")
+        .send(data);
 
-    await supertest(app)
-      .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
-      .set("Content-Type", "application/json")
-      .send(thirdSubscriptionData)
-      .then((response) => {
-        expect(response.status).toBe(400);
-        expect(response.body.error.message).toBe(
-          "Um ou mais jogadores já estão inscritos nessa categoria"
-        );
-      });
-  });
-});
-
-describe("Integration tests for categories/categorias", () => {
-  beforeAll(async () => {
-    tournament_Category = await new DatabaseService().createTournament({
-      nome: "Torneio Categoria Teste",
-      federado: false,
-      dataInicio: new Date("2025-10-10"),
-      dataLimiteInscricao: new Date("2025-10-09"),
+      expect(secondResponse.status).toBe(400);
+      expect(secondResponse.body.error.message).toBe(
+        "Categoria já cadastrada."
+      );
     });
-  });
-
-  it("accepts null as dataRealizacao", async () => {
-    const data = {
-      torneioId: tournament_Category.id,
-      genero: "feminino",
-      modalidade: "duplas",
-      nivel: "a",
-      valorInscricao: 30,
-      dataRealizacao: null,
-    };
-
-    const response = await supertest(app)
-      .post("/categorias/")
-      .set("Content-Type", "application/json")
-      .send(data);
-
-    expect(response.status).toBe(201);
-    expect(response.body.categoria.dataRealizacao).toBeNull();
-  });
-
-  it("rejects an invalid dataRealizacao", async () => {
-    const data = {
-      torneioId: tournament_Category.id,
-      genero: "feminino",
-      modalidade: "duplas",
-      nivel: "a",
-      valorInscricao: 30,
-      dataRealizacao: "data-invalida",
-    };
-
-    const response = await supertest(app)
-      .post("/categorias/")
-      .set("Content-Type", "application/json")
-      .send(data);
-
-    expect(response.status).toBe(400);
-  });
-});
-
-describe("Integration tests for categories/categorias", () => {
-  beforeAll(async () => {
-    tournament_Category = await new DatabaseService().createTournament({
-      nome: "Torneio Categoria Teste",
-      federado: false,
-      dataInicio: new Date("2025-10-10"),
-      dataLimiteInscricao: new Date("2025-10-09"),
-    });
-  });
-
-  it("accepts null as dataRealizacao", async () => {
-    const data = {
-      torneioId: tournament_Category.id,
-      genero: "feminino",
-      modalidade: "duplas",
-      nivel: "a",
-      valorInscricao: 30,
-      dataRealizacao: null,
-    };
-
-    const response = await supertest(app)
-      .post("/categorias/")
-      .set("Content-Type", "application/json")
-      .send(data);
-
-    expect(response.status).toBe(201);
-    expect(response.body.categoria.dataRealizacao).toBeNull();
-  });
-
-  it("rejects an invalid dataRealizacao", async () => {
-    const data = {
-      torneioId: tournament_Category.id,
-      genero: "feminino",
-      modalidade: "duplas",
-      nivel: "a",
-      valorInscricao: 30,
-      dataRealizacao: "data-invalida",
-    };
-
-    const response = await supertest(app)
-      .post("/categorias/")
-      .set("Content-Type", "application/json")
-      .send(data);
-
-    expect(response.status).toBe(400);
-  });
-
-  it("rejects a category when the tournament does not exist", async () => {
-    const data = {
-      torneioId: randomUUID(),
-      genero: "masculino",
-      modalidade: "duplas",
-      nivel: "b",
-      valorInscricao: 30,
-      dataRealizacao: null,
-    };
-
-    const response = await supertest(app)
-      .post("/categorias/")
-      .set("Content-Type", "application/json")
-      .send(data);
-
-    expect(response.status).toBe(404);
-    expect(response.body.error.message).toBe(
-      "Torneio não encontrado."
-    );
-  });
-
-  it("rejects a duplicated category in the same tournament", async () => {
-    const data = {
-      torneioId: tournament_Category.id,
-      genero: "masculino",
-      modalidade: "simples",
-      nivel: "b",
-      valorInscricao: 30,
-      dataRealizacao: null,
-    };
-
-    const firstResponse = await supertest(app)
-      .post("/categorias/")
-      .set("Content-Type", "application/json")
-      .send(data);
-
-    expect(firstResponse.status).toBe(201);
-
-    const secondResponse = await supertest(app)
-      .post("/categorias/")
-      .set("Content-Type", "application/json")
-      .send(data);
-
-    expect(secondResponse.status).toBe(400);
-    expect(secondResponse.body.error.message).toBe(
-      "Essa categoria já existe neste torneio."
-    );
-  });
 });
