@@ -51,16 +51,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   });
 
-  useEffect(() => {
-    if (accessToken) {
-      localStorage.setItem("token", accessToken);
-      apiClient.defaults.headers.common["Authorization"] = accessToken;
-    } else {
-      localStorage.removeItem("token");
-      delete apiClient.defaults.headers.common["Authorization"];
+useEffect(() => {
+  if (accessToken) {
+    localStorage.setItem("token", accessToken);
+    apiClient.defaults.headers.common["Authorization"] = accessToken;
+
+    try {
+      setRole(jwtDecode<TokenPayload>(accessToken).role);
+    } catch {
       setRole(null);
     }
-  }, [accessToken]);
+  } else {
+    localStorage.removeItem("token");
+    delete apiClient.defaults.headers.common["Authorization"];
+    setRole(null);
+  }
+}, [accessToken]);
 
   return (
     <AuthContext.Provider
