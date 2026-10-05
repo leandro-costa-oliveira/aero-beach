@@ -285,6 +285,78 @@ describe("Integration tests for categories/categorias", () => {
       dataRealizacao: "data-invalida",
     };
 
+    it("rejects request without token", async () => {
+  const response = await supertest(app)
+    .post("/categorias/")
+    .send({
+      torneioId: tournament_Category.id,
+      genero: "feminino",
+      modalidade: "duplas",
+      nivel: "a",
+      valorInscricao: 30,
+      dataRealizacao: null,
+    });
+
+  expect(response.status).toBe(401);
+});
+
+it("rejects request with invalid token", async () => {
+  const response = await supertest(app)
+    .post("/categorias/")
+    .set("Authorization", "token-invalido")
+    .send({
+      torneioId: tournament_Category.id,
+      genero: "feminino",
+      modalidade: "duplas",
+      nivel: "a",
+      valorInscricao: 30,
+      dataRealizacao: null,
+    });
+
+  expect(response.status).toBe(401);
+});
+
+it("rejects request with non-admin token", async () => {
+  const senha = "player123";
+
+  const bcrypt = require("bcrypt");
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(senha, salt);
+
+  await prisma.usuario.upsert({
+    where: { email: "player@test.com" },
+    update: {},
+    create: {
+      nome: "Player",
+      email: "player@test.com",
+      senha: hash,
+      salt,
+      role: "player",
+    },
+  });
+
+  const login = await supertest(app)
+    .post("/auth/login")
+    .send({
+      email: "player@test.com",
+      password: senha,
+    });
+
+  const response = await supertest(app)
+    .post("/categorias/")
+    .set("Authorization", login.body.accessToken)
+    .send({
+      torneioId: tournament_Category.id,
+      genero: "feminino",
+      modalidade: "duplas",
+      nivel: "a",
+      valorInscricao: 30,
+      dataRealizacao: null,
+    });
+
+  expect(response.status).toBe(401);
+});
+
     const response = await supertest(app)
       .post("/categorias/")
       .set("Authorization", adminToken)
