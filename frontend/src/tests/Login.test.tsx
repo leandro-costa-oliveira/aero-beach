@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
@@ -22,6 +21,8 @@ describe("Login", () => {
           accessToken: null,
           setAccessToken: () => {},
           role: null,
+          username: null,
+          setUsername: () => {},
           setRole: () => {},
         }}
       >
@@ -52,6 +53,8 @@ describe("Login", () => {
         value={{
           accessToken: "token",
           setAccessToken: () => {},
+          username: null,
+          setUsername: () => {},
           role: "player",
           setRole: () => {},
         }}
