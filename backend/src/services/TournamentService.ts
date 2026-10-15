@@ -41,6 +41,10 @@ export class TournamentService {
     });
   }
 
+  async getPlayerSubscriptions(userId: string) {
+    return this.databaseService.getPlayerSubscriptions(userId);
+  }
+
   // TODO: Retornar o torneio criado ao invés de uma mensagem fixa
   async createTournament(tournament: TorneioForm): Promise<string> {
     if (tournament.dataLimiteInscricao > tournament.dataInicio) {
