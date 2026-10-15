@@ -1,4 +1,3 @@
-
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
@@ -20,9 +19,11 @@ describe("Login", () => {
         value={{
           accessToken: null,
           setAccessToken: () => {},
-          role: null,
+          userId: null,
+          setUserId: () => {},
           username: null,
           setUsername: () => {},
+          role: null,
           setRole: () => {},
         }}
       >
@@ -53,7 +54,9 @@ describe("Login", () => {
         value={{
           accessToken: "token",
           setAccessToken: () => {},
-          username: null,
+          userId: "123",
+          setUserId: () => {},
+          username: "teste",
           setUsername: () => {},
           role: "player",
           setRole: () => {},
