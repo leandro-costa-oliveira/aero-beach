@@ -1,9 +1,29 @@
-import { Badge, Card, Col, Row } from "react-bootstrap";
+import { useContext } from "react";
+import { Badge, Button, Card, Col, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../Context/AuthContext";
 
 export function Profile() {
+  const { setAccessToken } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  function logout() {
+    setAccessToken(null);
+    navigate("/login");
+  }
+
   return (
     <>
-      <h1 className="mb-4">Perfil do Jogador</h1>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h1 className="mb-0">Perfil do Jogador</h1>
+
+        <Button
+          variant="outline-danger"
+          onClick={logout}
+        >
+          Sair
+        </Button>
+      </div>
 
       <Card className="mb-4">
         <Card.Body>
@@ -20,15 +40,15 @@ export function Profile() {
 
             <Col>
               <h3 className="mb-1">
-                Nome do jogador
+                Meu Perfil
               </h3>
 
               <p className="text-muted mb-1">
-                jogador@email.com
+                Dados do jogador serão exibidos aqui.
               </p>
 
               <p className="mb-0">
-                Dados principais
+                Área autenticada do jogador.
               </p>
             </Col>
           </Row>
@@ -43,7 +63,7 @@ export function Profile() {
                 Inscrições ativas
               </Card.Title>
 
-              <h3>0</h3>
+              <h3>—</h3>
             </Card.Body>
           </Card>
         </Col>
@@ -55,7 +75,7 @@ export function Profile() {
                 Histórico
               </Card.Title>
 
-              <h3>0</h3>
+              <h3>—</h3>
             </Card.Body>
           </Card>
         </Col>
@@ -67,8 +87,8 @@ export function Profile() {
                 Status
               </Card.Title>
 
-              <Badge bg="success">
-                Ativo
+              <Badge bg="secondary">
+                Em breve
               </Badge>
             </Card.Body>
           </Card>
