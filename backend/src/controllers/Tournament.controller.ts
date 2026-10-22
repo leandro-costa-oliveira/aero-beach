@@ -1,13 +1,4 @@
-import {
-  Body,
-  Get,
-  HeaderParam,
-  HttpCode,
-  JsonController,
-  Param,
-  Post,
-  QueryParam,
-} from "routing-controllers";
+import { Body, Get, HeaderParam, HttpCode, JsonController, Param, Post, QueryParam, } from "routing-controllers";
 import { Service } from "typedi";
 import { TournamentService } from "../services/TournamentService";
 import { AuthService } from "../services/AuthService";
@@ -22,6 +13,29 @@ export class TournamentController {
     private tournamentService: TournamentService,
     private authService: AuthService
   ) {}
+
+@Get("/historico")
+async getHistorico(
+  @HeaderParam("Authorization")
+  authorization: string
+) {
+  if (!authorization) {
+    throw new UnauthorizedError("Token não informado.");
+  }
+
+  const credentials =
+    await this.authService.getCredentials(
+      authorization
+    );
+
+  if (!credentials) {
+    throw new UnauthorizedError("Token inválido.");
+  }
+
+  return this.tournamentService.getHistorico(
+    credentials.userId
+  );
+}
 
   @Get("/")
   async getAll(
