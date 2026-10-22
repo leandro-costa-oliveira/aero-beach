@@ -1,10 +1,16 @@
 import { useContext } from "react";
-import { Badge, Button, Card, Col, Row } from "react-bootstrap";
+import { Badge, Button, Card, Col, Row, } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
+import { InscricoesAtivas } from "../components/InscricoesAtivas/InscricoesAtivas";
 
 export function Profile() {
-  const { setAccessToken } = useContext(AuthContext);
+  const {
+    setAccessToken,
+    username,
+    role,
+  } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   function logout() {
@@ -40,11 +46,11 @@ export function Profile() {
 
             <Col>
               <h3 className="mb-1">
-                Meu Perfil
+                {username}
               </h3>
 
               <p className="text-muted mb-1">
-                Dados do jogador serão exibidos aqui.
+                Perfil: {role}
               </p>
 
               <p className="mb-0">
@@ -94,6 +100,14 @@ export function Profile() {
           </Card>
         </Col>
       </Row>
+
+      <hr className="my-4" />
+
+      <h4 className="mb-3">
+        Minhas inscrições
+      </h4>
+
+      <InscricoesAtivas />
     </>
   );
 }

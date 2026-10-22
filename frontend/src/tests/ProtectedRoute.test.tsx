@@ -13,6 +13,10 @@ describe("ProtectedRoute", () => {
         value={{
           accessToken: "token",
           setAccessToken: () => {},
+          userId: "123",
+          setUserId: () => {},
+          username: "teste",
+          setUsername: () => {},
           role: "player",
           setRole: () => {},
         }}
@@ -41,6 +45,10 @@ describe("ProtectedRoute", () => {
         value={{
           accessToken: null,
           setAccessToken: () => {},
+          userId: null,
+          setUserId: () => {},
+          username: null,
+          setUsername: () => {},
           role: null,
           setRole: () => {},
         }}
