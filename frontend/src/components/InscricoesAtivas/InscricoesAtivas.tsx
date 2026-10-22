@@ -8,6 +8,11 @@ export function InscricoesAtivas() {
     isError,
   } = useMinhasInscricoes();
 
+  const inscricoesAtivas = inscricoes.filter(
+    (inscricao: any) =>
+      new Date(inscricao.torneio.dataInicio) >= new Date()
+  );
+
   if (isLoading) {
     return (
       <div className="text-center">
@@ -24,7 +29,7 @@ export function InscricoesAtivas() {
     );
   }
 
-  if (inscricoes.length === 0) {
+  if (inscricoesAtivas.length === 0) {
     return (
       <Alert variant="info">
         Você não possui inscrições ativas.
@@ -34,7 +39,7 @@ export function InscricoesAtivas() {
 
   return (
     <>
-      {inscricoes.map((inscricao: any) => (
+      {inscricoesAtivas.map((inscricao: any) => (
         <Card
           key={inscricao.id}
           className="mb-3"
@@ -52,15 +57,9 @@ export function InscricoesAtivas() {
             </Card.Text>
 
             <Badge
-              bg={
-                inscricao.pago
-                  ? "success"
-                  : "warning"
-              }
+              bg={inscricao.pago ? "success" : "warning"}
             >
-              {inscricao.pago
-                ? "Pago"
-                : "Pendente"}
+              {inscricao.pago ? "Pago" : "Pendente"}
             </Badge>
           </Card.Body>
         </Card>
