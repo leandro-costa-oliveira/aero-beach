@@ -1,15 +1,7 @@
   import { BadRequestError } from "../errors/BadRequestError";
   import { NotFoundError } from "../errors/NotFoundError";
   import { Service } from "typedi";
-  import {
-    Categoria,
-    Dupla,
-    Inscricao,
-    PrismaClient,
-    Torneio,
-    Usuario,
-    Prisma,
-  } from "../../generated/prisma";
+  import { Categoria, Dupla, Inscricao, PrismaClient, Torneio, Usuario, Prisma, } from "../../generated/prisma";
   import { TorneioForm } from "../DTOs/TorneioForm";
   import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
   import type { CriarCategoriaDTO } from "@aero-beach/api-schema/TorneioDTO";
@@ -135,6 +127,30 @@ async getPlayerSubscriptions(userId: string) {
     orderBy: {
       torneio: {
         dataInicio: "asc",
+      },
+    },
+  });
+}
+
+async getHistorico(userId: string) {
+  return prisma.inscricao.findMany({
+    where: {
+      jogador: {
+        usuarioId: userId,
+      },
+      torneio: {
+        dataInicio: {
+          lt: new Date(),
+        },
+      },
+    },
+    include: {
+      torneio: true,
+      categoria: true,
+    },
+    orderBy: {
+      torneio: {
+        dataInicio: "desc",
       },
     },
   });

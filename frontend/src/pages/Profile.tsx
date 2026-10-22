@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { Badge, Button, Card, Col, Row, } from "react-bootstrap";
+import { Badge, Button, Card, Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
+import { HistoricoParticipacao } from "../components/HistoricoParticipacao/HistoricoParticipacao";
 import { InscricoesAtivas } from "../components/InscricoesAtivas/InscricoesAtivas";
-
 export function Profile() {
   const {
     setAccessToken,
@@ -21,7 +21,9 @@ export function Profile() {
   return (
     <>
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="mb-0">Perfil do Jogador</h1>
+        <h1 className="mb-0">
+          Perfil do Jogador
+        </h1>
 
         <Button
           variant="outline-danger"
@@ -108,6 +110,14 @@ export function Profile() {
       </h4>
 
       <InscricoesAtivas />
+
+      <hr className="my-4" />
+
+      <h4 className="mb-3">
+        Histórico de participação
+      </h4>
+
+      <HistoricoParticipacao />
     </>
   );
 }
