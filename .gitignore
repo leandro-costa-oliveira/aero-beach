@@ -136,6 +136,12 @@ dist
 /generated/prisma
 
 aerobeach.db
+*.db-journal
+*.db-wal
+*.db-shm
+/infra/db-dev/
+/infra/db-prod/
+/infra/recovery-*/
 
 **/generated
 backend/prisma/.xdp-aerobeach.*
