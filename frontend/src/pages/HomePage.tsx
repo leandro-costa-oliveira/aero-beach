@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { Alert, Card, Col, Row, Spinner } from "react-bootstrap";
+import { Alert, Col, Row, Spinner } from "react-bootstrap";
 import { CardTorneios } from "../components/CardTorneios/CardTorneios";
 import { useUltimoTorneio } from "../hooks/useUltimoTorneio";
+import { RankingResumo } from "../components/RankingResumo/RankingResumo";
 
 export function HomePage() {
   const { data: torneio, isLoading, error } = useUltimoTorneio();
@@ -27,7 +28,7 @@ export function HomePage() {
             Ver torneios
           </Link>
 
-          <Link to="/rankings" className="btn btn-outline-primary px-4">
+          <Link to="/ranking" className="btn btn-outline-primary px-4">
             Ver rankings
           </Link>
         </div>
@@ -67,13 +68,7 @@ export function HomePage() {
       </section>
 
       <section className="mb-4">
-        <h2 className="mb-4">Ranking resumido</h2>
-
-        <Card className="shadow-sm border-0">
-          <Card.Body className="text-muted">
-            Ranking ainda indisponível no momento.
-          </Card.Body>
-        </Card>
+       <RankingResumo />
       </section>
     </div>
   );

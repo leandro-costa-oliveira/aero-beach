@@ -15,15 +15,14 @@ export class AuthController {
   async login(
     @Body() body: LoginForm
   ) {
-    const accessToken = await this.authService.login(
-      body.email,
-      body.password
-    );
+const login = await this.authService.login(
+  body.email,
+  body.password
+);
 
-    if (!accessToken) {
-      throw new UnauthorizedError("Invalid email or password");
-    }
-
-    return { accessToken };
-  }
+if (!login) {
+  throw new UnauthorizedError("Invalid email or password");
 }
+
+return login;
+  }}

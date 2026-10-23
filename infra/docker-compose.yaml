@@ -9,10 +9,11 @@ services:
     restart: unless-stopped
     environment:
       JWT_SECRET: REDACTED
+      DATABASE_URL: file:/app/db/aerobeach.db
     ports:
       - 3000:3000
     volumes:
-      - ./aerobeach.db:/app/aerobeach.db
+      - ./db-prod:/app/db
 
   frontend-dev:
     image: leandrocostaaca/aero-beach-frontend-dev
@@ -24,10 +25,11 @@ services:
     restart: unless-stopped
     environment:
       JWT_SECRET: REDACTED
+      DATABASE_URL: file:/app/db/aerobeach.db
     ports:
       - 3001:3000
     volumes:
-      - ./aerobeach-dev.db:/app/aerobeach.db
+      - ./db-dev:/app/db
 
   watchtower:
     image: containrrr/watchtower

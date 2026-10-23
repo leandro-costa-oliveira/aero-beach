@@ -41,6 +41,14 @@ export class TournamentService {
     });
   }
 
+  async getPlayerSubscriptions(userId: string) {
+    return this.databaseService.getPlayerSubscriptions(userId);
+  }
+
+  async getHistorico(userId: string) {
+    return this.databaseService.getHistorico(userId);
+  }
+
   // TODO: Retornar o torneio criado ao invés de uma mensagem fixa
   async createTournament(tournament: TorneioForm): Promise<string> {
     if (tournament.dataLimiteInscricao > tournament.dataInicio) {
@@ -76,7 +84,7 @@ export class TournamentService {
     }
 
     const torneio = await prisma.torneio.findUnique({
-      where: { id: id },
+      where: { id },
       include: { categorias: true },
     });
 

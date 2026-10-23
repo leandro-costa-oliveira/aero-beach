@@ -1,10 +1,9 @@
-import { IsEmail, IsString } from "class-validator"
+import { IsEmail, IsString} from "class-validator";
 
 export class JogadorForm {
-
   @IsString()
-  nome!: string
-  
+  nome!: string;
+
   @IsEmail()
-  email!: string
+  email!: string;
 }
