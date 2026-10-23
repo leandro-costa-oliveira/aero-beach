@@ -3,13 +3,14 @@ import { Alert, Button, Card, Container, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { apiClient } from "../api/api-client";
 
-export function SetupInicial({ onCompleted }: { onCompleted: () => void }) {
+export function SetupInicial({ setupAvailable, onCompleted }: { setupAvailable: boolean; onCompleted: () => void }) {
   const navigate = useNavigate();
   const [nomeAdministrador, setNomeAdministrador] = useState("");
   const [emailAdministrador, setEmailAdministrador] = useState("");
   const [senhaAdministrador, setSenhaAdministrador] = useState("");
   const [nomeArena, setNomeArena] = useState("");
   const [enderecoArena, setEnderecoArena] = useState("");
+  const [setupSecret, setSetupSecret] = useState("");
   const [erro, setErro] = useState("");
   const [salvando, setSalvando] = useState(false);
 
@@ -24,6 +25,7 @@ export function SetupInicial({ onCompleted }: { onCompleted: () => void }) {
         senhaAdministrador,
         nomeArena,
         enderecoArena: enderecoArena || undefined,
+        setupSecret,
       });
       onCompleted();
       navigate("/login", { replace: true, state: { setupConcluido: true } });
@@ -40,6 +42,9 @@ export function SetupInicial({ onCompleted }: { onCompleted: () => void }) {
         <h1 className="h3 mb-2">Configuração inicial</h1>
         <p className="text-muted mb-4">Crie a arena e a conta do primeiro administrador.</p>
         {erro && <Alert variant="danger">{erro}</Alert>}
+        {!setupAvailable ? (
+          <Alert variant="warning" className="mb-0">A configuração ainda não está liberada. Defina o segredo de setup no ambiente do servidor e reinicie a API.</Alert>
+        ) : (
         <Form onSubmit={handleSubmit}>
           <h2 className="h5">Arena</h2>
           <Form.Group className="mb-3">
@@ -63,10 +68,16 @@ export function SetupInicial({ onCompleted }: { onCompleted: () => void }) {
             <Form.Label>Senha (mínimo de 8 caracteres)</Form.Label>
             <Form.Control required minLength={8} type="password" value={senhaAdministrador} onChange={(e) => setSenhaAdministrador(e.target.value)} />
           </Form.Group>
+          <Form.Group className="mb-4">
+            <Form.Label>Segredo de configuração</Form.Label>
+            <Form.Control required minLength={16} type="password" autoComplete="off" value={setupSecret} onChange={(e) => setSetupSecret(e.target.value)} />
+            <Form.Text>Solicite o segredo ao responsável pela implantação.</Form.Text>
+          </Form.Group>
           <Button type="submit" disabled={salvando} className="w-100">
             {salvando ? "Salvando..." : "Concluir configuração"}
           </Button>
         </Form>
+        )}
       </Card>
     </Container>
   );

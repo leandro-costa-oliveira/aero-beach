@@ -15,13 +15,19 @@ export class AuthController {
 
   @Get("/setup-status")
   async setupStatus() {
-    return { required: await this.authService.isSetupRequired() };
+    return {
+      required: await this.authService.isSetupRequired(),
+      available: this.authService.isSetupAvailable(),
+    };
   }
 
   @Post("/setup")
   async setup(@Body() body: SetupForm) {
     if (!(await this.authService.isSetupRequired())) {
       throw new BadRequestError("A configuração inicial já foi concluída.");
+    }
+    if (!this.authService.isValidSetupSecret(body.setupSecret)) {
+      throw new UnauthorizedError("Segredo de configuração inválido ou não configurado.");
     }
     await this.authService.initializeSetup(body);
     return { message: "Configuração concluída. Faça login para continuar." };

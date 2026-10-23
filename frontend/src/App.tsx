@@ -23,11 +23,15 @@ import { SetupInicial } from "./pages/SetupInicial";
 
 function AppRoutes() {
   const [setupRequired, setSetupRequired] = useState<boolean | null>(null);
+  const [setupAvailable, setSetupAvailable] = useState(false);
   const [setupCheckFailed, setSetupCheckFailed] = useState(false);
 
   useEffect(() => {
-    apiClient.get<{ required: boolean }>("/auth/setup-status")
-      .then(({ data }) => setSetupRequired(data.required))
+    apiClient.get<{ required: boolean; available: boolean }>("/auth/setup-status")
+      .then(({ data }) => {
+        setSetupAvailable(data.available);
+        setSetupRequired(data.required);
+      })
       .catch(() => { setSetupCheckFailed(true); setSetupRequired(false); });
   }, []);
 
@@ -39,7 +43,7 @@ function AppRoutes() {
     return <div className="container py-5 text-center"><h1 className="h4">Não foi possível conectar ao servidor</h1><p>Recarregue a página quando a API estiver disponível.</p><button className="btn btn-primary" onClick={() => window.location.reload()}>Tentar novamente</button></div>;
   }
 
-  if (setupRequired) return <SetupInicial onCompleted={() => setSetupRequired(false)} />;
+  if (setupRequired) return <SetupInicial setupAvailable={setupAvailable} onCompleted={() => setSetupRequired(false)} />;
 
   return (
     <Routes>

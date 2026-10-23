@@ -2,6 +2,10 @@ import { IsEmail, IsOptional, IsString, MinLength } from "class-validator";
 
 export class SetupForm {
   @IsString()
+  @MinLength(16)
+  setupSecret!: string;
+
+  @IsString()
   @MinLength(2)
   nomeAdministrador!: string;
 

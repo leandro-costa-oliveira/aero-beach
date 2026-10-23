@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import 'dotenv/config'
 import { CredentialsDTO } from '../DTOs/Crendentials';
 import { SetupForm } from '../DTOs/SetupForm';
+import { timingSafeEqual } from "crypto";
 
 @Service()
 export class AuthService {
@@ -14,6 +15,18 @@ export class AuthService {
 
   async isSetupRequired(): Promise<boolean> {
     return !(await this.databaseService.hasAdmin());
+  }
+
+  isSetupAvailable(): boolean {
+    return Buffer.byteLength(process.env.INITIAL_SETUP_SECRET ?? "") >= 16;
+  }
+
+  isValidSetupSecret(secret: string): boolean {
+    const expected = process.env.INITIAL_SETUP_SECRET;
+    if (!expected || Buffer.byteLength(expected) < 16 || typeof secret !== "string") return false;
+    const expectedBuffer = Buffer.from(expected);
+    const suppliedBuffer = Buffer.from(secret);
+    return expectedBuffer.length === suppliedBuffer.length && timingSafeEqual(expectedBuffer, suppliedBuffer);
   }
 
   async initializeSetup(form: SetupForm) {

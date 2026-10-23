@@ -46,9 +46,9 @@ export function StatusParticipacao() {
 
             <Card.Text>
               <strong>Categoria:</strong>{" "}
-              {inscricao.categoria.genero} /{" "}
-              {inscricao.categoria.modalidade} /{" "}
-              {inscricao.categoria.nivel}
+              {inscricao.categoria
+                ? `${inscricao.categoria.genero} / ${inscricao.categoria.modalidade} / ${inscricao.categoria.nivel}`
+                : "Categoria não informada"}
             </Card.Text>
 
             <div className="mb-2">

@@ -11,6 +11,8 @@ create a new dev db:
 
 copy the `.env.example` information into a new `.env` file, and add the correct enviroment values.
 
+For a fresh deployment, set `INITIAL_SETUP_SECRET` to a random value of at least 16 characters before starting the API. The first administrator must enter this value in the setup screen. Once the administrator is created, the setup endpoint is permanently closed for that database.
+
 then just start with `npm run dev`
 
 ## last tested specs:
