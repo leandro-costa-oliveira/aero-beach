@@ -4,6 +4,8 @@ Copy `.env.example` to `.env` before running Prisma or starting the backend.
 Set `JWT_SECRET` and keep `DATABASE_URL="file:./aerobeach.db"` for local development.
 The relative SQLite path resolves from `backend/prisma/schema.prisma`, so the local database is `backend/prisma/aerobeach.db`.
 
+The first account registered in an empty database receives the administrator role. Later registrations receive the player role.
+
 install all dependencies:
 `npm install`
 
@@ -14,8 +16,6 @@ create a new dev db:
 `npm run db:migrate:dev`
 
 For container persistence and migration of existing databases, see [infra/README.md](../infra/README.md).
-
-For a fresh deployment, set `INITIAL_SETUP_SECRET` to a random value of at least 16 characters before starting the API. The first administrator must enter this value in the setup screen. Once the administrator is created, the setup endpoint is permanently closed for that database.
 
 then just start with `npm run dev`
 

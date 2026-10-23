@@ -10,27 +10,6 @@
 
   @Service()
   export default class DatabaseService {
-    async hasAdmin(): Promise<boolean> {
-      return (await prisma.usuario.count({ where: { role: "admin" } })) > 0;
-    }
-
-    async initializeSetup(data: { nomeAdministrador: string; emailAdministrador: string; senha: string; salt: string; nomeArena: string; enderecoArena?: string }) {
-      return prisma.$transaction(async (tx) => {
-        if (await tx.usuario.count({ where: { role: "admin" } })) {
-          throw new BadRequestError("A configuração inicial já foi concluída.");
-        }
-        const usuarioExistente = await tx.usuario.findUnique({ where: { email: data.emailAdministrador } });
-        if (usuarioExistente) throw new BadRequestError("E-mail já cadastrado.");
-        const usuario = await tx.usuario.create({
-          data: { nome: data.nomeAdministrador, email: data.emailAdministrador, senha: data.senha, salt: data.salt, role: "admin" },
-        });
-        const arena = await tx.arena.create({
-          data: { nome: data.nomeArena, endereco: data.enderecoArena || null },
-        });
-        return { usuario, arena };
-      });
-    }
-
     async getUserByEmail(email: string): Promise<Usuario | null> {
       return await prisma.usuario.findFirst({
         where: { email: email },
@@ -44,6 +23,7 @@
     salt: string;
   }) {
     return await prisma.$transaction(async (tx) => {
+      const userCount = await tx.usuario.count();
       const usuarioExistente = await tx.usuario.findUnique({
         where: { email: data.email },
       });
@@ -58,7 +38,7 @@
           email: data.email,
           senha: data.senha,
           salt: data.salt,
-          role: "player",
+          role: userCount === 0 ? "admin" : "player",
         },
       });
 
