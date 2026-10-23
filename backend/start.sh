@@ -1,5 +1,6 @@
 #!/bin/sh
+set -eu
 
 npm run db:migrate:deploy
 
-node src/aero-beach.js
+exec node src/aero-beach.js

@@ -1,5 +1,9 @@
 # How to initialize a dev enviroment
 
+Copy `.env.example` to `.env` before running Prisma or starting the backend.
+Set `JWT_SECRET` and keep `DATABASE_URL="file:./aerobeach.db"` for local development.
+The relative SQLite path resolves from `backend/prisma/schema.prisma`, so the local database is `backend/prisma/aerobeach.db`.
+
 install all dependencies:
 `npm install`
 
@@ -7,9 +11,9 @@ generate prisma local files:
 `npx prisma generate`
 
 create a new dev db:
-`npx migrate dev `
+`npm run db:migrate:dev`
 
-copy the `.env.example` information into a new `.env` file, and add the correct enviroment values.
+For container persistence and migration of existing databases, see [infra/README.md](../infra/README.md).
 
 For a fresh deployment, set `INITIAL_SETUP_SECRET` to a random value of at least 16 characters before starting the API. The first administrator must enter this value in the setup screen. Once the administrator is created, the setup endpoint is permanently closed for that database.
 
