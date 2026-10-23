@@ -15,6 +15,8 @@ create a new dev db:
 
 For container persistence and migration of existing databases, see [infra/README.md](../infra/README.md).
 
+For a fresh deployment, set `INITIAL_SETUP_SECRET` to a random value of at least 16 characters before starting the API. The first administrator must enter this value in the setup screen. Once the administrator is created, the setup endpoint is permanently closed for that database.
+
 then just start with `npm run dev`
 
 ## last tested specs:

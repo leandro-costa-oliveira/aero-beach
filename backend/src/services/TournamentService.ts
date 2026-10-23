@@ -61,21 +61,15 @@ export class TournamentService {
     return "Torneio criado com sucesso!";
   }
 
-  async subscribeTournamentAsDouble(
+  async subscribeTournament(
+    userId: string,
+    torneioId: string,
     torneioInscricaoForm: TorneioInscricaoForm
   ): Promise<{
     subscriptions: Inscricao[];
-    double: Dupla;
+    double?: Dupla;
   }> {
-    if (!torneioInscricaoForm.jogador2) {
-      throw new BadRequestError(
-        "Inscrição de dupla requer dois jogadores."
-      );
-    }
-
-    return await this.databaseService.subscribeTournamentAsDouble(
-      torneioInscricaoForm
-    );
+    return this.databaseService.subscribeTournament(userId, torneioId, torneioInscricaoForm);
   }
 
   async getById(id: string) {

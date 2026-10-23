@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 import { HistoricoParticipacao } from "../components/HistoricoParticipacao/HistoricoParticipacao";
 import { InscricoesAtivas } from "../components/InscricoesAtivas/InscricoesAtivas";
+import { StatusParticipacao } from "../components/StatusParticipacao/StatusParticipacao";
 export function Profile() {
   const {
     setAccessToken,
@@ -118,6 +119,15 @@ export function Profile() {
       </h4>
 
       <HistoricoParticipacao />
+
+      <hr className="my-4" />
+
+      <h4 className="mb-3">
+        Status por torneio e categoria
+      </h4>
+
+      <StatusParticipacao />
     </>
   );
 }
+

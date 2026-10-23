@@ -7,6 +7,14 @@ import { tournamentSubscriptionFormFactory } from "./Factories";
 
 describe("Integration tests for jogadores", () => {
   it("completes an existing account created during tournament subscription", async () => {
+    const email = `registered-${Date.now()}@test.com`;
+    const nome = "Jogador cadastrado";
+    const password = "123456";
+    const cadastro = await supertest(app).post("/jogadores").send({ nome, email, password });
+    expect(cadastro.status).toBe(201);
+    const login = await supertest(app).post("/auth/login").send({ email, password });
+    expect(login.status).toBe(200);
+
     const tournament = await new DatabaseService().createTournament({
       nome: "Cadastro Teste",
       federado: false,
@@ -30,22 +38,11 @@ describe("Integration tests for jogadores", () => {
       categoriaId: categoria.id,
     });
 
-    const email = inscricao.jogador1.email;
-
     await supertest(app)
       .post(`/torneios/${tournament.id}/inscrever`)
+      .set("Authorization", login.body.accessToken)
       .send(inscricao)
       .expect(201);
-
-    const cadastro = await supertest(app)
-      .post("/jogadores")
-      .send({
-        nome: inscricao.jogador1.nome,
-        email,
-        password: "123456",
-      });
-
-    expect(cadastro.status).toBe(201);
 
     const usuarios = await prisma.usuario.findMany({
       where: { email },

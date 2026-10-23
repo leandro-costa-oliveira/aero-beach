@@ -1,0 +1,6 @@
+CREATE TABLE "Arena" (
+    "id" INTEGER NOT NULL PRIMARY KEY DEFAULT 1,
+    "nome" TEXT NOT NULL,
+    "endereco" TEXT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

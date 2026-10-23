@@ -14,8 +14,25 @@
 
   let tournament_Ongoing: Torneio;
   let categoria: Categoria;
+  let categoriaIndividual: Categoria;
   let tournament_Done: Torneio;
   let tournament_Category: Torneio;
+  const bcrypt = require("bcrypt");
+
+  async function createPlayerToken(email = `player-${randomUUID()}@test.com`) {
+    const password = "player-password";
+    const salt = bcrypt.genSaltSync(10);
+    const senha = bcrypt.hashSync(password, salt);
+    const user = await prisma.usuario.create({
+      data: { nome: "Jogador de teste", email, senha, salt, role: "player" },
+    });
+    await prisma.jogador.upsert({
+      where: { email }, update: { usuarioId: user.id },
+      create: { nome: user.nome, email, usuarioId: user.id },
+    });
+    const response = await supertest(app).post("/auth/login").send({ email, password });
+    return response.body.accessToken as string;
+  }
 
   describe("Integration tests for tournaments/torneios", () => {
     it("checks if tournament creation works with valid data", async () => {
@@ -74,6 +91,16 @@
           dataRealizacao: null,
         },
       });
+      categoriaIndividual = await prisma.categoria.create({
+        data: {
+          torneioId: tournament_Ongoing.id,
+          genero: "feminino",
+          modalidade: "simples",
+          nivel: "b",
+          valorInscricao: 20,
+          dataRealizacao: null,
+        },
+      });
 
       tournament_Done = await new DatabaseService().createTournament({
         nome: "Torneio Done",
@@ -84,6 +111,7 @@
     });
 
     it("Checks if tournament subscription works with valid data", async () => {
+      const playerToken = await createPlayerToken();
       const subscriptionData = tournamentSubscriptionFormFactory.build({
         torneioId: tournament_Ongoing.id,
         categoriaId: categoria.id,
@@ -91,6 +119,7 @@
 
       await supertest(app)
         .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
+        .set("Authorization", playerToken)
         .set("Content-Type", "application/json")
         .send(subscriptionData)
         .then((response) => {
@@ -101,31 +130,54 @@
         });
     });
 
+    it("allows a logged in player to subscribe alone to an individual category", async () => {
+      const playerToken = await createPlayerToken();
+      const response = await supertest(app)
+        .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
+        .set("Authorization", playerToken)
+        .send({ categoriaId: categoriaIndividual.id });
+
+      expect(response.status).toBe(201);
+    });
+
+    it("requires a player account to subscribe", async () => {
+      const response = await supertest(app)
+        .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
+        .send({ categoriaId: categoriaIndividual.id });
+
+      expect(response.status).toBe(401);
+    });
+
     it("Checks it thows error when trying to subscribe a team with only one player", async () => {
+      const playerToken = await createPlayerToken();
       const subscriptionData = tournamentSubscriptionFormFactory.build({
         torneioId: tournament_Ongoing.id,
+        categoriaId: categoria.id,
         jogador2: undefined,
       });
 
       await supertest(app)
         .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
+        .set("Authorization", playerToken)
         .set("Content-Type", "application/json")
         .send(subscriptionData)
         .then((response) => {
           expect(response.status).toBe(400);
           expect(response.body.error.message).toBe(
-            "Inscrição de dupla requer dois jogadores."
+            "Informe os dados da dupla."
           );
         });
     });
 
     it("Checks if throws error when trying to subscribe to a non-existing tournament", async () => {
+      const playerToken = await createPlayerToken();
       const subscriptionData = tournamentSubscriptionFormFactory.build({
         torneioId: randomUUID(),
       });
 
       await supertest(app)
         .post(`/torneios/${subscriptionData.torneioId}/inscrever`)
+        .set("Authorization", playerToken)
         .set("Content-Type", "application/json")
         .send(subscriptionData)
         .then((response) => {
@@ -137,12 +189,14 @@
     });
 
     it("Checks if throws error when trying to subscribe after the registration deadline", async () => {
+      const playerToken = await createPlayerToken();
       const subscriptionData = tournamentSubscriptionFormFactory.build({
         torneioId: tournament_Done.id,
       });
 
       await supertest(app)
         .post(`/torneios/${tournament_Done.id}/inscrever`)
+        .set("Authorization", playerToken)
         .set("Content-Type", "application/json")
         .send(subscriptionData)
         .then((response) => {
@@ -154,6 +208,7 @@
     });
 
     it("Checks if throws error when trying to subscribe a team with already subscribed players", async () => {
+      const playerToken = await createPlayerToken();
       const subscriptionData = tournamentSubscriptionFormFactory.build({
         torneioId: tournament_Ongoing.id,
         categoriaId: categoria.id,
@@ -161,6 +216,7 @@
 
       await supertest(app)
         .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
+        .set("Authorization", playerToken)
         .set("Content-Type", "application/json")
         .send(subscriptionData)
         .then((response) => {
@@ -179,12 +235,13 @@
 
       await supertest(app)
         .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
+        .set("Authorization", playerToken)
         .set("Content-Type", "application/json")
         .send(secondSubscriptionData)
         .then((response) => {
           expect(response.status).toBe(400);
           expect(response.body.error.message).toBe(
-            "Um ou mais jogadores já estão inscritos nessa categoria"
+            "Você já está inscrito nesta categoria."
           );
         });
 
@@ -197,12 +254,13 @@
 
       await supertest(app)
         .post(`/torneios/${tournament_Ongoing.id}/inscrever`)
+        .set("Authorization", await createPlayerToken(subscriptionData.jogador2.email))
         .set("Content-Type", "application/json")
         .send(thirdSubscriptionData)
         .then((response) => {
           expect(response.status).toBe(400);
           expect(response.body.error.message).toBe(
-            "Um ou mais jogadores já estão inscritos nessa categoria"
+            "Você já está inscrito nesta categoria."
           );
         });
     });
