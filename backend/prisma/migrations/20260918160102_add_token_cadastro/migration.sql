@@ -154,7 +154,7 @@ SELECT
     "id",
     "nome",
     "telefone",
-"usuarioId"
+    "usuarioId"
 FROM "Jogador";
 
 DROP TABLE "Jogador";
