@@ -1,8 +1,10 @@
-import { Body, JsonController, Post } from "routing-controllers";
+import { Body, Get, JsonController, Post } from "routing-controllers";
 import { Service } from "typedi";
 import { UnauthorizedError } from "../errors/UnauthorizedError";
 import { AuthService } from "../services/AuthService";
 import { LoginForm } from "../forms/LoginForms";
+import { SetupForm } from "../DTOs/SetupForm";
+import { BadRequestError } from "../errors/BadRequestError";
 
 @JsonController("/auth")
 @Service()
@@ -10,6 +12,20 @@ export class AuthController {
   constructor(
     private authService: AuthService
   ) {}
+
+  @Get("/setup-status")
+  async setupStatus() {
+    return { required: await this.authService.isSetupRequired() };
+  }
+
+  @Post("/setup")
+  async setup(@Body() body: SetupForm) {
+    if (!(await this.authService.isSetupRequired())) {
+      throw new BadRequestError("A configuração inicial já foi concluída.");
+    }
+    await this.authService.initializeSetup(body);
+    return { message: "Configuração concluída. Faça login para continuar." };
+  }
 
   @Post("/login")
   async login(

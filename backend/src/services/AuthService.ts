@@ -4,12 +4,30 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import 'dotenv/config'
 import { CredentialsDTO } from '../DTOs/Crendentials';
+import { SetupForm } from '../DTOs/SetupForm';
 
 @Service()
 export class AuthService {
   constructor(
     private databaseService: DatabaseService
   ) {}
+
+  async isSetupRequired(): Promise<boolean> {
+    return !(await this.databaseService.hasAdmin());
+  }
+
+  async initializeSetup(form: SetupForm) {
+    const salt = await bcrypt.genSalt();
+    const senha = await bcrypt.hash(form.senhaAdministrador, salt);
+    await this.databaseService.initializeSetup({
+      nomeAdministrador: form.nomeAdministrador.trim(),
+      emailAdministrador: form.emailAdministrador.trim().toLowerCase(),
+      senha,
+      salt,
+      nomeArena: form.nomeArena.trim(),
+      enderecoArena: form.enderecoArena?.trim(),
+    });
+  }
 
   async login(email: string, password: string) {
     const user = await this.databaseService.getUserByEmail(email);

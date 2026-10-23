@@ -10,6 +10,27 @@
 
   @Service()
   export default class DatabaseService {
+    async hasAdmin(): Promise<boolean> {
+      return (await prisma.usuario.count({ where: { role: "admin" } })) > 0;
+    }
+
+    async initializeSetup(data: { nomeAdministrador: string; emailAdministrador: string; senha: string; salt: string; nomeArena: string; enderecoArena?: string }) {
+      return prisma.$transaction(async (tx) => {
+        if (await tx.usuario.count({ where: { role: "admin" } })) {
+          throw new BadRequestError("A configuração inicial já foi concluída.");
+        }
+        const usuarioExistente = await tx.usuario.findUnique({ where: { email: data.emailAdministrador } });
+        if (usuarioExistente) throw new BadRequestError("E-mail já cadastrado.");
+        const usuario = await tx.usuario.create({
+          data: { nome: data.nomeAdministrador, email: data.emailAdministrador, senha: data.senha, salt: data.salt, role: "admin" },
+        });
+        const arena = await tx.arena.create({
+          data: { nome: data.nomeArena, endereco: data.enderecoArena || null },
+        });
+        return { usuario, arena };
+      });
+    }
+
     async getUserByEmail(email: string): Promise<Usuario | null> {
       return await prisma.usuario.findFirst({
         where: { email: email },
@@ -154,21 +175,14 @@ async getHistorico(userId: string) {
   });
 }
 
-  async subscribeTournamentAsDouble(
-      tournamentForm: TorneioInscricaoForm
+  async subscribeTournament(userId: string, torneioId: string, tournamentForm: TorneioInscricaoForm
     ): Promise<{
       subscriptions: Inscricao[];
-      double: Dupla;
+      double?: Dupla;
     }> {
-      if (!tournamentForm.jogador2) {
-        throw new BadRequestError(
-          "É preciso fornecer os dados do segundo jogador para inscrição em dupla."
-        );
-      }
-
       const result = await prisma.$transaction(async (tx) => {
         const tournament = await tx.torneio.findUnique({
-          where: { id: tournamentForm.torneioId },
+          where: { id: torneioId },
         });
 
         if (!tournament) {
@@ -181,18 +195,35 @@ async getHistorico(userId: string) {
           );
         }
 
-        const player1 = await tx.jogador.upsert({
-          where: { email: tournamentForm.jogador1.email },
-          update: {},
-          create: {
-            nome: tournamentForm.jogador1.nome,
-            email: tournamentForm.jogador1.email,
-          },
-        });
+        const category = await tx.categoria.findUnique({ where: { id: tournamentForm.categoriaId } });
+        if (!category || category.torneioId !== torneioId) {
+          throw new BadRequestError("Categoria inválida para este torneio.");
+        }
+        if ((category.modalidade === "duplas") !== Boolean(tournamentForm.jogador2)) {
+          throw new BadRequestError(category.modalidade === "duplas" ? "Informe os dados da dupla." : "Esta categoria é individual.");
+        }
 
+        const player1 = await tx.jogador.findUnique({ where: { usuarioId: userId } });
+        if (!player1) throw new NotFoundError("Jogador vinculado à conta não encontrado.");
+
+        const duplicate = await tx.inscricao.findFirst({
+          where: { torneioId, categoriaId: tournamentForm.categoriaId, jogadorId: player1.id },
+        });
+        if (duplicate) throw new BadRequestError("Você já está inscrito nesta categoria.");
+
+        if (!tournamentForm.jogador2) {
+          const subscription = await tx.inscricao.create({
+            data: { torneioId, jogadorId: player1.id, categoriaId: tournamentForm.categoriaId },
+          });
+          return { subscriptions: [subscription] };
+        }
+
+        if (tournamentForm.jogador2.email.toLowerCase() === player1.email.toLowerCase()) {
+          throw new BadRequestError("O parceiro deve ser outro jogador.");
+        }
         const player2 = await tx.jogador.upsert({
           where: { email: tournamentForm.jogador2.email },
-          update: {},
+          update: { nome: tournamentForm.jogador2.nome },
           create: {
             nome: tournamentForm.jogador2.nome,
             email: tournamentForm.jogador2.email,
@@ -201,7 +232,7 @@ async getHistorico(userId: string) {
 
         const inscritos = await tx.inscricao.findMany({
           where: {
-            torneioId: tournamentForm.torneioId,
+            torneioId,
             categoriaId: tournamentForm.categoriaId,
             jogadorId: { in: [player1.id, player2.id] },
           },
@@ -215,7 +246,7 @@ async getHistorico(userId: string) {
 
         const inscricao1 = await tx.inscricao.create({
           data: {
-            torneioId: tournamentForm.torneioId,
+            torneioId,
             jogadorId: player1.id,
             categoriaId: tournamentForm.categoriaId,
           },
@@ -223,7 +254,7 @@ async getHistorico(userId: string) {
 
         const inscricao2 = await tx.inscricao.create({
           data: {
-            torneioId: tournamentForm.torneioId,
+            torneioId,
             jogadorId: player2.id,
             categoriaId: tournamentForm.categoriaId,
           },
@@ -231,7 +262,7 @@ async getHistorico(userId: string) {
 
         const double = await tx.dupla.create({
           data: {
-            torneioId: tournamentForm.torneioId,
+            torneioId,
             categoriaId: tournamentForm.categoriaId,
             participante1: player1.id,
             participante2: player2.id,

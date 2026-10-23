@@ -65,6 +65,13 @@ model Usuario {
   tokensCadastro TokenCadastro[]
 }
 
+model Arena {
+  id        Int      @id @default(1)
+  nome      String
+  endereco  String?
+  createdAt DateTime @default(now())
+}
+
 model Torneio {
   id                  String          @id @default(uuid())
   nome                String?
