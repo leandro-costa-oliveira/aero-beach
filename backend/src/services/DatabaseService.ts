@@ -222,13 +222,15 @@ async getHistorico(userId: string) {
           throw new BadRequestError("O parceiro deve ser outro jogador.");
         }
         const player2 = await tx.jogador.upsert({
-          where: { email: tournamentForm.jogador2.email },
-          update: { nome: tournamentForm.jogador2.nome },
-          create: {
-            nome: tournamentForm.jogador2.nome,
-            email: tournamentForm.jogador2.email,
-          },
-        });
+  where: {
+    email: tournamentForm.jogador2.email,
+  },
+  update: {},
+  create: {
+    nome: tournamentForm.jogador2.nome,
+    email: tournamentForm.jogador2.email,
+  },
+}); 
 
         const inscritos = await tx.inscricao.findMany({
           where: {
