@@ -4,6 +4,8 @@ export interface CadastroJogadorDTO {
   nome: string;
   email: string;
   password: string;
+  arenaNome?: string;
+  arenaEndereco?: string;
 }
 
 export async function cadastrarJogador(data: CadastroJogadorDTO) {

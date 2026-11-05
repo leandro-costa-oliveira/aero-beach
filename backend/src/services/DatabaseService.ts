@@ -16,12 +16,14 @@
       });
     }
 
-  async createJogador(data: {
-    nome: string;
-    email: string;
-    senha: string;
-    salt: string;
-  }) {
+async createJogador(data: {
+  nome: string;
+  email: string;
+  senha: string;
+  salt: string;
+  arenaNome?: string;
+  arenaEndereco?: string;
+}) {
     return await prisma.$transaction(async (tx) => {
       const userCount = await tx.usuario.count();
       const usuarioExistente = await tx.usuario.findUnique({
@@ -42,20 +44,29 @@
         },
       });
 
-      const jogador = await tx.jogador.upsert({
-        where: { email: data.email },
-        update: {
-          nome: data.nome,
-          usuarioId: usuario.id,
-        },
-        create: {
-          nome: data.nome,
-          email: data.email,
-          usuarioId: usuario.id,
-        },
-      });
+const jogador = await tx.jogador.upsert({
+  where: { email: data.email },
+  update: {
+    nome: data.nome,
+    usuarioId: usuario.id,
+  },
+  create: {
+    nome: data.nome,
+    email: data.email,
+    usuarioId: usuario.id,
+  },
+});
 
-      return { usuario, jogador };
+if (userCount === 0) {
+  await tx.arena.create({
+    data: {
+      nome: data.arenaNome || "Arena",
+      endereco: data.arenaEndereco || "",
+    },
+  });
+}
+
+return { usuario, jogador };
     });
   }
 
