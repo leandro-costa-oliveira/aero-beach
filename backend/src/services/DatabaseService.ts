@@ -273,7 +273,23 @@ async getHistorico(userId: string) {
       };
     }
 
-    async getDoubleRanking() {
-      return [];
-    }
+async getDoubleRanking() {
+  return prisma.dupla.findMany({
+    include: {
+      jogador1: {
+        select: {
+          nome: true,
+        },
+      },
+      jogador2: {
+        select: {
+          nome: true,
+        },
+      },
+    },
+    orderBy: {
+      pontuacao: "desc",
+    },
+  });
 }
+  }
