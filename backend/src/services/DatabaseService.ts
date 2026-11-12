@@ -273,8 +273,23 @@ async getHistorico(userId: string) {
       };
     }
 
-async getDoubleRanking() {
+async getDoubleRanking(categoria?: string, periodo?: string) {
   return prisma.dupla.findMany({
+    where: {
+      ...(categoria && {
+        categoria: {
+          nivel: categoria as any,
+        },
+      }),
+      ...(periodo && {
+        torneio: {
+          dataInicio: {
+            gte: new Date(`${periodo}-01-01`),
+            lt: new Date(`${Number(periodo) + 1}-01-01`),
+          },
+        },
+      }),
+    },
     include: {
       jogador1: {
         select: {
@@ -286,6 +301,8 @@ async getDoubleRanking() {
           nome: true,
         },
       },
+      categoria: true,
+      torneio: true,
     },
     orderBy: {
       pontuacao: "desc",

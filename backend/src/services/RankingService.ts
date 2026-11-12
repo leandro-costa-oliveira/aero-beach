@@ -5,7 +5,7 @@ import DatabaseService from "./DatabaseService";
 export class RankingService {
   constructor(private databaseService: DatabaseService) {}
 
-  async getDoubleRanking() {
-    return await this.databaseService.getDoubleRanking();
+  async getDoubleRanking(categoria?: string, periodo?: string) {
+    return this.databaseService.getDoubleRanking(categoria, periodo);
   }
 }

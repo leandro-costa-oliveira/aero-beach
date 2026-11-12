@@ -1,4 +1,4 @@
-import { Get, JsonController } from "routing-controllers";
+import { Get, JsonController, QueryParam } from "routing-controllers";
 import { Service } from "typedi";
 import { RankingService } from "../services/RankingService";
 
@@ -8,7 +8,10 @@ export class RankingController {
   constructor(private rankingService: RankingService) {}
 
   @Get("/duplas")
-  async getDoubleRanking() {
-    return this.rankingService.getDoubleRanking();
+  async getDoubleRanking(
+    @QueryParam("categoria") categoria?: string,
+    @QueryParam("periodo") periodo?: string,
+  ) {
+    return this.rankingService.getDoubleRanking(categoria, periodo);
   }
 }
