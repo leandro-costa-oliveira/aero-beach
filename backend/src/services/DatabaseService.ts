@@ -272,5 +272,8 @@ async getHistorico(userId: string) {
         double: result.double,
       };
     }
-  }
 
+    async getDoubleRanking() {
+      return [];
+    }
+}
