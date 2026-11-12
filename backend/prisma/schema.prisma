@@ -120,6 +120,8 @@ model Dupla {
   participante2 String
   categoriaId   String
 
+  pontuacao Int @default(0)
+
   torneio   Torneio   @relation(fields: [torneioId], references: [id])
   jogador1  Jogador   @relation("duplaParticipante1", fields: [participante1], references: [id])
   jogador2  Jogador   @relation("duplaParticipante2", fields: [participante2], references: [id])
