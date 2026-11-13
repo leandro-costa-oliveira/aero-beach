@@ -30,7 +30,10 @@ export const Ranking = () => {
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState("");
 
-  const carregarRanking = async () => {
+ useEffect(() => {
+  const controller = new AbortController();
+
+  async function carregarRanking() {
     try {
       setLoading(true);
       setErro("");
@@ -40,20 +43,26 @@ export const Ranking = () => {
           categoria: categoria || undefined,
           periodo: periodo || undefined,
         },
+        signal: controller.signal,
       });
 
       setRanking(data);
-    } catch (error) {
+    } catch (error: any) {
+      if (error.name === "CanceledError" || error.code === "ERR_CANCELED") {
+        return;
+      }
+
       console.error(error);
       setErro("Não foi possível carregar o ranking.");
     } finally {
       setLoading(false);
     }
-  };
+  }
 
-  useEffect(() => {
-    carregarRanking();
-  }, [categoria, periodo]);
+  carregarRanking();
+
+  return () => controller.abort();
+}, [categoria, periodo]);
 
   return (
     <>
