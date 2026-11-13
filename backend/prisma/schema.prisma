@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -17,6 +11,101 @@ datasource db {
 model Contador {
   id       Int @id @default(autoincrement())
   contador Int
+}
+
+model Usuario {
+  id             String          @id @default(uuid())
+  nome           String
+  email          String          @unique
+  role           Role            @default(user)
+  telefone       String?
+  senha          String?
+  salt           String?
+  jogador        Jogador?
+  tokensCadastro TokenCadastro[]
+}
+
+model Arena {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  endereco  String?
+  createdAt DateTime @default(now())
+}
+
+model Torneio {
+  id                  String          @id @default(uuid())
+  nome                String?
+  dataInicio          DateTime
+  dataLimiteInscricao DateTime
+  federado            Boolean         @default(false)
+  situacao            SituacaoTorneio @default(aberto)
+  categorias          Categoria[]
+  duplas              Dupla[]
+  inscricoes          Inscricao[]
+}
+
+model Jogador {
+  id         String      @id @default(uuid())
+  nome       String
+  email      String      @unique
+  cpf        String?
+  telefone   String?
+  usuarioId  String?     @unique
+  duplas2    Dupla[]     @relation("duplaParticipante2")
+  duplas1    Dupla[]     @relation("duplaParticipante1")
+  inscricoes Inscricao[]
+  usuario    Usuario?    @relation(fields: [usuarioId], references: [id])
+}
+
+model Inscricao {
+  id            String     @id @default(uuid())
+  torneioId     String
+  jogadorId     String
+  pago          Boolean    @default(false)
+  dataPagamento DateTime?
+  categoriaId   String?
+  categoria     Categoria? @relation(fields: [categoriaId], references: [id])
+  jogador       Jogador    @relation(fields: [jogadorId], references: [id])
+  torneio       Torneio    @relation(fields: [torneioId], references: [id])
+}
+
+model Dupla {
+  id            String    @id @default(uuid())
+  torneioId     String
+  participante1 String
+  participante2 String
+  categoriaId   String
+  pontuacao     Int       @default(0)
+  categoria     Categoria @relation(fields: [categoriaId], references: [id])
+  jogador2      Jogador   @relation("duplaParticipante2", fields: [participante2], references: [id])
+  jogador1      Jogador   @relation("duplaParticipante1", fields: [participante1], references: [id])
+  torneio       Torneio   @relation(fields: [torneioId], references: [id])
+
+  @@unique([participante1, participante2, categoriaId])
+}
+
+model Categoria {
+  id             String            @id @default(uuid())
+  torneioId      String
+  genero         TipoTorneio
+  modalidade     ModalidadeTorneio
+  nivel          CategoriaTorneio
+  valorInscricao Float
+  dataRealizacao DateTime?
+  torneio        Torneio           @relation(fields: [torneioId], references: [id])
+  duplas         Dupla[]
+  inscricoes     Inscricao[]
+
+  @@unique([torneioId, genero, modalidade, nivel])
+}
+
+model TokenCadastro {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  usuarioId String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
 }
 
 enum TipoTorneio {
@@ -38,7 +127,7 @@ enum SituacaoTorneio {
   aberto
   cancelado
   realizando
-  concluído
+  concluido
 }
 
 enum ModalidadeTorneio {
@@ -50,108 +139,4 @@ enum Role {
   user
   player
   admin
-}
-
-model Usuario {
-  id       String  @id @default(uuid())
-  nome     String
-  email    String  @unique
-  role     Role    @default(user)
-  telefone String?
-  senha    String?
-  salt     String?
-
-  jogador Jogador?
-  tokensCadastro TokenCadastro[]
-}
-
-model Arena {
-  id        Int      @id @default(1)
-  nome      String
-  endereco  String?
-  createdAt DateTime @default(now())
-}
-
-model Torneio {
-  id                  String          @id @default(uuid())
-  nome                String?
-  dataInicio          DateTime
-  dataLimiteInscricao DateTime
-  federado            Boolean         @default(false)
-  situacao            SituacaoTorneio @default(aberto)
-
-  categorias Categoria[]
-  inscricoes Inscricao[]
-  duplas     Dupla[]
-}
-
-model Jogador {
-  id       String  @id @default(uuid())
-  nome     String
-  email    String  @unique
-  cpf      String?
-  telefone String?
-
-  usuarioId String?  @unique
-  usuario   Usuario? @relation(fields: [usuarioId], references: [id])
-
-  inscricoes Inscricao[]
-  duplas1    Dupla[]     @relation("duplaParticipante1")
-  duplas2    Dupla[]     @relation("duplaParticipante2")
-}
-
-model Inscricao {
-  id            String    @id @default(uuid())
-  torneioId     String
-  jogadorId     String
-  pago          Boolean   @default(false)
-  dataPagamento DateTime?
-  categoriaId   String?
-
-  torneio   Torneio    @relation(fields: [torneioId], references: [id])
-  jogador   Jogador    @relation(fields: [jogadorId], references: [id])
-  categoria Categoria? @relation(fields: [categoriaId], references: [id])
-}
-
-model Dupla {
-  id            String @id @default(uuid())
-  torneioId     String
-  participante1 String
-  participante2 String
-  categoriaId   String
-
-  pontuacao Int @default(0)
-
-  torneio   Torneio   @relation(fields: [torneioId], references: [id])
-  jogador1  Jogador   @relation("duplaParticipante1", fields: [participante1], references: [id])
-  jogador2  Jogador   @relation("duplaParticipante2", fields: [participante2], references: [id])
-  categoria Categoria @relation(fields: [categoriaId], references: [id])
-
-  @@unique([participante1, participante2, categoriaId])
-}
-
-model Categoria {
-  id             String            @id @default(uuid())
-  torneioId      String
-  genero         TipoTorneio
-  modalidade     ModalidadeTorneio
-  nivel          CategoriaTorneio
-  valorInscricao Float
-  dataRealizacao DateTime?
-
-  torneio    Torneio     @relation(fields: [torneioId], references: [id])
-  inscricoes Inscricao[]
-  duplas     Dupla[]
-
-  @@unique([torneioId, genero, modalidade, nivel])
-}
-
-model TokenCadastro {
-  id         String   @id @default(uuid())
-  token      String   @unique
-  usuarioId  String
-  expiresAt  DateTime
-  used       Boolean  @default(false)
-
-  usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
 }

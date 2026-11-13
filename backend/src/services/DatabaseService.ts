@@ -152,7 +152,7 @@ async getHistorico(userId: string) {
         usuarioId: userId,
       },
       torneio: {
-        situacao: "concluído",
+        situacao: "concluido",
       },
     },
     include: {
