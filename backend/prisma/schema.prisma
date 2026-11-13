@@ -127,7 +127,7 @@ enum SituacaoTorneio {
   aberto
   cancelado
   realizando
-  concluido @map("concluído")
+  concluido
 }
 
 enum ModalidadeTorneio {
