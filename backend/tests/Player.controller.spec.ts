@@ -1,19 +1,27 @@
-import { describe, it, expect } from "@jest/globals";
+import { afterEach, describe, expect, it } from "@jest/globals";
 import supertest from "supertest";
 
 import app from "../src/app";
 import DatabaseService, { prisma } from "../src/services/DatabaseService";
 import { tournamentSubscriptionFormFactory } from "./Factories";
 
-describe("Integration tests for jogadores", () => {
-  it("completes an existing account created during tournament subscription", async () => {
+  it("creates a player account and links it after tournament subscription", async () => {
     const email = `registered-${Date.now()}@test.com`;
     const nome = "Jogador cadastrado";
     const password = "123456";
-    const cadastro = await supertest(app).post("/jogadores").send({ nome, email, password });
+
+    const cadastro = await supertest(app)
+      .post("/jogadores")
+      .send({ nome, email, password });
+
     expect(cadastro.status).toBe(201);
-    const login = await supertest(app).post("/auth/login").send({ email, password });
+
+    const login = await supertest(app)
+      .post("/auth/login")
+      .send({ email, password });
+
     expect(login.status).toBe(200);
+    expect(login.body.accessToken).toEqual(expect.any(String));
 
     const tournament = await new DatabaseService().createTournament({
       nome: "Cadastro Teste",
@@ -58,4 +66,3 @@ describe("Integration tests for jogadores", () => {
 
     expect(jogador?.usuarioId).toBe(usuarios[0].id);
   });
-});
