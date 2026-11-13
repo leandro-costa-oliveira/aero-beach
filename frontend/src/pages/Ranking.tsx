@@ -32,6 +32,7 @@ export const Ranking = () => {
 
  useEffect(() => {
   const controller = new AbortController();
+  let ativo = true;
 
   async function carregarRanking() {
     try {
@@ -46,22 +47,34 @@ export const Ranking = () => {
         signal: controller.signal,
       });
 
+      if (!ativo) return;
+
       setRanking(data);
     } catch (error: any) {
-      if (error.name === "CanceledError" || error.code === "ERR_CANCELED") {
+      if (
+        error.name === "CanceledError" ||
+        error.code === "ERR_CANCELED"
+      ) {
         return;
       }
+
+      if (!ativo) return;
 
       console.error(error);
       setErro("Não foi possível carregar o ranking.");
     } finally {
-      setLoading(false);
+      if (ativo) {
+        setLoading(false);
+      }
     }
   }
 
   carregarRanking();
 
-  return () => controller.abort();
+  return () => {
+    ativo = false;
+    controller.abort();
+  };
 }, [categoria, periodo]);
 
   return (
