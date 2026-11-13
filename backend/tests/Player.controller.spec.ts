@@ -5,16 +5,6 @@ import app from "../src/app";
 import DatabaseService, { prisma } from "../src/services/DatabaseService";
 import { tournamentSubscriptionFormFactory } from "./Factories";
 
-describe("Integration tests for jogadores", () => {
-  afterEach(async () => {
-    await prisma.inscricao.deleteMany({});
-    await prisma.dupla.deleteMany({});
-    await prisma.categoria.deleteMany({});
-    await prisma.jogador.deleteMany({});
-    await prisma.torneio.deleteMany({});
-    await prisma.usuario.deleteMany({});
-  });
-
   it("creates a player account and links it after tournament subscription", async () => {
     const email = `registered-${Date.now()}@test.com`;
     const nome = "Jogador cadastrado";
@@ -76,4 +66,3 @@ describe("Integration tests for jogadores", () => {
 
     expect(jogador?.usuarioId).toBe(usuarios[0].id);
   });
-});
