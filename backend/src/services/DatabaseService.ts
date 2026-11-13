@@ -281,9 +281,19 @@ async getDoubleRanking(categoria?: string, periodo?: string) {
     throw new BadRequestError("Categoria inválida.");
   }
 
-  if (periodo && !/^\d{4}$/.test(periodo)) {
+let ano: number | undefined;
+
+if (periodo) {
+  if (!/^\d{4}$/.test(periodo)) {
     throw new BadRequestError("Período inválido.");
   }
+
+  ano = Number(periodo);
+
+  if (ano < 1900 || ano > 2100) {
+    throw new BadRequestError("Período inválido.");
+  }
+}
 
   return prisma.dupla.findMany({
     where: {
@@ -293,13 +303,13 @@ async getDoubleRanking(categoria?: string, periodo?: string) {
         },
       }),
       ...(periodo && {
-        torneio: {
-          dataInicio: {
-            gte: new Date(`${periodo}-01-01`),
-            lt: new Date(`${Number(periodo) + 1}-01-01`),
-          },
-        },
-      }),
+  torneio: {
+    dataInicio: {
+      gte: new Date(ano!, 0, 1),
+      lt: new Date(ano! + 1, 0, 1),
+    },
+  },
+}),
     },
     include: {
       jogador1: { select: { nome: true } },
