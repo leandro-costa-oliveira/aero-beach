@@ -5,6 +5,7 @@
   import { TorneioForm } from "../DTOs/TorneioForm";
   import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
   import type { CriarCategoriaDTO } from "@aero-beach/api-schema/TorneioDTO";
+  import { CategoriaTorneio } from "../../generated/prisma"
 
   export const prisma = new PrismaClient();
 
@@ -273,19 +274,48 @@ async getHistorico(userId: string) {
       };
     }
 
-async getDoubleRanking() {
+async getDoubleRanking(categoria?: string, periodo?: string) {
+  const categoriasValidas = Object.values(CategoriaTorneio);
+
+  if (categoria && !categoriasValidas.includes(categoria as CategoriaTorneio)) {
+    throw new BadRequestError("Categoria inválida.");
+  }
+
+let ano: number | undefined;
+
+if (periodo) {
+  if (!/^\d{4}$/.test(periodo)) {
+    throw new BadRequestError("Período inválido.");
+  }
+
+  ano = Number(periodo);
+
+  if (ano < 1900 || ano > 2100) {
+    throw new BadRequestError("Período inválido.");
+  }
+}
+
   return prisma.dupla.findMany({
+    where: {
+      ...(categoria && {
+        categoria: {
+          nivel: categoria as CategoriaTorneio,
+        },
+      }),
+      ...(periodo && {
+  torneio: {
+    dataInicio: {
+      gte: new Date(ano!, 0, 1),
+      lt: new Date(ano! + 1, 0, 1),
+    },
+  },
+}),
+    },
     include: {
-      jogador1: {
-        select: {
-          nome: true,
-        },
-      },
-      jogador2: {
-        select: {
-          nome: true,
-        },
-      },
+      jogador1: { select: { nome: true } },
+      jogador2: { select: { nome: true } },
+      categoria: true,
+      torneio: true,
     },
     orderBy: {
       pontuacao: "desc",
