@@ -1,7 +1,7 @@
   import { BadRequestError } from "../errors/BadRequestError";
   import { NotFoundError } from "../errors/NotFoundError";
   import { Service } from "typedi";
-  import { Categoria, Dupla, Inscricao, PrismaClient, Torneio, Usuario, Prisma, } from "../../generated/prisma";
+  import { Categoria, Dupla, Inscricao, PrismaClient, Torneio, Usuario, Prisma, Role, } from "../../generated/prisma";
   import { TorneioForm } from "../DTOs/TorneioForm";
   import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
   import type { CriarCategoriaDTO } from "@aero-beach/api-schema/TorneioDTO";
@@ -320,6 +320,37 @@ if (periodo) {
     orderBy: {
       pontuacao: "desc",
     },
+    
+  });
+
+  }
+  async listJogadores() {
+  return prisma.usuario.findMany({
+    select: {
+      id: true,
+      nome: true,
+      email: true,
+      role: true,
+    },
+    orderBy: {
+      nome: "asc",
+    },
   });
 }
+async updateRole(id: string, role: Role) {
+  const usuario = await prisma.usuario.findUnique({
+    where: { id },
+  });
+
+  if (!usuario) {
+    throw new NotFoundError("Usuário não encontrado.");
   }
+
+  return prisma.usuario.update({
+    where: { id },
+    data: {
+      role,
+    },
+  });
+}
+}

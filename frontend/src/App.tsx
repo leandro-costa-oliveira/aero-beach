@@ -16,6 +16,7 @@ import { Admin } from "./pages/Admin";
 import { AdminRoute } from "./components/AdminRoutes/AdminRoute";
 import { CadastroTorneio } from "./pages/CadastroTorneio";
 import { CadastroCategoria, } from "./pages/CadastroCategoria";
+import { AdminUsuarios, } from "./pages/AdminUsuarios"
 
 function AppRoutes() {
   return (
@@ -33,6 +34,7 @@ function AppRoutes() {
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
           <Route index element={<Admin />} />
+          <Route path="usuarios" element={<AdminUsuarios />} />
           <Route path="torneios/cadastro" element={<CadastroTorneio />} />
           <Route path="categorias/cadastro" element={<CadastroCategoria />} />
         </Route>
