@@ -241,9 +241,9 @@ describe("Integration tests for tournaments/:id/inscrever", () => {
       .send(thirdSubscriptionData);
 
     expect(thirdResponse.status).toBe(400);
-    expect(thirdResponse.body.error.message).toBe(
-      "Você já está inscrito nesta categoria.",
-    );
+expect(thirdResponse.body.error.message).toBe(
+  "Você já está inscrito nesta categoria.",
+);
   });
 });
 

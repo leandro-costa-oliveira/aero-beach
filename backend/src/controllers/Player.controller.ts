@@ -1,13 +1,34 @@
-import { Get, Body, HttpCode, JsonController, Post, Patch, Param, } from "routing-controllers";
+import {
+  Body,
+  ForbiddenError,
+  Get,
+  HttpCode,
+  HeaderParam,
+  JsonController,
+  Param,
+  Patch,
+  Post,
+} from "routing-controllers";
 import { Service } from "typedi";
+
 import { CadastroJogadorForm } from "../DTOs/CadastroJogadorForm";
-import { PlayerService } from "../services/PlayerService";
 import { AtualizarRoleForm } from "../DTOs/AtualizarRoleForm";
+import { PlayerService } from "../services/PlayerService";
+import { AuthService } from "../services/AuthService";
 
 @JsonController("/jogadores")
 @Service()
 export class PlayerController {
-  constructor(private jogadorService: PlayerService) {}
+  constructor(
+    private jogadorService: PlayerService,
+    private authService: AuthService
+  ) {}
+
+  private async ensureAdmin(authorization?: string) {
+    if (!authorization || !(await this.authService.isAdmin(authorization))) {
+      throw new ForbiddenError("Acesso negado.");
+    }
+  }
 
   @Post("/")
   @HttpCode(201)
@@ -23,21 +44,28 @@ export class PlayerController {
         telefone: result.jogador.telefone,
         usuarioId: result.jogador.usuarioId,
       },
-    };   
+    };
   }
-  @Get("/")
-async list() {
-  const jogadores = await this.jogadorService.list();
 
-  return {
-    jogadores,
-  };
-}
-@Patch("/:id")
+  @Get("/")
+  async list(@HeaderParam("authorization") authorization?: string) {
+    await this.ensureAdmin(authorization);
+
+    const jogadores = await this.jogadorService.list();
+
+    return {
+      jogadores,
+    };
+  }
+
+  @Patch("/:id")
 async updateRole(
   @Param("id") id: string,
-  @Body() body: AtualizarRoleForm
+  @Body() body: AtualizarRoleForm,
+  @HeaderParam("authorization") authorization?: string
 ) {
+  await this.ensureAdmin(authorization);
+
   await this.jogadorService.updateRole(id, body.role);
 
   return {

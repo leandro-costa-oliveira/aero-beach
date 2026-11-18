@@ -19,7 +19,7 @@ const app = createExpressServer({
   middlewares: [ErrorHandler],
   interceptors: [path.join(__dirname, "/interceptors/*.{j,t}s")],
 
-  authorizationChecker: async (action: Action) => {
+  authorizationChecker: async (action: Action, roles: string[]) => {
     const token = action.request.headers["authorization"];
 
     if (!token) {

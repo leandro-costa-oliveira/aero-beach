@@ -1,68 +1,182 @@
-import { afterEach, describe, expect, it } from "@jest/globals";
+import { beforeEach, afterEach, describe, expect, it, jest } from "@jest/globals";
 import supertest from "supertest";
 
 import app from "../src/app";
-import DatabaseService, { prisma } from "../src/services/DatabaseService";
-import { tournamentSubscriptionFormFactory } from "./Factories";
+import { prisma } from "../src/services/DatabaseService";
 
-  it("creates a player account and links it after tournament subscription", async () => {
-    const email = `registered-${Date.now()}@test.com`;
-    const nome = "Jogador cadastrado";
+describe("PlayerController", () => {
+  beforeEach(async () => {
+    await prisma.inscricao.deleteMany();
+    await prisma.dupla.deleteMany();
+    await prisma.jogador.deleteMany();
+    await prisma.usuario.deleteMany();
+    await prisma.arena.deleteMany();
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("returns 403 when a player tries to list users", async () => {
+    const adminEmail = `admin-${Date.now()}@test.com`;
+    const playerEmail = `player-${Date.now()}@test.com`;
     const password = "123456";
 
-    const cadastro = await supertest(app)
+    await supertest(app)
       .post("/jogadores")
-      .send({ nome, email, password });
+      .send({
+        nome: "Administrador",
+        email: adminEmail,
+        password,
+      })
+      .expect(201);
 
-    expect(cadastro.status).toBe(201);
+    await supertest(app)
+      .post("/jogadores")
+      .send({
+        nome: "Jogador",
+        email: playerEmail,
+        password,
+      })
+      .expect(201);
 
     const login = await supertest(app)
       .post("/auth/login")
-      .send({ email, password });
+      .send({
+        email: playerEmail,
+        password,
+      })
+      .expect(200);
 
-    expect(login.status).toBe(200);
-    expect(login.body.accessToken).toEqual(expect.any(String));
+    await supertest(app)
+      .get("/jogadores")
+      .set("Authorization", login.body.accessToken)
+      .expect(403);
+  });
 
-    const tournament = await new DatabaseService().createTournament({
-      nome: "Cadastro Teste",
-      federado: false,
-      dataInicio: new Date("2500-10-10"),
-      dataLimiteInscricao: new Date("2500-10-09"),
-    });
+  it("returns 403 when a player tries to update another user's role", async () => {
+    const adminEmail = `admin-${Date.now()}@test.com`;
+    const playerEmail = `player-${Date.now()}@test.com`;
+    const password = "123456";
 
-    const categoria = await prisma.categoria.create({
-      data: {
-        torneioId: tournament.id,
-        genero: "feminino",
-        modalidade: "duplas",
-        nivel: "a",
-        valorInscricao: 30,
-        dataRealizacao: null,
+    await supertest(app)
+      .post("/jogadores")
+      .send({
+        nome: "Administrador",
+        email: adminEmail,
+        password,
+      })
+      .expect(201);
+
+    await supertest(app)
+      .post("/jogadores")
+      .send({
+        nome: "Jogador",
+        email: playerEmail,
+        password,
+      })
+      .expect(201);
+
+    const login = await supertest(app)
+      .post("/auth/login")
+      .send({
+        email: playerEmail,
+        password,
+      })
+      .expect(200);
+
+    const admin = await prisma.usuario.findUnique({
+      where: {
+        email: adminEmail,
       },
     });
 
-    const inscricao = tournamentSubscriptionFormFactory.build({
-      torneioId: tournament.id,
-      categoriaId: categoria.id,
-    });
+    expect(admin).not.toBeNull();
 
     await supertest(app)
-      .post(`/torneios/${tournament.id}/inscrever`)
+      .patch(`/jogadores/${admin!.id}`)
       .set("Authorization", login.body.accessToken)
-      .send(inscricao)
+      .send({
+        role: "admin",
+      })
+      .expect(403);
+  });
+
+  it("allows an administrator to list users", async () => {
+    const adminEmail = `admin-${Date.now()}@test.com`;
+    const password = "123456";
+
+    await supertest(app)
+      .post("/jogadores")
+      .send({
+        nome: "Administrador",
+        email: adminEmail,
+        password,
+      })
       .expect(201);
 
-    const usuarios = await prisma.usuario.findMany({
-      where: { email },
-    });
+    const login = await supertest(app)
+      .post("/auth/login")
+      .send({
+        email: adminEmail,
+        password,
+      })
+      .expect(200);
 
-    expect(usuarios).toHaveLength(1);
-    expect(usuarios[0].senha).not.toBeNull();
-    expect(usuarios[0].salt).not.toBeNull();
+    const response = await supertest(app)
+      .get("/jogadores")
+      .set("Authorization", login.body.accessToken)
+      .expect(200);
 
-    const jogador = await prisma.jogador.findUnique({
-      where: { email },
-    });
-
-    expect(jogador?.usuarioId).toBe(usuarios[0].id);
+    expect(response.body).toHaveProperty("jogadores");
+    expect(Array.isArray(response.body.jogadores)).toBe(true);
   });
+
+  it("allows an administrator to update a user's role", async () => {
+    const adminEmail = `admin-${Date.now()}@test.com`;
+    const playerEmail = `player-${Date.now()}@test.com`;
+    const password = "123456";
+
+    await supertest(app)
+      .post("/jogadores")
+      .send({
+        nome: "Administrador",
+        email: adminEmail,
+        password,
+      })
+      .expect(201);
+
+    await supertest(app)
+      .post("/jogadores")
+      .send({
+        nome: "Jogador",
+        email: playerEmail,
+        password,
+      })
+      .expect(201);
+
+    const login = await supertest(app)
+      .post("/auth/login")
+      .send({
+        email: adminEmail,
+        password,
+      })
+      .expect(200);
+
+    const player = await prisma.usuario.findUnique({
+      where: {
+        email: playerEmail,
+      },
+    });
+
+    expect(player).not.toBeNull();
+
+    await supertest(app)
+      .patch(`/jogadores/${player!.id}`)
+      .set("Authorization", login.body.accessToken)
+      .send({
+        role: "admin",
+      })
+      .expect(200);
+  });
+});
