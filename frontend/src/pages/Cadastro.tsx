@@ -10,6 +10,8 @@ export function Cadastro() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [arenaNome, setArenaNome] = useState("");
+  const [arenaEndereco, setArenaEndereco] = useState("");
 
   const [erro, setErro] = useState("");
   const [loading, setLoading] = useState(false);
@@ -33,11 +35,13 @@ export function Cadastro() {
     try {
       setLoading(true);
 
-      await cadastrarJogador({
-        nome,
-        email,
-        password,
-      });
+await cadastrarJogador({
+  nome,
+  email,
+  password,
+  arenaNome,
+  arenaEndereco,
+});
 
       setShowSuccess(true);
     } catch {
@@ -73,6 +77,26 @@ export function Cadastro() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </Form.Group>
+
+            <Form.Group className="mb-3">
+  <Form.Label>Nome da Arena (opcional)</Form.Label>
+  <Form.Control
+    type="text"
+    value={arenaNome}
+    onChange={(e) => setArenaNome(e.target.value)}
+    placeholder="Arena"
+  />
+</Form.Group>
+
+<Form.Group className="mb-3">
+  <Form.Label>Endereço da Arena (opcional)</Form.Label>
+  <Form.Control
+    type="text"
+    value={arenaEndereco}
+    onChange={(e) => setArenaEndereco(e.target.value)}
+    placeholder="Rua, número..."
+  />
+</Form.Group>
 
             <Form.Group className="mb-4">
               <Form.Label>Senha</Form.Label>

@@ -5,6 +5,7 @@
   import { TorneioForm } from "../DTOs/TorneioForm";
   import { TorneioInscricaoForm } from "../DTOs/TorneioInscricaoForm";
   import type { CriarCategoriaDTO } from "@aero-beach/api-schema/TorneioDTO";
+  import { CategoriaTorneio } from "../../generated/prisma"
 
   export const prisma = new PrismaClient();
 
@@ -16,13 +17,16 @@
       });
     }
 
-  async createJogador(data: {
-    nome: string;
-    email: string;
-    senha: string;
-    salt: string;
-  }) {
+async createJogador(data: {
+  nome: string;
+  email: string;
+  senha: string;
+  salt: string;
+  arenaNome?: string;
+  arenaEndereco?: string;
+}) {
     return await prisma.$transaction(async (tx) => {
+      const userCount = await tx.usuario.count();
       const usuarioExistente = await tx.usuario.findUnique({
         where: { email: data.email },
       });
@@ -37,24 +41,33 @@
           email: data.email,
           senha: data.senha,
           salt: data.salt,
-          role: "player",
+          role: userCount === 0 ? "admin" : "player",
         },
       });
 
-      const jogador = await tx.jogador.upsert({
-        where: { email: data.email },
-        update: {
-          nome: data.nome,
-          usuarioId: usuario.id,
-        },
-        create: {
-          nome: data.nome,
-          email: data.email,
-          usuarioId: usuario.id,
-        },
-      });
+const jogador = await tx.jogador.upsert({
+  where: { email: data.email },
+  update: {
+    nome: data.nome,
+    usuarioId: usuario.id,
+  },
+  create: {
+    nome: data.nome,
+    email: data.email,
+    usuarioId: usuario.id,
+  },
+});
 
-      return { usuario, jogador };
+if (userCount === 0) {
+  await tx.arena.create({
+    data: {
+      nome: data.arenaNome || "Arena",
+      endereco: data.arenaEndereco || "",
+    },
+  });
+}
+
+return { usuario, jogador };
     });
   }
 
@@ -139,7 +152,7 @@ async getHistorico(userId: string) {
         usuarioId: userId,
       },
       torneio: {
-        situacao: "concluído",
+        situacao: "concluido",
       },
     },
     include: {
@@ -154,21 +167,14 @@ async getHistorico(userId: string) {
   });
 }
 
-  async subscribeTournamentAsDouble(
-      tournamentForm: TorneioInscricaoForm
+  async subscribeTournament(userId: string, torneioId: string, tournamentForm: TorneioInscricaoForm
     ): Promise<{
       subscriptions: Inscricao[];
-      double: Dupla;
+      double?: Dupla;
     }> {
-      if (!tournamentForm.jogador2) {
-        throw new BadRequestError(
-          "É preciso fornecer os dados do segundo jogador para inscrição em dupla."
-        );
-      }
-
       const result = await prisma.$transaction(async (tx) => {
         const tournament = await tx.torneio.findUnique({
-          where: { id: tournamentForm.torneioId },
+          where: { id: torneioId },
         });
 
         if (!tournament) {
@@ -181,27 +187,46 @@ async getHistorico(userId: string) {
           );
         }
 
-        const player1 = await tx.jogador.upsert({
-          where: { email: tournamentForm.jogador1.email },
-          update: {},
-          create: {
-            nome: tournamentForm.jogador1.nome,
-            email: tournamentForm.jogador1.email,
-          },
-        });
+        const category = await tx.categoria.findUnique({ where: { id: tournamentForm.categoriaId } });
+        if (!category || category.torneioId !== torneioId) {
+          throw new BadRequestError("Categoria inválida para este torneio.");
+        }
+        if ((category.modalidade === "duplas") !== Boolean(tournamentForm.jogador2)) {
+          throw new BadRequestError(category.modalidade === "duplas" ? "Informe os dados da dupla." : "Esta categoria é individual.");
+        }
 
-        const player2 = await tx.jogador.upsert({
-          where: { email: tournamentForm.jogador2.email },
-          update: {},
-          create: {
-            nome: tournamentForm.jogador2.nome,
-            email: tournamentForm.jogador2.email,
-          },
+        const player1 = await tx.jogador.findUnique({ where: { usuarioId: userId } });
+        if (!player1) throw new NotFoundError("Jogador vinculado à conta não encontrado.");
+
+        const duplicate = await tx.inscricao.findFirst({
+          where: { torneioId, categoriaId: tournamentForm.categoriaId, jogadorId: player1.id },
         });
+        if (duplicate) throw new BadRequestError("Você já está inscrito nesta categoria.");
+
+        if (!tournamentForm.jogador2) {
+          const subscription = await tx.inscricao.create({
+            data: { torneioId, jogadorId: player1.id, categoriaId: tournamentForm.categoriaId },
+          });
+          return { subscriptions: [subscription] };
+        }
+
+        if (tournamentForm.jogador2.email.toLowerCase() === player1.email.toLowerCase()) {
+          throw new BadRequestError("O parceiro deve ser outro jogador.");
+        }
+        const player2 = await tx.jogador.upsert({
+  where: {
+    email: tournamentForm.jogador2.email,
+  },
+  update: {},
+  create: {
+    nome: tournamentForm.jogador2.nome,
+    email: tournamentForm.jogador2.email,
+  },
+}); 
 
         const inscritos = await tx.inscricao.findMany({
           where: {
-            torneioId: tournamentForm.torneioId,
+            torneioId,
             categoriaId: tournamentForm.categoriaId,
             jogadorId: { in: [player1.id, player2.id] },
           },
@@ -215,7 +240,7 @@ async getHistorico(userId: string) {
 
         const inscricao1 = await tx.inscricao.create({
           data: {
-            torneioId: tournamentForm.torneioId,
+            torneioId,
             jogadorId: player1.id,
             categoriaId: tournamentForm.categoriaId,
           },
@@ -223,7 +248,7 @@ async getHistorico(userId: string) {
 
         const inscricao2 = await tx.inscricao.create({
           data: {
-            torneioId: tournamentForm.torneioId,
+            torneioId,
             jogadorId: player2.id,
             categoriaId: tournamentForm.categoriaId,
           },
@@ -231,7 +256,7 @@ async getHistorico(userId: string) {
 
         const double = await tx.dupla.create({
           data: {
-            torneioId: tournamentForm.torneioId,
+            torneioId,
             categoriaId: tournamentForm.categoriaId,
             participante1: player1.id,
             participante2: player2.id,
@@ -248,5 +273,53 @@ async getHistorico(userId: string) {
         double: result.double,
       };
     }
+
+async getDoubleRanking(categoria?: string, periodo?: string) {
+  const categoriasValidas = Object.values(CategoriaTorneio);
+
+  if (categoria && !categoriasValidas.includes(categoria as CategoriaTorneio)) {
+    throw new BadRequestError("Categoria inválida.");
   }
 
+let ano: number | undefined;
+
+if (periodo) {
+  if (!/^\d{4}$/.test(periodo)) {
+    throw new BadRequestError("Período inválido.");
+  }
+
+  ano = Number(periodo);
+
+  if (ano < 1900 || ano > 2100) {
+    throw new BadRequestError("Período inválido.");
+  }
+}
+
+  return prisma.dupla.findMany({
+    where: {
+      ...(categoria && {
+        categoria: {
+          nivel: categoria as CategoriaTorneio,
+        },
+      }),
+      ...(periodo && {
+  torneio: {
+    dataInicio: {
+      gte: new Date(ano!, 0, 1),
+      lt: new Date(ano! + 1, 0, 1),
+    },
+  },
+}),
+    },
+    include: {
+      jogador1: { select: { nome: true } },
+      jogador2: { select: { nome: true } },
+      categoria: true,
+      torneio: true,
+    },
+    orderBy: {
+      pontuacao: "desc",
+    },
+  });
+}
+  }

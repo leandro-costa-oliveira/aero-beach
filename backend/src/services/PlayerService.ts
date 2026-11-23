@@ -11,11 +11,13 @@ export class PlayerService {
     const salt = await bcrypt.genSalt();
     const senhaHash = await bcrypt.hash(player.password, salt);
 
-    return await this.databaseService.createJogador({
-      nome: player.nome,
-      email: player.email,
-      senha: senhaHash,
-      salt,
-    });
+return await this.databaseService.createJogador({
+  nome: player.nome,
+  email: player.email,
+  senha: senhaHash,
+  salt,
+  arenaNome: player.arenaNome,
+  arenaEndereco: player.arenaEndereco,
+});
   }
 }

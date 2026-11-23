@@ -68,11 +68,13 @@ async getHistorico(
   @Post("/:id/inscrever")
   @HttpCode(201)
   async tournamentSubscription(
+    @Param("id") id: string,
+    @HeaderParam("Authorization") authorization: string,
     @Body() body: TorneioInscricaoForm
   ) {
-    await this.tournamentService.subscribeTournamentAsDouble(
-      body
-    );
+    const credentials = authorization ? await this.authService.getCredentials(authorization) : null;
+    if (!credentials || credentials.role !== "player") throw new UnauthorizedError("Entre com uma conta de jogador para se inscrever.");
+    await this.tournamentService.subscribeTournament(credentials.userId, id, body);
 
     return {
       message: "Inscrição realizada com sucesso!",

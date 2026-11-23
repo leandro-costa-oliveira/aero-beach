@@ -1,12 +1,28 @@
-import { describe, it, expect } from "@jest/globals";
+import { afterEach, describe, expect, it } from "@jest/globals";
 import supertest from "supertest";
 
 import app from "../src/app";
 import DatabaseService, { prisma } from "../src/services/DatabaseService";
 import { tournamentSubscriptionFormFactory } from "./Factories";
 
-describe("Integration tests for jogadores", () => {
-  it("completes an existing account created during tournament subscription", async () => {
+  it("creates a player account and links it after tournament subscription", async () => {
+    const email = `registered-${Date.now()}@test.com`;
+    const nome = "Jogador cadastrado";
+    const password = "123456";
+
+    const cadastro = await supertest(app)
+      .post("/jogadores")
+      .send({ nome, email, password });
+
+    expect(cadastro.status).toBe(201);
+
+    const login = await supertest(app)
+      .post("/auth/login")
+      .send({ email, password });
+
+    expect(login.status).toBe(200);
+    expect(login.body.accessToken).toEqual(expect.any(String));
+
     const tournament = await new DatabaseService().createTournament({
       nome: "Cadastro Teste",
       federado: false,
@@ -30,22 +46,11 @@ describe("Integration tests for jogadores", () => {
       categoriaId: categoria.id,
     });
 
-    const email = inscricao.jogador1.email;
-
     await supertest(app)
       .post(`/torneios/${tournament.id}/inscrever`)
+      .set("Authorization", login.body.accessToken)
       .send(inscricao)
       .expect(201);
-
-    const cadastro = await supertest(app)
-      .post("/jogadores")
-      .send({
-        nome: inscricao.jogador1.nome,
-        email,
-        password: "123456",
-      });
-
-    expect(cadastro.status).toBe(201);
 
     const usuarios = await prisma.usuario.findMany({
       where: { email },
@@ -61,4 +66,3 @@ describe("Integration tests for jogadores", () => {
 
     expect(jogador?.usuarioId).toBe(usuarios[0].id);
   });
-});
