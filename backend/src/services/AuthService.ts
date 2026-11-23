@@ -1,15 +1,14 @@
-import { Service } from 'typedi';
+import { Service } from "typedi";
+import { ForbiddenError } from "routing-controllers";
 import DatabaseService from "../services/DatabaseService";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import 'dotenv/config'
-import { CredentialsDTO } from '../DTOs/Crendentials';
+import "dotenv/config";
+import { CredentialsDTO } from "../DTOs/Crendentials";
 
 @Service()
 export class AuthService {
-  constructor(
-    private databaseService: DatabaseService
-  ) {}
+  constructor(private databaseService: DatabaseService) {}
 
   async login(email: string, password: string) {
     const user = await this.databaseService.getUserByEmail(email);
@@ -34,11 +33,9 @@ export class AuthService {
       role: user.role,
     };
 
-    const accessToken = jwt.sign(
-      credentials,
-      process.env.JWT_SECRET!,
-      { expiresIn: "3h" }
-    );
+    const accessToken = jwt.sign(credentials, process.env.JWT_SECRET!, {
+      expiresIn: "3h",
+    });
 
     return {
       accessToken,
@@ -46,24 +43,23 @@ export class AuthService {
     };
   }
 
-  async isAdmin(
-    authorizationToken: string
-  ): Promise<boolean> {
-    const credentials = await this.getCredentials(
-      authorizationToken
-    );
+  async isAdmin(authorizationToken: string): Promise<boolean> {
+    const credentials = await this.getCredentials(authorizationToken);
 
     return credentials?.role === "admin";
+  }
+
+  async ensureAdmin(authorizationToken?: string): Promise<void> {
+    if (!authorizationToken || !(await this.isAdmin(authorizationToken))) {
+      throw new ForbiddenError("Acesso negado.");
+    }
   }
 
   async getCredentials(
     authorizationToken: string
   ): Promise<CredentialsDTO | null> {
     try {
-      const decoded = jwt.verify(
-        authorizationToken,
-        process.env.JWT_SECRET!
-      );
+      const decoded = jwt.verify(authorizationToken, process.env.JWT_SECRET!);
 
       if (typeof decoded === "string") {
         return null;
