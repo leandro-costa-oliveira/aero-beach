@@ -1,10 +1,10 @@
 import { Alert, Form, Spinner, Table } from "react-bootstrap";
-import { useAtualizarRole } from "../hooks/useAtualizarRole";
+import { useAtualizarRole, AuthRoles, type AuthRole } from "../hooks/useAtualizarRole";
 import { useListaUsuarios } from "../hooks/useListarUsuarios";
 
 export function AdminUsuarios() {
-const { data, isLoading, error } = useListaUsuarios();
-const atualizarRole = useAtualizarRole();
+  const { data, isLoading, error } = useListaUsuarios();
+  const atualizarRole = useAtualizarRole();
 
   if (isLoading) {
     return (
@@ -15,11 +15,7 @@ const atualizarRole = useAtualizarRole();
   }
 
   if (error) {
-    return (
-      <Alert variant="danger">
-        Não foi possível carregar os usuários.
-      </Alert>
-    );
+    return <Alert variant="danger">Não foi possível carregar os usuários.</Alert>;
   }
 
   return (
@@ -41,20 +37,22 @@ const atualizarRole = useAtualizarRole();
               <td>{usuario.nome}</td>
               <td>{usuario.email}</td>
               <td>
-  <Form.Select
-    value={usuario.role}
-    onChange={(e) =>
-      atualizarRole.mutate({
-        id: usuario.id,
-        role: e.target.value as "user" | "player" | "admin",
-      })
-    }
-  >
-    <option value="user">Usuário</option>
-    <option value="player">Jogador</option>
-    <option value="admin">Administrador</option>
-  </Form.Select>
-</td>
+                <Form.Select
+                  value={usuario.role}
+                  onChange={(e) =>
+                    atualizarRole.mutate({
+                      id: usuario.id,
+                      role: e.target.value as AuthRole,
+                    })
+                  }
+                >
+                  {Object.entries(AuthRoles).map(([label, value]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </Form.Select>
+              </td>
             </tr>
           ))}
         </tbody>

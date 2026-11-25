@@ -1,34 +1,29 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api/api-client";
-import { QueryKeys } from "../api/queryKeys";
+
+export const AuthRoles = {
+  Usuário: "user",
+  Jogador: "player",
+  Administrador: "admin",
+} as const;
+
+export type AuthRole = (typeof AuthRoles)[keyof typeof AuthRoles];
 
 interface AtualizarRoleDTO {
   id: string;
-  role: "user" | "player" | "admin";
-}
-
-async function fetchAtualizarRole({ id, role }: AtualizarRoleDTO) {
-  const response = await apiClient.patch(`/jogadores/${id}`, {
-    role,
-  });
-
-  return response.data;
+  role: AuthRole;
 }
 
 export function useAtualizarRole() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: fetchAtualizarRole,
-
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: QueryKeys.ListarUsuarios,
-      });
+    mutationFn: async ({ id, role }: AtualizarRoleDTO) => {
+      const response = await apiClient.patch(`/jogadores/${id}`, { role });
+      return response.data;
     },
-
-    onError: (e) => {
-      console.log(e);
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["jogadores"] });
     },
   });
 }
