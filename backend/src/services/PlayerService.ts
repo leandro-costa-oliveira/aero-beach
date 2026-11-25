@@ -30,8 +30,6 @@ export class PlayerService {
           nome: player.nome,
           email: player.email,
           usuarioId: usuario.id,
-          arenaNome: player.arenaNome,
-          arenaEndereco: player.arenaEndereco,
         },
       });
 
